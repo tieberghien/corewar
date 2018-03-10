@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 18:34:20 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/03/10 19:41:09 by slynn-ev         ###   ########.fr       */
+/*   Updated: 2018/03/10 20:17:53 by slynn-ev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ typedef struct 		s_opset
 	int				oc;
 	int				address;
 //	t_op	*ops;
-	struct opset	*nxt;
+	struct s_opset	*nxt;
 }				t_opset;
 
 typedef struct	s_am
@@ -53,5 +53,6 @@ typedef struct s_op
 int				get_name(t_am *a);
 int				get_comment(t_am *a);
 void			remove_leading_whitespaces(t_am *a);
+int				build_operations(t_am *a);
 
 #endif

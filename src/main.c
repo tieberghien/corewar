@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 18:34:20 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/03/10 19:43:47 by slynn-ev         ###   ########.fr       */
+/*   Updated: 2018/03/10 20:20:30 by slynn-ev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,12 @@ int			check_all(t_am *a)
 		return (0);
 	remove_leading_whitespaces(a);
 	build_operations(a);
-	int i = 0;
-	while (i < a->lc)
+//	int i = 0;
+/*	while (i < a->lc)
 		ft_printf("%s\n", a->lines[i++]);
 	ft_printf("%s\n", a->name);
 	ft_printf("%s\n", a->comment);
-	ft_printf("%d\n", a->eoc);
+	ft_printf("%d\n", a->eoc);*/
 	return (1);
 }
 

@@ -1,6 +1,6 @@
 LIB = libft/libft.a
 
-SRC = src/main.c src/op.c src/name_comments.c src/rm_whitespace.c
+SRC = src/main.c src/build_ops.c  src/op.c src/name_comments.c src/rm_whitespace.c
 
 OBJ_PATH = obj
 
