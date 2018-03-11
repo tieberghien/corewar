@@ -6,58 +6,110 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/10 19:44:10 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/03/10 20:24:26 by slynn-ev         ###   ########.fr       */
+/*   Updated: 2018/03/11 19:44:04 by slynn-ev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 
-void	add_os(t_opset **os, t_am *a, int i, int end)
+int	check_chars(char *line)
 {
-	t_opset	*tmp;
-	t_opset	*new;
-
-	if (*os == NULL)
+	while (*line)
 	{
-		if (!(*os = malloc(sizeof(t_opset))))
-			return ;
-		(*os)->name = ft_strsub(a->lines[i], 0, end);
-		(*os)->nxt = NULL;
-		return ;
+		if (!ft_strrchr(LABEL_CHARS, *line))
+			return (0);
+		line++;
 	}
-	tmp = *os;
-	while (tmp->nxt != NULL)
-		tmp = tmp->nxt;
-	if (!(new = malloc(sizeof(t_opset))))
-		return ;
-	new->name = ft_strsub(a->lines[i], 0, end);
-	new->nxt = NULL;
-	tmp->nxt = new;
+	return (1);
 }
 
-int		build_operations(t_am *a)
+int	add_label(t_label **l, char *line, int address, int end)
+{
+	t_label	*tmp;
+	t_label	*new;
+
+	if (*l == NULL)
+	{
+		if (!(*l = malloc(sizeof(t_label))))
+			return (0);
+		(*l)->name = ft_strsub(line, 0, end);
+		(*l)->address = address;
+		(*l)->nxt = NULL;
+		return (check_chars((*l)->name));
+	}
+	tmp = *l;
+	while (tmp->nxt != NULL)
+		tmp = tmp->nxt;
+	if (!(new = malloc(sizeof(t_label))))
+		return (0);
+	new->name = ft_strsub(line, 0, end);
+	new->address = address;
+	new->nxt = NULL;
+	tmp->nxt = new;
+	return (check_chars(new->name));
+}
+
+int get_address(t_ops *ops)
+{
+	t_ops	*tmp;
+
+	tmp = ops;
+	if (!tmp)
+		return (0);
+	while (tmp->nxt)
+		tmp = tmp->nxt;	
+	return (tmp->end_addr);
+}	
+
+int	build_operations(t_am *a)
 {
 	int		i;
 	int		j;
-	t_opset *os;
+	t_label	*l;
+	t_ops	*ops;
+	int		label_line;
 
+	l = NULL;
+	ops = NULL;
 	i = a->eoc;
-	os = NULL;
 	while (i < a->lc)
 	{
+		label_line = 0;
 		j = 0;
 		while (a->lines[i][j] != ' ' && a->lines[i][j] != '\t' && a->lines[i][j])
-			if (a->lines[i][j++] == ':')
+		{
+			if (a->lines[i][j] == ':')
 			{
-				add_os(&os, a, i, j - 1);
+				label_line = 1;
+				if (!add_label(&l, a->lines[i], get_address(ops), j))
+					return (0);
+				while (a->lines[i][++j] == ' ' || a->lines[i][j] == '\t')
+					;
+				if (a->lines[i][j])
+					if (!get_op(a->lines[i] + j, &ops))
+						return (0);
 				break ;
 			}
+			j++;
+		}
+		if (!label_line)
+			if (!get_op(a->lines[i], &ops))
+				return (0);
+		//	ft_printf("%s\n", a->lines[i]);
 		i++;
 	}
-	while (os != NULL)
+	while (l)
 	{
-		ft_printf("%s\n", os->name);
-		os = os->nxt;
+		ft_printf("{label.name = %s, address = %d}\n", l->name, l->address);
+		l = l->nxt;
+	}
+	while (ops)
+	{
+		i = 0;
+		ft_printf("{ops.name = %s, ops.address = %d}\n", ops->name, ops->addr);
+		while (i < ops->lc)
+			ft_printf("%s\n", ops->labels[i++]);
+		ops = ops->nxt;
 	}
 	return (1);
 }

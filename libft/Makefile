@@ -6,7 +6,7 @@
 #    By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/05 21:56:14 by slynn-ev          #+#    #+#              #
-#    Updated: 2018/03/08 19:29:43 by slynn-ev         ###   ########.fr        #
+#    Updated: 2018/03/11 19:11:08 by slynn-ev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,6 +32,7 @@ libft/strings/ft_strcpy.c \
 libft/strings/ft_strdebug.c \
 libft/strings/ft_strdel.c \
 libft/strings/ft_strdup.c \
+libft/strings/ft_strndup.c \
 libft/strings/ft_strequ.c \
 libft/strings/ft_striter.c \
 libft/strings/ft_striteri.c \

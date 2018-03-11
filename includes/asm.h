@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 18:34:20 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/03/10 20:17:53 by slynn-ev         ###   ########.fr       */
+/*   Updated: 2018/03/11 22:49:24 by slynn-ev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,29 @@
 # define STRCMP_NAME ft_strncmp(a->lines[i] + j, NAME_CMD_STRING, ft_strlen(NAME_CMD_STRING))
 # define STRCMP_CMNT ft_strncmp(a->lines[i] + j, COMMENT_CMD_STRING, ft_strlen(COMMENT_CMD_STRING))
 
-# include <stdio.h>
+# include <limits.h>
 # include "libft.h"
 # include "op.h"
 # include <fcntl.h>
 
-typedef struct 		s_opset
+typedef struct		s_ops
 {
 	char			*name;
-	int				oc;
+	char			data[20];
+	int				lc;
+	char			**labels;
+	int				put[3];
+	int				addr;
+	int				end_addr;
+	struct s_ops		*nxt;
+}					t_ops;
+
+typedef struct 		s_label
+{
+	char			*name;
 	int				address;
-//	t_op	*ops;
-	struct s_opset	*nxt;
-}				t_opset;
+	struct s_label	*nxt;
+}					t_label;
 
 typedef struct	s_am
 {
@@ -40,19 +50,22 @@ typedef struct	s_am
 
 typedef struct s_op
 {
-	char	cmnd[100];
+	char	*cmnd;
 	int		argc;
 	int		params[3];	
 	int		op_code;
 	int		dur;
 	char	effect[100];
 	int		carry;
-	int		unknown;
+	int		small;
+	int		ocp;
 }				t_op;
 
 int				get_name(t_am *a);
 int				get_comment(t_am *a);
 void			remove_leading_whitespaces(t_am *a);
 int				build_operations(t_am *a);
+int				get_op(char *line, t_ops **ops);
+int				fill_opdata(t_op *ops, char *line);
 
 #endif

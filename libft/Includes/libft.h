@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/05 11:52:39 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/03/08 19:33:14 by slynn-ev         ###   ########.fr       */
+/*   Updated: 2018/03/11 19:11:30 by slynn-ev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ char				**ft_strsplit(char const *s, char c);
 char				*ft_itoa(int n);
 char				*ft_strchr(const char *s, int c);
 char				*ft_strdup(const char *s);
+char				*ft_strndup(const char *s, int n);
 char				*ft_strjoin(char const *s1, char const *s2);
 char				*ft_strmap(char const *s, char (*f)(char));
 char				*ft_strmapi(char const *s, char (*f)(unsigned int, char));

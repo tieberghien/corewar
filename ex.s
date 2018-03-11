@@ -1,9 +1,10 @@
 .name "putain"
 .comment "I am alive"
-l2:	sti	r1,%:live,%0
-and	r1,%0,r1
-live:	live	%1
-	zjmp	%:live
+0s:	  ld	-12, r1
+
+ld:	  and	r1 ,%:0s,r1
+live: live	%1000000
+	  zjmp	%:live
 
 
 
