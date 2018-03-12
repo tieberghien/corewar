@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/11 15:59:20 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/03/11 23:07:46 by slynn-ev         ###   ########.fr       */
+/*   Updated: 2018/03/12 18:42:37 by slynn-ev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_op    g_op_tab[16] =
 	{"lldi", 3, {T_REG | T_DIR | T_IND, T_DIR | T_REG, T_REG}, 14, 50,
 		"long load index", 1, 1, 1},
 	{"lfork", 1, {T_DIR}, 15, 1000, "long fork", 0, 1, 0},
-	{"aff", 1, {T_REG}, 16, 2, "aff", 1, 0},
+	{"aff", 1, {T_REG}, 16, 2, "aff", 1, 0, 0},
 };
 
 int		get_opname(char *line, t_ops *ops)
@@ -45,8 +45,8 @@ int		get_opname(char *line, t_ops *ops)
 
 	j = 0;
 	i = 0;
-	ops->labels = NULL;
 	ops->lc = 0;
+	ops->cb_i = 0;
 	while (line[i] != ' ' && line[i] != '\t' && line[i])
 		i++;
 	if (!line[i])
@@ -55,8 +55,9 @@ int		get_opname(char *line, t_ops *ops)
 	{
 		if (!ft_strncmp(line, g_op_tab[j].name, i))
 		{
-			ops->name = ft_strsub(line, 0, i);
-			return (i);
+			if (!(ops->name = ft_strsub(line, 0, i)))
+				return (-1);
+			return (j);
 		}
 		j++;
 	}
@@ -75,28 +76,77 @@ void	get_op_addr(t_ops *ops, t_ops *prev)
 		ops->addr = 0;
 }
 
-int	fill_opdata(t_op *ops, char *line, int i)
+void	write_to_data(char *data, int num, int index, int size)
+{
+	int	len;
+
+	len = 8 * (size - 1);
+	while (len >= 0)
+	{
+		data[index++] = (num >> len) & 255;
+		len -= 8;
+	}
+}
+
+int	setup_data(t_ops *ops, char *line, int index)
+{
+	int	i;
+
+	write_to_data(ops->data, g_op_tab[index].op_code, 0, 1);
+	i = ft_strlen(ops->name);
+	while (line[i] == ' ' || line[i] == '\t')
+		i++;
+	return (i);
+}
+
+void	put_encoding_byte(t_ops *ops)
+{
+	int	i;
+	int	first;
+
+
+	i = ops->cb_i;
+	first = 1;
+	while (i >= 0)
+	{
+		ops->cb[i]= ops->cb[i] << i * 2;
+		if (!first)
+			ops->cb[ops->cb_i] |= ops->cb[i];
+		first = 0;
+		i--;
+	}
+	write_to_data(ops->data, ops->cb[ops->cb_i], 1, 1);
+}
+
+int	fill_opdata(t_ops *ops, char *line, int index)
 {
 	int	count;
 	int	ret;
 	int	pc;
+	int	i;
 
-	pc = 0;
 	count = -1;
-	while (++count < g_op_tab[i].argc)
+	pc = (g_op_tab[index].ocp) ? 2 : 1;
+	i = setup_data(ops, line, index);
+	ops->small = (g_op_tab[index].small) ? 2 : 4;
+	while (++count < g_op_tab[index].argc)
 	{
 		ret = pc;
-		if (g_op_tab[i].params[count] & T_REG)
-			pc += fill_reg(line + i, ops->data) 
-		if (g_op_tab[i].params[count] & T_DIR)
-			pc += fill_index(line + i, ops->data, (g_op_tab[i].small) ? 2 : 4);
-		if (g_op_tab[i].params[count] & T_IND)
-			pc += fill_value(line + i, ops->data);
-		if (ret == pc || (ret = go_next_param(line + i)) == -1)
-		   return (ret);	
+		if (g_op_tab[index].params[count] & T_REG)
+			pc += fill_reg(line + i, ops, pc);
+		if (g_op_tab[index].params[count] & T_DIR)
+			pc += fill_index(line + i, ops, pc, ops->small);
+		if (g_op_tab[index].params[count] & T_IND)
+			pc += fill_value(line + i, ops, pc);
+		if (ret == pc || (count + 1 < g_op_tab[index].argc &&
+		(ret = go_next_param(line + i)) == -1))
+		   return (ret);
 		i += ret;
 	}
-	ops->addr = (g_op_tab[i].ocp) ? pc + 2 : pc + 1;
+	if (g_op_tab[index].ocp)
+		put_encoding_byte(ops);
+	ops->addr = pc;
+	ops->pc = pc;
 	return (1);
 }
 
@@ -111,8 +161,8 @@ int	get_op(char *line, t_ops **ops)
 		if (!(*ops = malloc(sizeof(t_ops))) || (i = get_opname(line, *ops)) == -1)
 			return (0);
 		(*ops)->nxt = NULL;
+		fill_opdata(*ops, line, i);
 		get_op_addr(*ops, NULL);
-		fill_in_opdata(*ops, line, i);
 		return (1);
 	}
 	tmp = *ops;
@@ -121,8 +171,8 @@ int	get_op(char *line, t_ops **ops)
 	if (!(new = malloc(sizeof(t_ops))) || (i = get_opname(line, new)) == -1)
 		return (0);
 	new->nxt = NULL;
+	fill_opdata(new, line, i);
 	get_op_addr(new, tmp);
 	tmp->nxt = new;
-	fill_in_opdata(*ops, line, i);
 	return (1);
 }

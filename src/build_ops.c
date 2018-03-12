@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/10 19:44:10 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/03/11 19:44:04 by slynn-ev         ###   ########.fr       */
+/*   Updated: 2018/03/12 17:04:07 by slynn-ev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,18 @@ int	check_chars(char *line)
 	}
 	return (1);
 }
+
+int get_address(t_ops *ops)
+{
+	t_ops	*tmp;
+
+	tmp = ops;
+	if (!tmp)
+		return (0);
+	while (tmp->nxt)
+		tmp = tmp->nxt;	
+	return (tmp->end_addr);
+}	
 
 int	add_label(t_label **l, char *line, int address, int end)
 {
@@ -49,28 +61,12 @@ int	add_label(t_label **l, char *line, int address, int end)
 	return (check_chars(new->name));
 }
 
-int get_address(t_ops *ops)
-{
-	t_ops	*tmp;
-
-	tmp = ops;
-	if (!tmp)
-		return (0);
-	while (tmp->nxt)
-		tmp = tmp->nxt;	
-	return (tmp->end_addr);
-}	
-
-int	build_operations(t_am *a)
+int	build_operations(t_am *a, t_label **l, t_ops **ops)
 {
 	int		i;
 	int		j;
-	t_label	*l;
-	t_ops	*ops;
 	int		label_line;
 
-	l = NULL;
-	ops = NULL;
 	i = a->eoc;
 	while (i < a->lc)
 	{
@@ -81,24 +77,23 @@ int	build_operations(t_am *a)
 			if (a->lines[i][j] == ':')
 			{
 				label_line = 1;
-				if (!add_label(&l, a->lines[i], get_address(ops), j))
+				if (!add_label(l, a->lines[i], get_address(*ops), j))
 					return (0);
 				while (a->lines[i][++j] == ' ' || a->lines[i][j] == '\t')
 					;
 				if (a->lines[i][j])
-					if (!get_op(a->lines[i] + j, &ops))
+					if (!get_op(a->lines[i] + j, ops))
 						return (0);
 				break ;
 			}
 			j++;
 		}
 		if (!label_line)
-			if (!get_op(a->lines[i], &ops))
+			if (!get_op(a->lines[i], ops))
 				return (0);
-		//	ft_printf("%s\n", a->lines[i]);
 		i++;
 	}
-	while (l)
+/*	while (l)
 	{
 		ft_printf("{label.name = %s, address = %d}\n", l->name, l->address);
 		l = l->nxt;
@@ -107,9 +102,9 @@ int	build_operations(t_am *a)
 	{
 		i = 0;
 		ft_printf("{ops.name = %s, ops.address = %d}\n", ops->name, ops->addr);
-		while (i < ops->lc)
-			ft_printf("%s\n", ops->labels[i++]);
+	//	while (i < ops->lc)
+	//		ft_printf("%s\n", ops->labels[i++]);
 		ops = ops->nxt;
-	}
+	}*/
 	return (1);
 }
