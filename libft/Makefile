@@ -6,7 +6,7 @@
 #    By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/05 21:56:14 by slynn-ev          #+#    #+#              #
-#    Updated: 2018/03/11 19:11:08 by slynn-ev         ###   ########.fr        #
+#    Updated: 2018/03/13 12:38:38 by slynn-ev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ ft_printf/print_numbers.c \
 ft_printf/unicode.c \
 ft_printf/fd.c \
 libft/strings/ft_add_charpointer.c \
+libft/strings/ft_rm_lead_space.c \
 libft/strings/ft_str_to_intdata.c \
 libft/strings/ft_strcat.c \
 libft/strings/ft_strchr.c \

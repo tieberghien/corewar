@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 18:34:20 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/03/13 11:10:22 by slynn-ev         ###   ########.fr       */
+/*   Updated: 2018/03/13 12:42:17 by slynn-ev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ typedef struct		s_ops
 	int				lc;
 	char			**labels;
 	int				put[3];
-	int				addr;
 	int				end_addr;
 	int				small;
 	int				pc;
@@ -65,7 +64,6 @@ typedef struct s_op
 
 int				get_name(t_am *a);
 int				get_comment(t_am *a);
-void			remove_leading_whitespaces(t_am *a);
 int				get_op(char *line, t_ops **ops);
 void			fill_value(char *line, t_ops *ops, int count, int *cb);
 void			fill_reg(char *line, t_ops *ops, int count, int *cb);
@@ -74,5 +72,6 @@ void			fill_index(char *line, t_ops *ops, int count, int *cb);
 int				build_operations(t_am *a, t_label **l, t_ops **ops);
 int 			get_address(t_ops *ops);
 void			write_to_data(char *data, int num, int index, int size);
+int				read_file(int fd, t_am *a);
 
 #endif

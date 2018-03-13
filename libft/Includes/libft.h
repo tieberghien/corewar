@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/05 11:52:39 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/03/11 19:11:30 by slynn-ev         ###   ########.fr       */
+/*   Updated: 2018/03/13 12:38:13 by slynn-ev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,5 +120,6 @@ void				ft_striteri(char *s, void(*f)(unsigned int, char *));
 int					*str_to_intdata(char *str, int size);
 void				ft_lstdel_link(t_list **alst, t_list *link,
 void (*del)(void *, size_t));
+char				*ft_rm_lead_space(char	*line);
 
 #endif

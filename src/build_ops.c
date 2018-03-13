@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/10 19:44:10 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/03/12 17:04:07 by slynn-ev         ###   ########.fr       */
+/*   Updated: 2018/03/13 13:08:12 by slynn-ev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int get_address(t_ops *ops)
 	if (!tmp)
 		return (0);
 	while (tmp->nxt)
-		tmp = tmp->nxt;	
+		tmp = tmp->nxt;
 	return (tmp->end_addr);
 }	
 
@@ -93,18 +93,5 @@ int	build_operations(t_am *a, t_label **l, t_ops **ops)
 				return (0);
 		i++;
 	}
-/*	while (l)
-	{
-		ft_printf("{label.name = %s, address = %d}\n", l->name, l->address);
-		l = l->nxt;
-	}
-	while (ops)
-	{
-		i = 0;
-		ft_printf("{ops.name = %s, ops.address = %d}\n", ops->name, ops->addr);
-	//	while (i < ops->lc)
-	//		ft_printf("%s\n", ops->labels[i++]);
-		ops = ops->nxt;
-	}*/
 	return (1);
 }

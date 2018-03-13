@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/11 15:59:20 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/03/13 11:24:45 by slynn-ev         ###   ########.fr       */
+/*   Updated: 2018/03/13 12:14:25 by slynn-ev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,18 +62,6 @@ int		get_opname(char *line, t_ops *ops)
 	return (-1);
 }
 
-void	get_op_addr(t_ops *ops, t_ops *prev)
-{
-	ops->end_addr = ops->pc;
-	if (prev)
-	{
-		ops->end_addr += prev->end_addr;
-		ops->addr = prev->end_addr;
-	}
-	else 
-		ops->addr = 0;
-}
-
 void	write_to_data(char *data, int num, int index, int size)
 {
 	int	len;
@@ -125,7 +113,7 @@ int	fill_opdata(t_ops *ops, char *line, int index)
 		i += ret;
 	}
 	if (g_op_tab[index].ocp)
-		write_to_data(ops->data, 10, 1, 1);
+		write_to_data(ops->data, cb, 1, 1);
 	return (1);
 }
 
@@ -141,7 +129,7 @@ int	get_op(char *line, t_ops **ops)
 			return (0);
 		(*ops)->nxt = NULL;
 		fill_opdata(*ops, line, i);
-		get_op_addr(*ops, NULL);
+		(*ops)->end_addr = (*ops)->pc;
 		return (1);
 	}
 	tmp = *ops;
@@ -151,7 +139,7 @@ int	get_op(char *line, t_ops **ops)
 		return (0);
 	new->nxt = NULL;
 	fill_opdata(new, line, i);
-	get_op_addr(new, tmp);
 	tmp->nxt = new;
+	new->end_addr = tmp->end_addr + new->pc;
 	return (1);
 }

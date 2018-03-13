@@ -6,13 +6,13 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/10 19:38:54 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/03/10 19:39:21 by slynn-ev         ###   ########.fr       */
+/*   Updated: 2018/03/13 12:33:35 by slynn-ev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "asm.h"
+#include "libft.h"
 
-char	*rm_lead_space(char	*line)
+char	*ft_rm_lead_space(char	*line)
 {
 	int		i;
 	int		j;
@@ -32,16 +32,3 @@ char	*rm_lead_space(char	*line)
 	free(line);
 	return(dst);
 }
-
-void	remove_leading_whitespaces(t_am *a)
-{
-	int	i;
-
-	i = 0;
-	while (i < a->lc)
-	{
-		a->lines[i] = rm_lead_space(a->lines[i]);
-		i++;
-	}
-}
-
