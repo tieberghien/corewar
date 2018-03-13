@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/11 16:33:16 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/03/13 12:29:07 by slynn-ev         ###   ########.fr       */
+/*   Updated: 2018/03/13 13:25:11 by slynn-ev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,25 +44,6 @@ static	void	colon_case(char *line, t_ops *ops, int count, int *cb)
 	ops->labels = ft_add_charpointer(ops->labels, ft_strndup(line, i), ops->lc);
 	ops->put[ops->lc++] = ops->pc;
 	*cb |=  2 << ((3 - count) * 2);
-}
-
-int	go_next_param(char *line)
-{
-	int	i;
-	
-	i = 0;
-	while (line[i])
-	{
-		if (line[i] == ',')
-		{
-			i++;
-			while (line[i] == '\t' || line[i] == ' ')
-				i++;
-			return (i);
-		}
-		i++;
-	}
-	return (-1);
 }
 
 void	fill_reg(char *line, t_ops *ops, int count, int *cb)

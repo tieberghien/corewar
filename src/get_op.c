@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/11 15:59:20 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/03/13 12:14:25 by slynn-ev         ###   ########.fr       */
+/*   Updated: 2018/03/13 13:26:36 by slynn-ev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ t_op    g_op_tab[16] =
 	{"aff", 1, {T_REG}, 16, 2, "aff", 1, 0, 0},
 };
 
-int		get_opname(char *line, t_ops *ops)
+static int		get_opname(char *line, t_ops *ops)
 {
 	int	i;
 	int	j;
@@ -62,19 +62,26 @@ int		get_opname(char *line, t_ops *ops)
 	return (-1);
 }
 
-void	write_to_data(char *data, int num, int index, int size)
+static int	go_next_param(char *line)
 {
-	int	len;
-
-	len = 8 * (size - 1);
-	while (len >= 0)
+	int	i;
+	
+	i = 0;
+	while (line[i])
 	{
-		data[index++] = (num >> len) & 255;
-		len -= 8;
+		if (line[i] == ',')
+		{
+			i++;
+			while (line[i] == '\t' || line[i] == ' ')
+				i++;
+			return (i);
+		}
+		i++;
 	}
+	return (-1);
 }
 
-int	setup_filldata(t_ops *ops, char *line, int index)
+static int	setup_filldata(t_ops *ops, char *line, int index)
 {
 	int	i;
 
@@ -88,7 +95,7 @@ int	setup_filldata(t_ops *ops, char *line, int index)
 	return (i);
 }
 
-int	fill_opdata(t_ops *ops, char *line, int index)
+static int	fill_opdata(t_ops *ops, char *line, int index)
 {
 	int	count;
 	int	ret;

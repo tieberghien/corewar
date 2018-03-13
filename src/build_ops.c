@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/10 19:44:10 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/03/13 13:08:12 by slynn-ev         ###   ########.fr       */
+/*   Updated: 2018/03/13 13:24:23 by slynn-ev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,36 @@ int get_address(t_ops *ops)
 		tmp = tmp->nxt;
 	return (tmp->end_addr);
 }	
+
+int		match_labels(t_label *l, t_ops *ops)
+{
+	int		i;
+	t_label *tmp;
+
+	while (ops)
+	{
+		i = -1;
+		while (++i < ops->lc)
+		{
+			tmp = l;
+			while (tmp)
+			{
+				if (!ft_strcmp(tmp->name, ops->labels[i]))
+				{
+					write_to_data(ops->data, tmp->address -
+					(ops->end_addr - ops->pc), ops->put[i], ops->small);
+					break ;
+				}
+				tmp = tmp->nxt;
+			}
+			if (!tmp)
+				return (0);
+		}
+		ops = ops->nxt;
+	}
+	return (1);
+}
+
 
 int	add_label(t_label **l, char *line, int address, int end)
 {
@@ -68,12 +98,11 @@ int	build_operations(t_am *a, t_label **l, t_ops **ops)
 	int		label_line;
 
 	i = a->eoc;
-	while (i < a->lc)
+	while (++i < a->lc)
 	{
 		label_line = 0;
-		j = 0;
-		while (a->lines[i][j] != ' ' && a->lines[i][j] != '\t' && a->lines[i][j])
-		{
+		j = -1;
+		while (a->lines[i][++j] != ' ' && a->lines[i][j] != '\t' && a->lines[i][j])
 			if (a->lines[i][j] == ':')
 			{
 				label_line = 1;
@@ -81,17 +110,12 @@ int	build_operations(t_am *a, t_label **l, t_ops **ops)
 					return (0);
 				while (a->lines[i][++j] == ' ' || a->lines[i][j] == '\t')
 					;
-				if (a->lines[i][j])
-					if (!get_op(a->lines[i] + j, ops))
+				if (a->lines[i][j] && !get_op(a->lines[i] + j, ops))
 						return (0);
 				break ;
 			}
-			j++;
-		}
-		if (!label_line)
-			if (!get_op(a->lines[i], ops))
+		if (!label_line && !get_op(a->lines[i], ops))
 				return (0);
-		i++;
 	}
-	return (1);
+	return (match_labels(*l, *ops));
 }

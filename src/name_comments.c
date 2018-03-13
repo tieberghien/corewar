@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/09 18:54:22 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/03/10 19:23:40 by slynn-ev         ###   ########.fr       */
+/*   Updated: 2018/03/13 13:12:02 by slynn-ev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static char	*read_name_comm(t_am *a, int i)
 		i++;
 		k = 0;
 	}
-	a->eoc = (i > a->eoc) ? i + 1 : a->eoc;
+	a->eoc = (i > a->eoc) ? i : a->eoc;
 	return (ft_strjoin_free(name, ft_strsub(a->lines[i],
 	k, j - k)));
 }
