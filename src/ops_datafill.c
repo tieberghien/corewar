@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/11 16:33:16 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/03/13 13:25:11 by slynn-ev         ###   ########.fr       */
+/*   Updated: 2018/03/13 13:38:31 by slynn-ev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static int	check_characters(char *line, long n)
 	return (1);
 }
 
-static	void	colon_case(char *line, t_ops *ops, int count, int *cb)
+static	void	colon_case(char *line, t_ops *ops)
 {
 	int	i;
 
@@ -43,7 +43,6 @@ static	void	colon_case(char *line, t_ops *ops, int count, int *cb)
 		i++;
 	ops->labels = ft_add_charpointer(ops->labels, ft_strndup(line, i), ops->lc);
 	ops->put[ops->lc++] = ops->pc;
-	*cb |=  2 << ((3 - count) * 2);
 }
 
 void	fill_reg(char *line, t_ops *ops, int count, int *cb)
@@ -78,8 +77,9 @@ void	fill_index(char *line, t_ops *ops, int count, int *cb)
 		return ;
 	if (line[i] == ':')
 	{
-		colon_case(line + ++i, ops, count, cb);
+		colon_case(line + ++i, ops);
 		ops->pc += ops->small;
+		*cb |=  2 << ((3 - count) * 2);
 		return ;
 	}
 	n = ft_atol(line + i);
@@ -98,8 +98,9 @@ void	fill_value(char *line, t_ops *ops, int count, int *cb)
 	i = 0;
 	if (line[i] == ':')
 	{
-		colon_case(line + 1, ops, count, cb);
+		colon_case(line + 1, ops);
 		ops->pc += 2;
+		*cb |= 3 << ((3 - count) * 2);
 		return ;
 	}
 	if (!line[i] || (!ft_isdigit(line[i]) && line[i] != '-'))
