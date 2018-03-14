@@ -32,7 +32,7 @@ static int	check_characters(char *line, long n)
 	return (1);
 }
 
-static	void	colon_case(char *line, t_ops *ops)
+static	void	colon_case(char *line, t_ops *ops, int size)
 {
 	int	i;
 
@@ -42,7 +42,8 @@ static	void	colon_case(char *line, t_ops *ops)
 	while (line[i] != ' ' && line[i] != '\t' && line[i] && line[i] != ',')
 		i++;
 	ops->labels = ft_add_charpointer(ops->labels, ft_strndup(line, i), ops->lc);
-	ops->put[ops->lc++] = ops->pc;
+	ops->put[ops->lc][0] = ops->pc;
+	ops->put[ops->lc++][1] = size;
 }
 
 void	fill_reg(char *line, t_ops *ops, int count, int *cb)
@@ -77,7 +78,7 @@ void	fill_index(char *line, t_ops *ops, int count, int *cb)
 		return ;
 	if (line[i] == ':')
 	{
-		colon_case(line + ++i, ops);
+		colon_case(line + ++i, ops, ops->small);
 		ops->pc += ops->small;
 		*cb |=  2 << ((3 - count) * 2);
 		return ;
@@ -98,7 +99,7 @@ void	fill_value(char *line, t_ops *ops, int count, int *cb)
 	i = 0;
 	if (line[i] == ':')
 	{
-		colon_case(line + 1, ops);
+		colon_case(line + 1, ops, 2);
 		ops->pc += 2;
 		*cb |= 3 << ((3 - count) * 2);
 		return ;

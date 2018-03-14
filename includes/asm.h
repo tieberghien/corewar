@@ -26,7 +26,7 @@ typedef struct		s_ops
 	char			data[20];
 	int				lc;
 	char			**labels;
-	int				put[3];
+	int				put[3][2];
 	int				end_addr;
 	int				small;
 	int				pc;

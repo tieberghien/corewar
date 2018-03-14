@@ -51,7 +51,7 @@ int		match_labels(t_label *l, t_ops *ops)
 				if (!ft_strcmp(tmp->name, ops->labels[i]))
 				{
 					write_to_data(ops->data, tmp->address -
-					(ops->end_addr - ops->pc), ops->put[i], ops->small);
+					(ops->end_addr - ops->pc), ops->put[i][0], ops->put[i][1]);
 					break ;
 				}
 				tmp = tmp->nxt;
