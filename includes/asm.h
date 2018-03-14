@@ -73,5 +73,6 @@ int 			get_address(t_ops *ops);
 void			write_to_data(char *data, int num, int index, int size);
 int				read_file(int fd, t_am *a);
 int				assembler(t_am *a, char *prog_name, int fd);
+void			free_all(t_am *a, t_label *l);
 
 #endif

@@ -24,6 +24,26 @@ void	write_to_data(char *data, int num, int index, int size)
 	}
 }
 
+void	free_all(t_am *a, t_label *l)
+{
+	t_label *tmp;
+	int		i;
+
+	i = 0;
+	free(a->name);
+	free(a->comment);
+	while (i < a->lc)
+		free(a->lines[i++]);
+	free(a->lines);
+	while (l)
+	{
+		free(l->name);
+		tmp = l;
+		l = l->nxt;
+		free(tmp);
+	}
+}
+
 int 		main(int ac, char **av)
 {
 	int		fd;

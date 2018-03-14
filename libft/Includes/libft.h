@@ -121,5 +121,6 @@ int					*str_to_intdata(char *str, int size);
 void				ft_lstdel_link(t_list **alst, t_list *link,
 void (*del)(void *, size_t));
 char				*ft_rm_lead_space(char	*line);
+char				*ft_strjoin_freeboth(char const *s1, char const *s2);
 
 #endif

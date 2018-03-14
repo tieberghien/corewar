@@ -26,6 +26,8 @@ int		create_cor(char *pname, int fd)
 	pname = ft_strjoin_free(pname, ".cor");
 	if (close(fd) || (fd = open(pname, O_CREAT | O_WRONLY, 0666)) < 1)
 		return (0);
+	ft_printf("Writing output program to %s\n", pname);
+	free(pname);
 	return (fd);
 }
 
@@ -58,14 +60,24 @@ void	print_namecomm(t_am *a, int fd, int prog_size)
 		write(fd, &zero, 1);
 }
 
-void	print_ops(t_ops *ops, int fd)
+void	print_free_ops(t_ops *ops, int fd)
 {
 	t_ops *tmp;
+	int		i;
 
 	while (ops)
 	{
 		write(fd, ops->data, ops->pc);
 		tmp = ops;
+		free(tmp->name);	
+		i = 0;
+		while (i < ops->lc)
+		{
+			free(ops->labels[i++]);
+			if (i == ops->lc)
+				free(ops->labels);
+			i++;
+		}
 		ops = ops->nxt;
 		free(tmp);
 	}
@@ -82,6 +94,7 @@ int		assembler(t_am *a, char *prog_name, int fd)
 		ft_printf("ERROR\n");
 	fd = create_cor(prog_name, fd);
 	print_namecomm(a, fd, get_address(ops));
-	print_ops(ops, fd);
+	print_free_ops(ops, fd);
+	free_all(a, l);
 	return (1);
 }

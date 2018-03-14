@@ -39,6 +39,7 @@ libft/strings/ft_striter.c \
 libft/strings/ft_striteri.c \
 libft/strings/ft_strjoin.c \
 libft/strings/ft_strjoin_free.c \
+libft/strings/ft_strjoin_freeboth.c \
 libft/strings/ft_strlcat.c \
 libft/strings/ft_strlen.c \
 libft/strings/ft_strmap.c \

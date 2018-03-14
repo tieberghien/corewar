@@ -66,14 +66,14 @@ static char	*read_name_comm(t_am *a, int i)
 	name[0] = '\0';
 	while (count-- > 0)
 	{
-		name = ft_strjoin_free(name, ft_strsub(a->lines[i], k,
+		name = ft_strjoin_freeboth(name, ft_strsub(a->lines[i], k,
 		ft_strlen(a->lines[i]) - k));
 		name = ft_strjoin_free(name, "\n");
 		i++;
 		k = 0;
 	}
 	a->eoc = (i > a->eoc) ? i : a->eoc;
-	return (ft_strjoin_free(name, ft_strsub(a->lines[i],
+	return (ft_strjoin_freeboth(name, ft_strsub(a->lines[i],
 	k, j - k)));
 }
 
