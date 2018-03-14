@@ -49,7 +49,33 @@ static int	check_at_top(t_am *a)
 	return (0);
 }
 
-static void	remove_leading_whitespace(t_am * a)
+static char	*rm_trailing_comment(char *line)
+{
+	int		i;
+	char	*dst;
+	int		j;
+
+	i = 0;
+	j = 0;
+	while (line[i])
+	{
+		if (line[i] == '#')
+			break ;
+		i++;
+	}
+	if (!(dst = malloc(i + 1)))
+		return (NULL);
+	while (j < i)
+	{
+		dst[j] = line[j];
+		j++;
+	}
+	dst[j] = '\0';
+	free(line);
+	return (dst);
+}
+
+static void	clean_lines(t_am * a)
 {
 	int	i;
 
@@ -57,8 +83,11 @@ static void	remove_leading_whitespace(t_am * a)
 	while (i < a->lc)
 	{
 		a->lines[i] = ft_rm_lead_space(a->lines[i]);
+		if (ft_strchr(a->lines[i], '#'))
+			a->lines[i] = rm_trailing_comment(a->lines[i]);
 		i++;
 	}
+	
 }
 
 int		read_file(int fd, t_am *a)
@@ -86,6 +115,6 @@ int		read_file(int fd, t_am *a)
 	}
 	if (!get_name(a) || !get_comment(a) || !check_at_top(a))
 		return (0);
-	remove_leading_whitespace(a);
+	clean_lines(a);
 	return (1);
 }
