@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/13 12:40:17 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/03/15 15:59:29 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/03/15 16:05:25 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ static int	is_comment(char *line)
 	while (*line == ' ' || *line == '\t')
 		line++;
 	if (*line == '#' || !*line)
+		return (1);
+	if (*line == ';' || !*line)
 		return (1);
 	return (0);
 }
