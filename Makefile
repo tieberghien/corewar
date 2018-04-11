@@ -1,39 +1,64 @@
-LIB = libft/libft.a
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: etieberg <marvin@42.fr>                    +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2018/04/11 16:50:44 by etieberg          #+#    #+#              #
+#    Updated: 2018/04/11 17:02:50 by etieberg         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+	
+NAME		=	asm
+CC			=	gcc
+CFLAGS		=	-Wall -Werror -Wextra #-fsanitize=address #-O3 #-g
 
-SRC = src/main.c src/assembler.c src/read.c src/ops_datafill.c src/build_ops.c src/get_op.c src/name_comments.c
+LIB_PATH	=	libft
+LIB		=	$(LIB_PATH)/libft.a
+LIB_LINK	=	-L. $(LIB)
 
-OBJ_PATH = obj
+INC_DIR		=	includes
+INCS		=	-I $(INC_DIR) -I $(LIB_PATH)/includes/.
 
-SRC_NAME = $(notdir $(SRC))
+SRC_DIR 	= 	src
 
-OBJ_NAME = $(SRC_NAME:.c=.o)
+SRC		=	main.c			\
+			assembler.c		\
+			read.c			\
+			ops_datafill.c	\
+			build_ops.c		\
+			get_op.c		\
+			name_comments.c
 
-OBJ = $(addprefix $(OBJ_PATH)/, $(OBJ_NAME))
+OBJ_DIR		=	obj
 
-INCLUDES = -Iincludes -Ilibft/Includes
+SRCS		=	$(addprefix $(SRC_DIR)/, $(SRC))
+OBJS		=	$(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 
-FLAGS = -Wall -Wextra -Werror -g
+all: obj $(NAME)
 
-NAME = asm
+$(NAME): $(LIB) $(OBJS)
+	$(CC) $(CFLAGS) -o $@ $^ $(LIB_LINK)
 
-all : library $(NAME)
+$(LIB):
+	make -C $(LIB_PATH) re
 
-$(NAME): $(OBJ)
-	gcc -o $@ $(OBJ) $(LIB)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	$(CC) $(CFLAGS) $(INCS) -c -o $@ $<
 
-library :
-	make -C libft
+obj:
+	mkdir -p obj
 
-$(OBJ_PATH)/%.o: src/%.c
-	@mkdir -p $(OBJ_PATH)
-	@gcc -c $< $(FLAGS) -o $@ $(INCLUDES)
+clean:
+	make -C $(LIB_PATH) clean
+	rm -f $(OBJS)
+	rm -Rf obj
 
-clean :
-	make clean -C libft
-	rm -fr obj
-
-fclean : clean
-	make fclean -C libft
+fclean: clean
+	rm -f $(LIB)
 	rm -f $(NAME)
 
-re : fclean all
+re: fclean all
+
+.PHONY: all clean fclean re
