@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 18:34:20 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/03/13 13:26:47 by slynn-ev         ###   ########.fr       */
+/*   Updated: 2018/04/11 17:18:10 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ int 		main(int ac, char **av)
 	fd = open(av[ac - 1], O_RDONLY);
 	if (fd == -1)
 		return (0);
-	read_file(fd, &a);
+	if (!read_file(fd, &a))
+		return (0);
    	if (!assembler(&a, av[1], fd))
 	{
 		ft_putstr("ERRORRRRRRR!!!!!!!! AAAHHHHHHHGGGHH\n");
