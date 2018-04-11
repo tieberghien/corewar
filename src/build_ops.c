@@ -6,12 +6,11 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/10 19:44:10 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/04/11 17:02:05 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/04/11 17:14:15 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
-#include <stdio.h>
 
 int	check_chars(char *line)
 {
