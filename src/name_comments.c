@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/09 18:54:22 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/03/13 13:12:02 by slynn-ev         ###   ########.fr       */
+/*   Updated: 2018/04/11 15:58:36 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ static int	get_second_quote(t_am *a, int i, int j, int *count)
 {
 	int	original_i;
 
+	if (a->lines[i][j] == '"')
+		return (j + 1);
 	original_i = i;
 	while (1)
 	{
