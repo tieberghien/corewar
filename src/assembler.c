@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/13 13:18:27 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/04/11 17:16:48 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/04/11 17:22:47 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int		assembler(t_am *a, char *prog_name, int fd)
 	ops = NULL;
 	if (!build_operations(a, &l, &ops))
 	{
-		ft_printf("ERROR\n");
+		ft_putstr("LEXICAL ERROR\n");
 		exit(0);
 	}
 	fd = create_cor(prog_name, fd);
