@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/13 12:40:17 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/03/13 13:07:44 by slynn-ev         ###   ########.fr       */
+/*   Updated: 2018/04/11 16:04:50 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ static int	is_comment(char *line)
 	while (*line == ' ' || *line == '\t')
 		line++;
 	if (*line == '#' || !*line)
+		return (1);
+	if (*line == ';' || !*line)
 		return (1);
 	return (0);
 }
@@ -61,6 +63,8 @@ static char	*rm_trailing_comment(char *line)
 	{
 		if (line[i] == '#')
 			break ;
+		else if (line[i] == ';')
+			break ;
 		i++;
 	}
 	if (!(dst = malloc(i + 1)))
@@ -85,9 +89,11 @@ static void	clean_lines(t_am * a)
 		a->lines[i] = ft_rm_lead_space(a->lines[i]);
 		if (ft_strchr(a->lines[i], '#'))
 			a->lines[i] = rm_trailing_comment(a->lines[i]);
+		else if (ft_strchr(a->lines[i], ';'))
+			a->lines[i] = rm_trailing_comment(a->lines[i]);
 		i++;
 	}
-	
+
 }
 
 int		read_file(int fd, t_am *a)
