@@ -84,7 +84,7 @@ Je Suis le Prédateur, tu est Ma Proie"
 
 
 begin_coromp2:
-	st				r1, :stock
+	st				r1, %:stock
 	ld				%151068160,r1
 	st				r1, :begin_coromp2
 	ld				%506,r2

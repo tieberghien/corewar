@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 18:34:20 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/03/13 13:26:47 by slynn-ev         ###   ########.fr       */
+/*   Updated: 2018/04/12 13:24:50 by syboeuf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,17 +44,56 @@ void	free_all(t_am *a, t_label *l)
 	}
 }
 
+char	*tmp(char *s)
+{
+	char *tmp;
+	int i;
+	int k;
+	int a;
+
+	if (!(tmp = (char*)malloc(sizeof(char) * ft_strlen(s) + 200)))
+		return (NULL);
+	i = 0;
+	k = 0;
+	a = 0;
+	while (s[i])
+	{
+		if (a == 0 && s[i] == '%' && (s[i - 1] != ' ' || s[i - 1] != '\t'))
+		{
+			tmp[k] = ' ';
+			k++;
+			a = 1;
+		}
+		else
+		{
+			a = 0;
+			tmp[k] = s[i];
+			i++;
+			k++;
+		}
+	}
+	tmp[k] = '\0';
+	return (tmp);
+}
+
 int 		main(int ac, char **av)
 {
 	int		fd;
 	t_am	a;
+	int		i;
 
+	i = 0;
 	if (ac < 2)
 		return (0);
 	fd = open(av[ac - 1], O_RDONLY);
 	if (fd == -1)
 		return (0);
 	read_file(fd, &a);
+	while (i < a.lc)
+	{
+		a.lines[i] = tmp(a.lines[i]);
+		i++;
+	}
    	if (!assembler(&a, av[1], fd))
 	{
 		ft_putstr("ERRORRRRRRR!!!!!!!! AAAHHHHHHHGGGHH\n");

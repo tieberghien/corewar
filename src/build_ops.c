@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/10 19:44:10 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/03/13 13:24:23 by slynn-ev         ###   ########.fr       */
+/*   Updated: 2018/04/12 12:43:40 by syboeuf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,11 +111,11 @@ int	build_operations(t_am *a, t_label **l, t_ops **ops)
 				while (a->lines[i][++j] == ' ' || a->lines[i][j] == '\t')
 					;
 				if (a->lines[i][j] && !get_op(a->lines[i] + j, ops))
-						return (0);
+					return (0);
 				break ;
 			}
 		if (!label_line && !get_op(a->lines[i], ops))
-				return (0);
+			return (0);
 	}
 	return (match_labels(*l, *ops));
 }

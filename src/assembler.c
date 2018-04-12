@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/13 13:18:27 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/03/13 13:22:00 by slynn-ev         ###   ########.fr       */
+/*   Updated: 2018/04/12 12:43:47 by syboeuf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int		assembler(t_am *a, char *prog_name, int fd)
 	l = NULL;
 	ops = NULL;
 	if (!build_operations(a, &l, &ops))
-		ft_printf("ERROR\n");
+		return (0);
 	fd = create_cor(prog_name, fd);
 	print_namecomm(a, fd, get_address(ops));
 	print_free_ops(ops, fd);
