@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/09 18:54:22 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/04/12 12:41:51 by syboeuf          ###   ########.fr       */
+/*   Updated: 2018/04/13 12:42:25 by syboeuf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ static char	*read_name_comm(t_am *a, int i)
 		return (NULL);
 	name = malloc(1);
 	name[0] = '\0';
+	ft_printf("%d\n", ft_strlen(a->lines[i]) - k);
 	while (count-- > 0)
 	{
 		name = ft_strjoin_freeboth(name, ft_strsub(a->lines[i], k,
