@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/11 16:33:16 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/04/11 16:05:34 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/04/13 19:58:01 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	check_characters(char *line, long n)
 	int	i;
 
 	i = 0;
-	if (n > UINT_MAX || n < INT_MIN)
+	if (n > LONG_MAX || n < LONG_MIN)
 		return (0);
 	if (line[i] == '-')
 		i++;
