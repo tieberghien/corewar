@@ -51,7 +51,7 @@ int		match_labels(t_label *l, t_ops *ops)
 				if (!ft_strcmp(tmp->name, ops->labels[i]))
 				{
 					write_to_data(ops->data, tmp->address -
-					(ops->end_addr - ops->pc), ops->put[i][0], ops->put[i][1]);
+							(ops->end_addr - ops->pc), ops->put[i][0], ops->put[i][1]);
 					break ;
 				}
 				tmp = tmp->nxt;
@@ -102,7 +102,7 @@ int	build_operations(t_am *a, t_label **l, t_ops **ops)
 	{
 		label_line = 0;
 		j = -1;
-		while (a->lines[i][++j] != ' ' && a->lines[i][j] != '\t' && a->lines[i][j])
+		while (a->lines[i][++j] != ' ' && a->lines[i][j] != '\t' && a->lines[i][j] != '%' && a->lines[i][j])
 			if (a->lines[i][j] == ':')
 			{
 				label_line = 1;
@@ -111,11 +111,11 @@ int	build_operations(t_am *a, t_label **l, t_ops **ops)
 				while (a->lines[i][++j] == ' ' || a->lines[i][j] == '\t')
 					;
 				if (a->lines[i][j] && !get_op(a->lines[i] + j, ops))
-						return (0);
+					return (0);
 				break ;
 			}
 		if (!label_line && !get_op(a->lines[i], ops))
-				return (0);
+			return (0);
 	}
 	return (match_labels(*l, *ops));
 }

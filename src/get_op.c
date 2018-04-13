@@ -45,7 +45,7 @@ static int		get_opname(char *line, t_ops *ops)
 
 	j = 0;
 	i = 0;
-	while (line[i] != ' ' && line[i] != '\t' && line[i])
+	while (line[i] != ' ' && line[i] != '\t' && line[i] != '%' && line[i])
 		i++;
 	if (!line[i])
 		return (-1);
