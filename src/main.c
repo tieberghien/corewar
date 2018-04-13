@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 18:34:20 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/04/13 15:16:36 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/04/13 15:55:32 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,17 @@ int 		main(int ac, char **av)
 	int		fd;
 	t_am	a;
 
+	/* print usage */
 	if (ac < 2)
 		return (0);
 	fd = open(av[ac - 1], O_RDONLY);
 	if (fd == -1)
+	{
+		ft_putstr_fd("Can't read source file ", 2);
+		ft_putstr_fd(av[1], 2);
+		ft_putchar_fd('\n', 2);
 		return (0);
+	}
 	if (!read_file(fd, &a))
 	{
 		ft_putstr_fd("SYNTAX ERROR\n", 2);
@@ -68,6 +74,8 @@ int 		main(int ac, char **av)
    	if (!assembler(&a, av[1], fd))
 	{
 		ft_putstr("ERRORRRRRRR!!!!!!!! AAAHHHHHHHGGGHH\n");
-		return (0);
+		exit (0);
 	}
+	close(fd);
+	return (0);
 }
