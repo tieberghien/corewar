@@ -6,11 +6,17 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 18:34:20 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/04/11 17:18:10 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/04/13 15:16:36 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
+
+void    return_failure(char *str)
+{
+	ft_putendl_fd(str, 2);
+	exit(0);
+}
 
 void	write_to_data(char *data, int num, int index, int size)
 {
@@ -55,7 +61,10 @@ int 		main(int ac, char **av)
 	if (fd == -1)
 		return (0);
 	if (!read_file(fd, &a))
-		return (0);
+	{
+		ft_putstr_fd("SYNTAX ERROR\n", 2);
+		exit (0);
+	}
    	if (!assembler(&a, av[1], fd))
 	{
 		ft_putstr("ERRORRRRRRR!!!!!!!! AAAHHHHHHHGGGHH\n");

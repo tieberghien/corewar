@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 18:34:20 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/03/13 13:27:10 by slynn-ev         ###   ########.fr       */
+/*   Updated: 2018/04/13 15:19:41 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 # define ASM_H
 # define STRCMP_NAME ft_strncmp(a->lines[i] + j, NAME_CMD_STRING, ft_strlen(NAME_CMD_STRING))
 # define STRCMP_CMNT ft_strncmp(a->lines[i] + j, COMMENT_CMD_STRING, ft_strlen(COMMENT_CMD_STRING))
+# define NAME_LONG "Champion name too long (Max length 128)"
+# define COMMENT_LONG "Champion comment too long (Max length 2048)"
+
 
 # include <limits.h>
 # include "libft.h"
@@ -74,5 +77,6 @@ void			write_to_data(char *data, int num, int index, int size);
 int				read_file(int fd, t_am *a);
 int				assembler(t_am *a, char *prog_name, int fd);
 void			free_all(t_am *a, t_label *l);
+void			return_failure(char *str);
 
 #endif

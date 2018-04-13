@@ -6,11 +6,12 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/09 18:54:22 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/04/11 15:58:36 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/04/13 15:20:28 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
+#include <stdio.h>
 
 static	int	get_first_quote(char *line)
 {
@@ -41,7 +42,7 @@ static int	get_second_quote(t_am *a, int i, int j, int *count)
 			i++;
 			j = -1;
 		}
-		if (a->lines[i][j] == '"')
+		else if (a->lines[i][j] == '"')
 			break ;
 		j++;
 		if (*count == a->lc - original_i)
@@ -60,7 +61,7 @@ static char	*read_name_comm(t_am *a, int i)
 	int		count;
 
 	count = 0;
-	if (!(k = get_first_quote(a->lines[i])))
+	if ((k = get_first_quote(a->lines[i])) == -1)
 		return (NULL);
 	if ((j = get_second_quote(a, i, k, &count)) == -1)
 		return (NULL);
@@ -103,7 +104,7 @@ int		get_name(t_am *a)
 	if (count != 1 || !(a->name = read_name_comm(a, name_i)))
 		return (0);
 	if (ft_strlen(a->name) > PROG_NAME_LENGTH)
-		return (0);
+		return_failure(NAME_LONG);
 	return (1);
 }
 
@@ -131,6 +132,6 @@ int		get_comment(t_am *a)
 	if (count != 1 || !(a->comment = read_name_comm(a, comment_i)))
 		return (0);
 	if (ft_strlen(a->name) > COMMENT_LENGTH)
-		return (0);
+		return_failure(COMMENT_LONG);
 	return (1);
 }
