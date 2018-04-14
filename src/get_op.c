@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/11 15:59:20 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/04/13 18:31:53 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/04/14 14:50:25 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_op    g_op_tab[16] =
 	{"lldi", 3, {T_REG | T_DIR | T_IND, T_DIR | T_REG, T_REG}, 14, 50,
 		"long load index", 1, 1, 1},
 	{"lfork", 1, {T_DIR}, 15, 1000, "long fork", 0, 1, 0},
-	{"aff", 1, {T_REG}, 16, 2, "aff", 1, 0, 0},
+	{"aff", 1, {T_REG}, 16, 2, "aff", 1, 0, 1},
 };
 
 static int		get_opname(char *line, t_ops *ops)
