@@ -1,59 +1,73 @@
 #include "vm.h"
 
-int	parsing_arg_b(char *str, t_opts *opts, int *j)
+int	parsing_arg_b(char *str, t_opts *opts, int *j, t_champs *champs)
 {
 	int	k;
 
 	k = 0;
+	if (str[k] == '-')
+		k++;
 	while (str[k] >= '0' && str[k] <= '9')
 		k++;
-	if (str[k])
+	if (str[k] || (str[0] == '1' && k == 1))
 		return (ft_printf("not a number\n"));
 	if (*j == 1)
 	{
 		if (opts->s_cycles != 0)
 			return (ft_printf("more than 1 dump command\n"));
 		opts->s_cycles = ft_atoi(str);
-		j = 0;
+		*j = 0;
 	}
 	else
+	{
+		champs[opts->n_players].player_id = ft_atoi(str);
 		*j = -1;
+	}
 	return (0);
 }
 
+int parsing_arg_c(char *av, t_opts *opts, t_champs *champ, int *j)
+{
+	char *par;
 
-int	parsing_arg_a(int ac, char **av, t_opts *opts)
+	if (*j > 0)
+	{
+		if (parsing_arg_b(av, opts, j, champ))
+			return (1);
+	}
+	else if (!ft_strcmp("-dump", av) && *j == 0)
+		*j = 1;
+	else if (!ft_strcmp("-n", av) && *j == 0)
+		*j = 2;
+	else if (ft_strcmp(av, ".cor") &&
+			(par = ft_strstr(av, ".cor")) && *j < 1)
+	{
+		if (ft_strcmp(".cor",par) || par[-1] == '/')
+			return(ft_printf("invalid player"));
+		champ[opts->n_players].file_name = av;
+		if (champ[opts->n_players].player_id == 0)
+			champ[opts->n_players].player_id = 1 + opts->n_players;
+		opts->n_players++;
+		if (opts->n_players> MAX_PLAYERS)
+			return (ft_printf("too many player\n"));
+		*j = 0;
+	}
+	else
+		return (ft_printf("invalid player\n"));
+	return (0);
+}
+
+int	parsing_arg_a(int ac, char **av, t_opts *opts, t_champs *champ)
 {
 	int	i;
-	int	j;
-	char *par;
+	int j;
+
 
 	i = 0;
 	j = 0;
-	while (++i < ac)
-	{
-		if (j > 0)
-		{
-			if (parsing_arg_b(av[i], opts, &j))
-				return (1);
-		}
-		else if (!ft_strcmp("-dump", av[i]) && j == 0)
-			j = 1;
-		else if (!ft_strcmp("-n", av[i]) && j == 0)
-			j = 2;
-		else if (ft_strcmp(av[i], ".cor") &&
-				(par = ft_strstr(av[i], ".cor")) && j < 1)
-		{
-			if (ft_strcmp(".cor",par) || par[-1] == '/')
-				return(ft_printf("invalid player"));
-			opts->n_players++;
-			if (opts->n_players> MAX_PLAYERS)
-				return (ft_printf("too many player\n"));
-			j = 0;
-		}
-		else
-			return (ft_printf("invalid player\n"));
-	}
+	while (++i < ac && opts->n_players < MAX_PLAYERS)
+		if (parsing_arg_c(av[i], opts, champ, &j))
+			return (1);
 	if (1 == ac || opts->n_players == 0 || j != 0)
 		return (ft_printf((j == 0) ? "no player\n" : "missing player"));
 	return (0);
@@ -62,12 +76,25 @@ int	parsing_arg_a(int ac, char **av, t_opts *opts)
 int	main(int ac, char **av)
 {
 	t_opts opts;
+	t_champs champs[MAX_PLAYERS];
+	unsigned int i;
+	int j;
 
-	if (MAX_PLAYERS < 1)
+	i = 0;
+	j = -1;
+	while (++j < MAX_PLAYERS)
+		champs[j].player_id = 0;
+	if (MAX_PLAYERS != 4)
 		ft_printf("MAX_PLAYERS not properly defined");
 	opts.s_cycles = 0;
 	opts.n_players = 0;
-	if (parsing_arg_a(ac, av, &opts))
+	if (parsing_arg_a(ac, av, &opts, champs))
 		return (1);
-	ft_printf("number of player: %d", opts.n_players);
+	while (i < opts.n_players)
+	{
+		ft_printf("player %s id %d\n", champs[i].file_name, champs[i].player_id);
+		i++;
+	}
+	ft_printf("number of player: %d\n", opts.n_players);
+	oc_file(champs, &opts);
 }

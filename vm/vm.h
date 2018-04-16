@@ -3,6 +3,7 @@
 
 # include "libft.h"
 # include "op.h"
+# include <fcntl.h>
 
 # define NO_CHAMP	"missing champion"
 # define OPEN_CHAMP	"failed to open .cor"
@@ -27,6 +28,7 @@ typedef struct		s_champ
 	unsigned int	size;
 	char			*name;
 	char			*comment;
+	char			*file_name;
 	int				fd;
 	unsigned short	*buffer;
 }					t_champs;
@@ -35,4 +37,5 @@ typedef struct		s_champ
 //void			display_intro(t_champ *champs, t_opts, opts);
 //void			verbose_zero(t_champ *champ);
 //void			verbose_one(t_champ *champs);
+int				oc_file(t_champs *champs, t_opts *opts);
 #endif

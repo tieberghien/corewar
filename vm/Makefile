@@ -1,6 +1,7 @@
 LIB = libft/libft.a
 
-SRC = vm_main.c
+SRC = vm_main.c \
+		read_champ.c
 
 OBJ_PATH = obj
 
@@ -10,7 +11,7 @@ OBJ_NAME = $(SRC_NAME:.c=.o)
 
 OBJ = $(addprefix $(OBJ_PATH)/, $(OBJ_NAME))
 
-INCLUDES = -Iincludes -Ilibft/Includes
+INCLUDES = -I includes -I libft/Includes
 
 FLAGS = -Wall -Wextra -Werror -g
 
@@ -24,7 +25,7 @@ $(NAME): $(OBJ)
 library :
 	make -C libft
 
-$(OBJ_PATH)/%.o: src/%.c
+$(OBJ_PATH)/%.o: %.c
 	@mkdir -p $(OBJ_PATH)
 	@gcc -c $< $(FLAGS) -o $@ $(INCLUDES)
 
