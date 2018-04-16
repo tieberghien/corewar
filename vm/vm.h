@@ -11,8 +11,6 @@
 # define MAX_CHAMPS	"too many champions"
 # define VERBOSE	"verbosity level: 0, 1, 2, 4, 8, 16"
 
-typedef struct	
-
 typedef struct		s_opts
 {
 	unsigned int	aff_mode;
@@ -21,19 +19,20 @@ typedef struct		s_opts
 //	unsigned int	player_id;
 	unsigned int	n_players;
 	unsigned int	verbosity;
-}			t_opts;
+}					t_opts;
 
 typedef struct		s_champ
 {
-	int		player_id;
+	int				player_id;
 	unsigned int	size;
-	char		*name;
-	char		*comment;
+	char			*name;
+	char			*comment;
+	int				fd;
 	unsigned short	*buffer;
-};
+}					t_champs;
 
-void			parse_args(int ac, char **av, t_opts *opts);
-void			display_intro(t_champ *champs, t_opts, opts);
-void			verbose_zero(t_champ *champ);
-void			verbose_one(t_champ *champs);
+//void			parse_args(int ac, char **av, t_opts *opts);
+//void			display_intro(t_champ *champs, t_opts, opts);
+//void			verbose_zero(t_champ *champ);
+//void			verbose_one(t_champ *champs);
 #endif
