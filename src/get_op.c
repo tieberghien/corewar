@@ -6,13 +6,13 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/11 15:59:20 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/04/14 14:50:25 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/04/16 17:02:45 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 
-t_op    g_op_tab[16] =
+t_op		g_op_tab[16] =
 {
 	{"live", 1, {T_DIR}, 1, 10, "alive", 0, 0, 0},
 	{"ld", 2, {T_DIR | T_IND, T_REG}, 2, 5, "load", 1, 0, 1},
@@ -38,7 +38,7 @@ t_op    g_op_tab[16] =
 	{"aff", 1, {T_REG}, 16, 2, "aff", 1, 0, 1},
 };
 
-static int		get_opname(char *line, t_ops *ops)
+static int	get_opname(char *line, t_ops *ops)
 {
 	int	i;
 	int	j;
@@ -65,7 +65,7 @@ static int		get_opname(char *line, t_ops *ops)
 static int	go_next_param(char *line)
 {
 	int	i;
-	
+
 	i = 0;
 	while (line[i])
 	{
@@ -124,10 +124,10 @@ static int	fill_opdata(t_ops *ops, char *line, int index)
 	return (1);
 }
 
-int	get_op(char *line, t_ops **ops)
+int			get_op(char *line, t_ops **ops)
 {
-	t_ops 	*tmp;
-	t_ops	*new;	
+	t_ops	*tmp;
+	t_ops	*new;
 	int		i;
 
 	if (*ops == NULL)

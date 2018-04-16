@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/13 12:40:17 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/04/14 15:13:40 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/04/16 17:05:57 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static int	check_at_top(t_am *a)
 		while (a->lines[i][j])
 			if (a->lines[i][j++] == '"')
 				quote++;
-		i++;	
+		i++;
 	}
 	return (0);
 }
@@ -79,7 +79,7 @@ static char	*rm_trailing_comment(char *line)
 	return (dst);
 }
 
-static void	clean_lines(t_am * a)
+static void	clean_lines(t_am *a)
 {
 	int	i;
 
@@ -93,10 +93,9 @@ static void	clean_lines(t_am * a)
 			a->lines[i] = rm_trailing_comment(a->lines[i]);
 		i++;
 	}
-
 }
 
-int		read_file(int fd, t_am *a)
+int			read_file(int fd, t_am *a)
 {
 	int		j;
 	int		quote;

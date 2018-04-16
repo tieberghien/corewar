@@ -6,14 +6,14 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/09 18:54:22 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/04/14 15:13:38 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/04/16 17:03:44 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 #include <stdio.h>
 
-static	int	get_first_quote(char *line)
+static int	get_first_quote(char *line)
 {
 	int	j;
 
@@ -21,7 +21,7 @@ static	int	get_first_quote(char *line)
 	while (line[j])
 	{
 		if (line[j] == '"' && line[j + 1])
-		   return (j + 1);
+			return (j + 1);
 		j++;
 	}
 	return (-1);
@@ -80,7 +80,7 @@ static char	*read_name_comm(t_am *a, int i)
 	k, j - k)));
 }
 
-int		get_name(t_am *a)
+int			get_name(t_am *a)
 {
 	int	i;
 	int	j;
@@ -90,7 +90,7 @@ int		get_name(t_am *a)
 	count = 0;
 	i = 0;
 	while (i < a->lc)
-	{ 
+	{
 		j = 0;
 		while (a->lines[i][j] == '\t' || a->lines[i][j] == ' ')
 			j++;
@@ -110,7 +110,7 @@ int		get_name(t_am *a)
 	return (1);
 }
 
-int		get_comment(t_am *a)
+int			get_comment(t_am *a)
 {
 	int	i;
 	int	j;

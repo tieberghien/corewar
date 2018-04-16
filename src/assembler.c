@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/13 13:18:27 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/04/13 20:04:32 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/04/16 16:55:09 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,14 +62,14 @@ void	print_namecomm(t_am *a, int fd, int prog_size)
 
 void	print_free_ops(t_ops *ops, int fd)
 {
-	t_ops *tmp;
+	t_ops	*tmp;
 	int		i;
 
 	while (ops)
 	{
 		write(fd, ops->data, ops->pc);
 		tmp = ops;
-		free(tmp->name);	
+		free(tmp->name);
 		i = 0;
 		while (i < ops->lc)
 		{

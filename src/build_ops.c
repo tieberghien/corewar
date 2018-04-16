@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/10 19:44:10 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/04/14 14:26:01 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/04/16 16:58:10 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	check_chars(char *line)
 	return (1);
 }
 
-int get_address(t_ops *ops)
+int	get_address(t_ops *ops)
 {
 	t_ops	*tmp;
 
@@ -33,9 +33,9 @@ int get_address(t_ops *ops)
 	while (tmp->nxt)
 		tmp = tmp->nxt;
 	return (tmp->end_addr);
-}	
+}
 
-int		match_labels(t_label *l, t_ops *ops)
+int	match_labels(t_label *l, t_ops *ops)
 {
 	int		i;
 	t_label *tmp;
@@ -51,7 +51,7 @@ int		match_labels(t_label *l, t_ops *ops)
 				if (!ft_strcmp(tmp->name, ops->labels[i]))
 				{
 					write_to_data(ops->data, tmp->address -
-							(ops->end_addr - ops->pc), ops->put[i][0], ops->put[i][1]);
+						(ops->end_addr - ops->pc), ops->put[i][0], ops->put[i][1]);
 					break ;
 				}
 				tmp = tmp->nxt;
@@ -63,7 +63,6 @@ int		match_labels(t_label *l, t_ops *ops)
 	}
 	return (1);
 }
-
 
 int	add_label(t_label **l, char *line, int address, int end)
 {
@@ -102,7 +101,8 @@ int	build_operations(t_am *a, t_label **l, t_ops **ops)
 	{
 		label_line = 0;
 		j = -1;
-		while (a->lines[i][++j] != ' ' && a->lines[i][j] != '\t' && a->lines[i][j] != '%' && a->lines[i][j])
+		while (a->lines[i][++j] != ' ' && a->lines[i][j] != '\t' 
+				&& a->lines[i][j] != '%' && a->lines[i][j])
 			if (a->lines[i][j] == ':')
 			{
 				label_line = 1;

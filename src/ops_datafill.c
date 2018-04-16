@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/11 16:33:16 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/04/14 14:51:51 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/04/16 17:05:17 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static int	check_characters(char *line, long n)
 	return (1);
 }
 
-static	void	colon_case(char *line, t_ops *ops, int size)
+static void	colon_case(char *line, t_ops *ops, int size)
 {
 	int	i;
 
@@ -46,7 +46,7 @@ static	void	colon_case(char *line, t_ops *ops, int size)
 	ops->put[ops->lc++][1] = size;
 }
 
-void	fill_reg(char *line, t_ops *ops, int count, int *cb)
+void		fill_reg(char *line, t_ops *ops, int count, int *cb)
 {
 	int		i;
 	long	n;
@@ -66,7 +66,7 @@ void	fill_reg(char *line, t_ops *ops, int count, int *cb)
 	ops->pc++;
 }
 
-void	fill_index(char *line, t_ops *ops, int count, int *cb)
+void		fill_index(char *line, t_ops *ops, int count, int *cb)
 {
 	int		i;
 	long	n;
@@ -80,7 +80,7 @@ void	fill_index(char *line, t_ops *ops, int count, int *cb)
 	{
 		colon_case(line + ++i, ops, ops->small);
 		ops->pc += ops->small;
-		*cb |=  2 << ((3 - count) * 2);
+		*cb |= 2 << ((3 - count) * 2);
 		return ;
 	}
 	n = ft_atol(line + i);
@@ -91,7 +91,7 @@ void	fill_index(char *line, t_ops *ops, int count, int *cb)
 	ops->pc += ops->small;
 }
 
-void	fill_value(char *line, t_ops *ops, int count, int *cb)
+void		fill_value(char *line, t_ops *ops, int count, int *cb)
 {
 	int		i;
 	long	n;
