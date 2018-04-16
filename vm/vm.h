@@ -12,6 +12,8 @@
 # define MAX_CHAMPS	"too many champions"
 # define VERBOSE	"verbosity level: 0, 1, 2, 4, 8, 16"
 
+static unsigned char g_magic[] = {0, 234, 131, 243};
+
 typedef struct		s_opts
 {
 	unsigned int	aff_mode;

@@ -84,7 +84,7 @@ int	main(int ac, char **av)
 	j = -1;
 	while (++j < MAX_PLAYERS)
 		champs[j].player_id = 0;
-	if (MAX_PLAYERS != 4)
+	if (MAX_PLAYERS <= 0)
 		ft_printf("MAX_PLAYERS not properly defined");
 	opts.s_cycles = 0;
 	opts.n_players = 0;
