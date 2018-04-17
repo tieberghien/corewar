@@ -6,7 +6,7 @@
 /*   By: etieberg <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 13:54:05 by etieberg          #+#    #+#             */
-/*   Updated: 2018/04/17 15:13:32 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/04/17 16:48:30 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,3 +30,10 @@ int		create_s(char *pname, int fd)
 	free(pname);
 	return (fd);
 }
+
+/*
+int		disassembler(t_champs champ)
+{
+	return (0);
+}
+*/

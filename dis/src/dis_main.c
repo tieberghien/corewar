@@ -6,7 +6,7 @@
 /*   By: etieberg <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/16 17:53:59 by etieberg          #+#    #+#             */
-/*   Updated: 2018/04/17 16:30:15 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/04/17 16:48:27 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,5 +44,6 @@ int		main(int ac, char **av)
 		return (0);
 	champ.file = ft_strcpy(champ.file, av[1]);
 	oc_file(&champ);
+	//disassembler
 	return (0);
 }
