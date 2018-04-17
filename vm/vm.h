@@ -32,7 +32,7 @@ typedef struct		s_champ
 	char			*comment;
 	char			*file_name;
 	int				fd;
-	unsigned short	*buffer;
+	unsigned char	*hello;
 }					t_champs;
 
 //void			parse_args(int ac, char **av, t_opts *opts);

@@ -1,6 +1,19 @@
 #include "vm.h"
 
-int readstr(unsigned char **str, int buffsize, unsigned char *buf, int fd)
+int cpyinst(unsigned char **str, int buffsize, unsigned char *buf, int fd)
+{
+    int i;
+
+    i = read(fd, buf, buffsize);
+    if (i != buffsize)
+        return (-1);
+    if (!(*str = (unsigned char*)malloc(sizeof(unsigned char) * buffsize)))
+        return (-1);
+    *str = ft_memcpy((char*)*str, (char*)buf, buffsize);
+    return (i);
+}
+
+int readstr(char **str, int buffsize, unsigned char *buf, int fd)
 {
     int i;
 
@@ -8,8 +21,8 @@ int readstr(unsigned char **str, int buffsize, unsigned char *buf, int fd)
     if (!(*str = (char*)malloc(sizeof(char) * buffsize + 1)))
         return (-1);
     (*str)[buffsize] = '\0';
-    *str = ft_strncpy(*str, buf, buffsize);
-    return (i)
+    *str = ft_strncpy(*str, (char*)buf, buffsize);
+    return (i);
 }
 
 int read_file(t_champs *champs)
@@ -26,13 +39,19 @@ int read_file(t_champs *champs)
     if((i = readstr(&champs->name, PROG_NAME_LENGTH, buf, champs->fd)) < 0)
         ft_printf("malloc error");
     j += i;
+    lseek(champs->fd, 4, SEEK_CUR);
     i = read(champs->fd, buf, 4);
-    if (buf[0] != 0  buf[1] != 0 || buf[2] * 256 + buf[3] > CHAMP_MAX_SIZE)
+    if ((champs->size = buf[2] * 256 + buf[3]) == 0)
+        return (ft_printf("champion empty"));
+    if (buf [0] != 0 || buf[1] != 0 || champs->size > CHAMP_MAX_SIZE)
         return (ft_printf("%s is too big", champs->name));
-    if((i = readstr(champs->comment, COMMENT_LENGTH, buf, champs->fd)) < 0)
+    if((i = readstr(&champs->comment, COMMENT_LENGTH, buf, champs->fd)) < 0)
         ft_printf("malloc error");
     j += i;
-    if (i)
+    lseek(champs->fd, 4, SEEK_CUR);
+    if((i = cpyinst(&champs->hello, champs->size, buf, champs->fd)) < 0)
+        ft_printf("malloc error");
+    j += i;
     return (ft_printf("number of data read = %d\n", j));
 }
 
