@@ -35,10 +35,16 @@ typedef struct		s_champ
 	unsigned char	*instructions;
 }					t_champs;
 
+typedef	struct		s_vm
+{
+	unsigned char			*map;
+}					t_vm;
+
 //void			parse_args(int ac, char **av, t_opts *opts);
 int				display_intro(t_champs *champs, t_opts opts);
-//void			verbose_zero(t_champ *champ);
+//void			verbose_zero(t_champ *champs);
 //void			verbose_one(t_champ *champs);
 int				oc_file(t_champs *champs, t_opts *opts);
 int 			fun_exit(char *str, t_champs *champs, t_opts *opts);
+int 			init_vm(t_champs *champs, t_opts *opts, t_vm *vm);
 #endif

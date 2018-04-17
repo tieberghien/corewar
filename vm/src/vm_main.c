@@ -77,6 +77,7 @@ int	main(int ac, char **av)
 {
 	t_opts opts;
 	t_champs champs[MAX_PLAYERS];
+	t_vm vm;
 	unsigned int i;
 	int j;
 
@@ -97,6 +98,8 @@ int	main(int ac, char **av)
 	}
 	ft_printf("number of player: %d\n", opts.n_players);
 	if (oc_file(champs, &opts) > 0)
+		return (fun_exit(NULL, champs, &opts));
+	if (init_vm(champs, &opts, &vm))
 		return (fun_exit(NULL, champs, &opts));
 	return (0);
 }

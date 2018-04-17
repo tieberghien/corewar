@@ -7,9 +7,12 @@ int fun_exit(char *str, t_champs *champs, t_opts *opts)
 	i = -1;
 	while ((unsigned int)++i < opts->n_players)
 	{
-		ft_strdel(&champs[i].name);
-		ft_strdel(&champs[i].comment);
-		ft_memdel((void**)&champs[i].instructions);
+		if (champs[i].name)
+			ft_strdel(&champs[i].name);
+		if (champs[i].comment)
+			ft_strdel(&champs[i].comment);
+		if (champs[i].instructions)
+			ft_memdel((void**)&champs[i].instructions);
 	}
 	if (str)
 		return (ft_printf("%s\n", str));
@@ -36,6 +39,15 @@ int	display_intro(t_champs *champs, t_opts opts)
 		ft_putstr(champs[i].comment);
 		ft_putendl("\") !");
 	}
-	fun_exit("All free", champs, &opts);
 	return(0);
+}
+
+void	verbose_zero(t_champs champ)
+{
+	ft_putstr("le joueur");
+	ft_putnbr(champ.player_id);
+	ft_putchar('(');
+	ft_putstr(champ.name);
+	ft_putchar(')');
+	ft_putstr(" a gagne");	
 }
