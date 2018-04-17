@@ -1,13 +1,16 @@
 LIB = libft/libft.a
 
-SRC = vm_main.c \
-		read_champ.c
+SRC_NAME = vm_main.c \
+		read_champ.c \
+		display_intro.c
 
 OBJ_PATH = obj
 
-SRC_NAME = $(notdir $(SRC))
+SRC_PATH = src
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
+
+SRC = $(addprefix $(SRC_PATH)/, $(SRC_NAME))
 
 OBJ = $(addprefix $(OBJ_PATH)/, $(OBJ_NAME))
 
@@ -20,12 +23,12 @@ NAME = corewar
 all : library $(NAME)
 
 $(NAME): $(OBJ)
-	gcc -o $@ $(OBJ) $(LIB)
+	gcc $(FLAGS) -o $@ $(OBJ) $(LIB)
 
 library :
 	make -C libft
 
-$(OBJ_PATH)/%.o: %.c
+$(OBJ_PATH)/%.o: $(SRC_PATH)/%.c
 	@mkdir -p $(OBJ_PATH)
 	@gcc -c $< $(FLAGS) -o $@ $(INCLUDES)
 

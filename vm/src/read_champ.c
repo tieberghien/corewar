@@ -49,10 +49,10 @@ int read_file(t_champs *champs)
         ft_printf("malloc error");
     j += i;
     lseek(champs->fd, 4, SEEK_CUR);
-    if((i = cpyinst(&champs->hello, champs->size, buf, champs->fd)) < 0)
+    if((i = cpyinst(&champs->instructions, champs->size, buf, champs->fd)) < 0)
         ft_printf("malloc error");
     j += i;
-    return (ft_printf("number of data read = %d\n", j));
+    return (0);
 }
 
 int	oc_file(t_champs *champs, t_opts *opts)
@@ -69,14 +69,19 @@ int	oc_file(t_champs *champs, t_opts *opts)
             return(ft_printf("champion %s is a lie!", champs[i].file_name));
         if (lseek(champs[i].fd, PROG_NAME_LENGTH, SEEK_CUR) == -1)
             return(ft_printf("champion %s is a lie!", champs[i].file_name));
+        if (lseek(champs[i].fd, 4, SEEK_SET) == -1)
+            return(ft_printf("champion %s is a lie!", champs[i].file_name));
         if (lseek(champs[i].fd, 4, SEEK_CUR) == -1)
             return(ft_printf("champion %s is a lie!", champs[i].file_name));    
         if (lseek(champs[i].fd, COMMENT_LENGTH, SEEK_CUR) == -1)
             return(ft_printf("champion %s is a lie!", champs[i].file_name));
+        if (lseek(champs[i].fd, 4, SEEK_SET) == -1)
+            return(ft_printf("champion %s is a lie!", champs[i].file_name));
         lseek(champs[i].fd, 0, SEEK_SET);
-        read_file(champs + i);
+        if(read_file(champs + i) > 0)
+            return (1);
         close(champs[i].fd);
         i++;
     }
-    return (0);
+    return (display_intro(champs, *opts));
 }

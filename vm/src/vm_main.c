@@ -96,5 +96,7 @@ int	main(int ac, char **av)
 		i++;
 	}
 	ft_printf("number of player: %d\n", opts.n_players);
-	oc_file(champs, &opts);
+	if (oc_file(champs, &opts) > 0)
+		return (fun_exit(NULL, champs, &opts));
+	return (0);
 }

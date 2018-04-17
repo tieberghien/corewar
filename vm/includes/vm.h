@@ -32,12 +32,13 @@ typedef struct		s_champ
 	char			*comment;
 	char			*file_name;
 	int				fd;
-	unsigned char	*hello;
+	unsigned char	*instructions;
 }					t_champs;
 
 //void			parse_args(int ac, char **av, t_opts *opts);
-//void			display_intro(t_champ *champs, t_opts, opts);
+int				display_intro(t_champs *champs, t_opts opts);
 //void			verbose_zero(t_champ *champ);
 //void			verbose_one(t_champ *champs);
 int				oc_file(t_champs *champs, t_opts *opts);
+int 			fun_exit(char *str, t_champs *champs, t_opts *opts);
 #endif
