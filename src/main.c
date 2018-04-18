@@ -6,11 +6,22 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 18:34:20 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/04/18 15:36:55 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/04/18 16:16:58 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
+
+void	return_invparams(int n, char *type, char *op)
+{
+	ft_putstr_fd("Invalid parameter ", 2);
+	ft_putnbr_fd(n, 2);
+	ft_putstr_fd(" type ", 2);
+	ft_putstr_fd(type, 2);
+	ft_putstr_fd(" for instruction ", 2);
+	ft_putendl_fd(op, 2);
+	exit(0);
+}
 
 void	return_failure(char *str, char *op)
 {
