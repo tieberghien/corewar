@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 18:34:20 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/04/13 15:19:41 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/04/18 15:36:32 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # define STRCMP_CMNT ft_strncmp(a->lines[i] + j, COMMENT_CMD_STRING, ft_strlen(COMMENT_CMD_STRING))
 # define NAME_LONG "Champion name too long (Max length 128)"
 # define COMMENT_LONG "Champion comment too long (Max length 2048)"
+# define PARAMS_NO "Invalid parameter count for instruction "
 
 
 # include <limits.h>
@@ -77,6 +78,6 @@ void			write_to_data(char *data, int num, int index, int size);
 int				read_file(int fd, t_am *a);
 int				assembler(t_am *a, char *prog_name, int fd);
 void			free_all(t_am *a, t_label *l);
-void			return_failure(char *str);
+void			return_failure(char *str, char *op);
 
 #endif

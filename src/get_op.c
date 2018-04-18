@@ -6,11 +6,12 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/11 15:59:20 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/04/16 17:02:45 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/04/18 15:50:25 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
+#include <stdio.h>
 
 t_op		g_op_tab[16] =
 {
@@ -116,7 +117,7 @@ static int	fill_opdata(t_ops *ops, char *line, int index)
 			fill_value(line + i, ops, count, &cb);
 		if (ret == ops->pc || (count + 1 < g_op_tab[index].argc &&
 		(ret = go_next_param(line + i)) == -1))
-			return (ret);
+			return (0);
 		i += ret;
 	}
 	if (g_op_tab[index].ocp)
@@ -135,7 +136,8 @@ int			get_op(char *line, t_ops **ops)
 		if (!(*ops = malloc(sizeof(t_ops))) || (i = get_opname(line, *ops)) == -1)
 			return (0);
 		(*ops)->nxt = NULL;
-		fill_opdata(*ops, line, i);
+		if ((fill_opdata(*ops, line, i)) == 0)
+			return_failure(PARAMS_NO, g_op_tab[i].name);
 		(*ops)->end_addr = (*ops)->pc;
 		return (1);
 	}
@@ -145,7 +147,8 @@ int			get_op(char *line, t_ops **ops)
 	if (!(new = malloc(sizeof(t_ops))) || (i = get_opname(line, new)) == -1)
 		return (0);
 	new->nxt = NULL;
-	fill_opdata(new, line, i);
+	if ((fill_opdata(new, line, i)) == 0)
+		return_failure(PARAMS_NO, g_op_tab[i].name);
 	tmp->nxt = new;
 	new->end_addr = tmp->end_addr + new->pc;
 	return (1);

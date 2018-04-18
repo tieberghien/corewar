@@ -6,15 +6,19 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 18:34:20 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/04/16 16:56:19 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/04/18 15:36:55 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 
-void	return_failure(char *str)
+void	return_failure(char *str, char *op)
 {
-	ft_putendl_fd(str, 2);
+	ft_putstr_fd(str, 2);
+	if (op != NULL)
+		ft_putendl_fd(op, 2);
+	else
+		ft_putchar_fd('\n', 2);
 	exit(0);
 }
 

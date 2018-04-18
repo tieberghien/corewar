@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/09 18:54:22 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/04/16 17:03:44 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/04/18 15:36:09 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ int			get_name(t_am *a)
 	if (a->name[0] == '"')
 		a->name[0] = '\0';
 	if (ft_strlen(a->name) > PROG_NAME_LENGTH)
-		return_failure(NAME_LONG);
+		return_failure(NAME_LONG, NULL);
 	return (1);
 }
 
@@ -136,6 +136,6 @@ int			get_comment(t_am *a)
 	if (a->comment[0] == '"')
 		a->comment[0] = '\0';
 	if (ft_strlen(a->name) > COMMENT_LENGTH)
-		return_failure(COMMENT_LONG);
+		return_failure(COMMENT_LONG, NULL);
 	return (1);
 }
