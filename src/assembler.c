@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/13 13:18:27 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/04/16 16:55:09 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/04/19 18:38:59 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ int		create_cor(char *pname, int fd)
 	while (--i)
 		if (pname[i] == '.')
 			break ;
+	if (*(pname + i + 1) != 's')
+		return_failure(FILE_FORMAT, NULL);
 	pname = ft_strndup(pname, i);
 	pname = ft_strjoin_free(pname, ".cor");
 	if (close(fd) || (fd = open(pname, O_CREAT | O_WRONLY, 0666)) < 1)

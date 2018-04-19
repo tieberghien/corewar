@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 18:34:20 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/04/18 16:14:19 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/04/19 18:37:18 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # define NAME_LONG "Champion name too long (Max length 128)"
 # define COMMENT_LONG "Champion comment too long (Max length 2048)"
 # define PARAMS_NO "Invalid parameter count for instruction "
+# define FILE_FORMAT "Wrong file format: FILE_NAME.s"
 
 
 # include <limits.h>
