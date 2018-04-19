@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/09 18:54:22 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/04/19 15:20:16 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/04/19 15:43:42 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int	get_first_quote(char *line)
 	j = 0;
 	while (line[j])
 	{
-		if (line[j] == '"' && line[j + 1])
+		if (line[j] == '"' && line[j + 1] != '\n')
 			return (j + 1);
 		j++;
 	}
