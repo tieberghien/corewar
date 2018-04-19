@@ -24,91 +24,62 @@ t_op     *extract_good_instruc(int instruction)
 }
 */
 
-int start_game(t_vm *vm)
+int toint(unsigned int vm, int size)
+{
+
+}
+
+int start_game(t_vm *vm, t_op **op)
 {
     int i;
-    int j;
+    int par;
     int ocp;
+    int k;
     t_op *new;
-    int k = 1;
 
     i = 0;
     while (i < MEM_SIZE)
     {
-        if (vm->map[i] == 9)
+        if (vm->map[i] == 9 || vm->map[i] == 15 || vm->map[i] == 12 || vm->map[i] == 1)
         {
-            k = 32;
-            ft_printf("\x1B[3%dm \n %hhx %hhx \n", k, vm->map[i], vm->map[i + 1]);
-            i += 2;
+            new = ft_opdup(g_optab[vm->map[i] - 1]);
+            new->next = *op;
+            *op = new;
+            i++;
+            k = (vm->map[i] == 1) ? 5 : 3;
+
+            i += k;
         }
-        else if (vm->map[i] == 1)
+        else if (vm->map[i] > 1 && vm->map[i] < 17)
         {
-            j = 0;
-            k = 31;
-            ft_printf("\x1B[3%dm %hhx %hhx %hhc %hhx \n", k, vm->map[i], vm->map[i + 1], vm->map[i + 2], vm->map[i + 3]);
-            i += 4;
-        }
-        else if (vm->map[i] > 1 && i < 17)
-        {
-            k = 33;
-            new = ft_opdup(g_optab[i]);
-            ft_printf("\x1B[3%dm %hhx ", k, vm->map[i]);
+            new = ft_opdup(g_optab[vm->map[i] - 1]);
+            new->next = *op;
+            *op = new;
             i++;
             ocp = vm->map[i];
-            ft_printf("\x1B[3%dm %hhx ", k, vm->map[i]);
             i++;
-            if (decript_ocp(((ocp & PARAM_C) >> 6) > 1))
-            {
-                if (/*((ocp & PARAM_C) >> 6) == 2 &&*/ 
-                (new->op_code < 9 || new->op_code == 13))
-                    ft_printf("\x1B[3%dm %hhx %hhx %hhc %hhx", k, vm->map[i], vm->map[i + 1], vm->map[i + 2], vm->map[i + 3]);
-                else
-                    ft_printf("\x1B[3%dm %hhx %hhx ", k, vm->map[i], vm->map[i + 1]);
-                i += (/*((ocp & PARAM_C) >> 6) == 2 &&*/ 
-                (new->op_code < 9 || new->op_code == 13)) ? 4 : 2;
-            }
-            else 
-            {
-                ft_printf("\x1B[3%dm %hhx ", k, vm->map[i]);
+            if (decript_ocp((par = ((ocp & PARAM_C) >> 6)) > 1))
+                i += (par == 2 && (new->op_code < 9 || new->op_code == 13)) ? 4 : 2;
+            else if (par == 1)
                 i++;
-            }
-            if (decript_ocp(((ocp & PARAM_B) >> 4) > 1))
-            {
-                if (/*((ocp & PARAM_B) >> 4) == 2 &&*/ 
-                (new->op_code < 9 || new->op_code == 13))
-                    ft_printf("\x1B[3%dm %hhx %hhx %hhc %hhx ", k, vm->map[i], vm->map[i + 1], vm->map[i + 2], vm->map[i + 3]);
-                else
-                    ft_printf("\x1B[3%dm %hhx %hhx ", k, vm->map[i], vm->map[i + 1]);
-                i += (/*((ocp & PARAM_B) >> 4) == 2 &&*/ 
-                (new->op_code < 9 || new->op_code == 13)) ? 4 : 2;
-            }
-            else
-            {
-                ft_printf("\x1B[3%dm %hhx ", k, vm->map[i]);
+            if (decript_ocp((par =((ocp & PARAM_B) >> 4))) > 1)
+                i += (par == 2 && (new->op_code < 9 || new->op_code == 13)) ? 4 : 2;
+            else if (par == 1)
                 i++;
-            }
-            if (decript_ocp(((ocp & PARAM_A) >> 2 ) > 1))
-            {
-                if (/*((ocp & PARAM_A) >> 2) == 2 &&*/ 
-                (new->op_code < 9 || new->op_code == 13))
-                    ft_printf("\x1B[3%dm %hhx %hhx %hhc %hhx", k, vm->map[i], vm->map[i + 1], vm->map[i + 2], vm->map[i + 3]);
-                else
-                    ft_printf("\x1B[3%dm %hhx %hhx ", k, vm->map[i], vm->map[i + 1]);
-                i += (/*((ocp & PARAM_A) >> 2) == 2 &&*/ 
-                (new->op_code < 9 || new->op_code == 13)) ? 4 : 2;
-            }
-            else 
-            {
-                ft_printf("\x1B[3%dm %hhx ", k, vm->map[i]);
+            if (decript_ocp((par = ((ocp & PARAM_A)) >> 2 ) > 1))
+                i += (par == 2 && (new->op_code < 9 || new->op_code == 13)) ? 4 : 2;
+            else if (par == 1)
                 i++;
-            }
-            ft_printf("\n");
         }
         else
             i++;
-        k = 0;
     }
-    ft_putchar('\n');
+    new = *op;
+    while (new)
+    {
+        ft_printf("%s\n", new->name);
+        new = new->next;
+    }
     return (0);
 }
 
@@ -142,7 +113,9 @@ int mv_mem(int pos, int move)
 int init_vm(t_champs *champs, t_opts *opts, t_vm *vm)
 {
     int i;
+    t_op *op;
 
+    op = NULL;
     if (!(vm->map = (unsigned char*)malloc(sizeof(unsigned char) * MEM_SIZE)))
         return (-1);
     i = -1;
@@ -150,7 +123,7 @@ int init_vm(t_champs *champs, t_opts *opts, t_vm *vm)
         vm->map[i] = 0;
     if (install_champion(champs, opts, vm))
         return (ft_printf("Error, the map is not initilisated\n"));
-    if (start_game(vm))
+    if (start_game(vm, &op))
         return (ft_printf("Error, he doesn't have a game\n"));
     return (0);
 }
