@@ -6,12 +6,11 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/09 18:54:22 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/04/18 15:36:09 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/04/19 15:20:16 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
-#include <stdio.h>
 
 static int	get_first_quote(char *line)
 {
@@ -48,8 +47,6 @@ static int	get_second_quote(t_am *a, int i, int j, int *count)
 		if (*count == a->lc - original_i)
 			return (-1);
 	}
-	if (a->lines[i][j + 1])
-		return (-1);
 	return (j);
 }
 
