@@ -24,15 +24,49 @@ t_op     *extract_good_instruc(int instruction)
 }
 */
 
-int toint(unsigned int vm, int size)
+unsigned int toint(t_vm *vm, int i, int size)
 {
+    int multiplicateur;
+    unsigned int total;
 
+    total = 0;
+    multiplicateur = 1;
+    size =  size + i - 1;
+    while (size >= i)
+    {
+        total += vm->map[size] * multiplicateur;
+        multiplicateur *= 256;
+        size--;
+    }
+    ft_printf("%d\n", total);
+    return (total);
 }
 
+int main_decript(int par, unsigned char *vm, int j, t_op **new)
+{
+    int k;
+    t_vm map;
+
+    k = 0;
+    map.map = vm;
+    if (par > 1)
+    {
+        k = (par == 2 && ((*new)->op_code < 9 || (*new)->op_code == 13)) ? 4 : 2;
+        (*new)->params[j] = toint(&map , 0, k);
+        //ft_printf(new->params[j]);
+        return (k);
+    }
+    else if (par == 1)
+    {
+        (*new)->params[j] = toint(&map, 0, 1);
+        return (1);
+    }
+    return (0);
+}
+ 
 int start_game(t_vm *vm, t_op **op)
 {
     int i;
-    int par;
     int ocp;
     int k;
     t_op *new;
@@ -45,9 +79,9 @@ int start_game(t_vm *vm, t_op **op)
             new = ft_opdup(g_optab[vm->map[i] - 1]);
             new->next = *op;
             *op = new;
+            k = (vm->map[i] == 1) ? 4 : 2;
             i++;
-            k = (vm->map[i] == 1) ? 5 : 3;
-
+            (*op)->params[0] = toint(vm, i, k);
             i += k;
         }
         else if (vm->map[i] > 1 && vm->map[i] < 17)
@@ -56,20 +90,10 @@ int start_game(t_vm *vm, t_op **op)
             new->next = *op;
             *op = new;
             i++;
-            ocp = vm->map[i];
-            i++;
-            if (decript_ocp((par = ((ocp & PARAM_C) >> 6)) > 1))
-                i += (par == 2 && (new->op_code < 9 || new->op_code == 13)) ? 4 : 2;
-            else if (par == 1)
-                i++;
-            if (decript_ocp((par =((ocp & PARAM_B) >> 4))) > 1)
-                i += (par == 2 && (new->op_code < 9 || new->op_code == 13)) ? 4 : 2;
-            else if (par == 1)
-                i++;
-            if (decript_ocp((par = ((ocp & PARAM_A)) >> 2 ) > 1))
-                i += (par == 2 && (new->op_code < 9 || new->op_code == 13)) ? 4 : 2;
-            else if (par == 1)
-                i++;
+            ocp = vm->map[i++];
+            i += main_decript(decript_ocp((ocp & PARAM_C) >> 6), vm->map + i, 0, op);
+            i += main_decript(decript_ocp((ocp & PARAM_B) >> 4), vm->map + i, 1, op);
+            i += main_decript(decript_ocp((ocp & PARAM_A) >> 2), vm->map + i, 2, op);
         }
         else
             i++;
@@ -77,7 +101,14 @@ int start_game(t_vm *vm, t_op **op)
     new = *op;
     while (new)
     {
-        ft_printf("%s\n", new->name);
+        i = 0;
+        ft_printf("%s  ", new->name);
+        while (i < new->argc)
+        {
+            ft_printf("%x ", new->params[i]);
+            i++;
+        }
+        ft_printf("\n");
         new = new->next;
     }
     return (0);
