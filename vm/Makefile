@@ -3,7 +3,8 @@ LIB = libft/libft.a
 SRC_NAME = vm_main.c \
 		read_champ.c \
 		display_intro.c \
-		vm_mem.c		\
+		vm_mem.c \
+		vm_allocop.c \
 		free_and_dup.c
 
 OBJ_PATH = obj

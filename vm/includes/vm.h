@@ -80,7 +80,9 @@ static t_op			g_optab[17] =
 
 typedef	struct		s_vm
 {
-	unsigned char			*map;
+	unsigned char	*map;
+	int			 	cycle;
+	int				next_cycle_group;
 }					t_vm;
 
 void    		ft_opdel(t_op **op);
@@ -93,4 +95,6 @@ int				oc_file(t_champs *champs, t_opts *opts);
 int 			fun_exit(char *str, t_champs *champs, t_opts *opts);
 int 			init_vm(t_champs *champs, t_opts *opts, t_vm *vm);
 void			print_vm_mem(t_vm *vm);
+int				save_op(t_op **op, int *i, t_vm *vm, int flag);
+
 #endif

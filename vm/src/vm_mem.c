@@ -1,100 +1,30 @@
 #include "vm.h"
 
-
-int decript_ocp(unsigned char opc)
+int mv_mem(int *pos, int move, t_vm *vm)
 {
-    if (opc == 1)
-        return (1);
-    else if (opc == 2)
-        return (2);
-    else if (opc == 3)
-        return (3);
-    return (0);
-}
-/*
-t_op     *extract_good_instruc(int instruction)
-{
-    int i;
-
-    i = -1;
-    while (g_optab[++i][0])
-        if (instruction == g_optab[i][3])
-            return (g_optab + i);
-    return (NULL);
-}
-*/
-
-unsigned int toint(t_vm *vm, int i, int size)
-{
-    int multiplicateur;
-    unsigned int total;
-
-    total = 0;
-    multiplicateur = 1;
-    size =  size + i - 1;
-    while (size >= i)
-    {
-        total += vm->map[size] * multiplicateur;
-        multiplicateur *= 256;
-        size--;
-    }
-    ft_printf("%d\n", total);
-    return (total);
+    *pos = *pos + move;
+    if (*pos >= MEM_SIZE)
+        vm->cycle--;
+    if (vm->cycle == 0 && vm->next_cycle_group > 0)
+        vm->cycle = vm->next_cycle_group;
+    else if (vm->next_cycle_group == 0)
+        return (-1);
+    *pos = *pos % MEM_SIZE;
+    return(1);
 }
 
-int main_decript(int par, unsigned char *vm, int j, t_op **new)
-{
-    int k;
-    t_vm map;
-
-    k = 0;
-    map.map = vm;
-    if (par > 1)
-    {
-        k = (par == 2 && ((*new)->op_code < 9 || (*new)->op_code == 13)) ? 4 : 2;
-        (*new)->params[j] = toint(&map , 0, k);
-        //ft_printf(new->params[j]);
-        return (k);
-    }
-    else if (par == 1)
-    {
-        (*new)->params[j] = toint(&map, 0, 1);
-        return (1);
-    }
-    return (0);
-}
- 
 int start_game(t_vm *vm, t_op **op)
 {
     int i;
-    int ocp;
-    int k;
     t_op *new;
 
     i = 0;
     while (i < MEM_SIZE)
     {
         if (vm->map[i] == 9 || vm->map[i] == 15 || vm->map[i] == 12 || vm->map[i] == 1)
-        {
-            new = ft_opdup(g_optab[vm->map[i] - 1]);
-            new->next = *op;
-            *op = new;
-            k = (vm->map[i] == 1) ? 4 : 2;
-            i++;
-            (*op)->params[0] = toint(vm, i, k);
-            i += k;
-        }
+            save_op(op, &i, vm, 0);
         else if (vm->map[i] > 1 && vm->map[i] < 17)
-        {
-            new = ft_opdup(g_optab[vm->map[i] - 1]);
-            new->next = *op;
-            *op = new;
-            i++;
-            ocp = vm->map[i++];
-            i += main_decript(decript_ocp((ocp & PARAM_C) >> 6), vm->map + i, 0, op);
-            i += main_decript(decript_ocp((ocp & PARAM_B) >> 4), vm->map + i, 1, op);
-            i += main_decript(decript_ocp((ocp & PARAM_A) >> 2), vm->map + i, 2, op);
-        }
+            save_op(op, &i, vm, 1);
         else
             i++;
     }
@@ -135,18 +65,14 @@ int install_champion(t_champs *champs, t_opts *opts, t_vm *vm)
     return (0);
 }
 
-int mv_mem(int pos, int move)
-{
-    pos = pos + move;
-    return (pos % MEM_SIZE);
-}
-
 int init_vm(t_champs *champs, t_opts *opts, t_vm *vm)
 {
     int i;
     t_op *op;
 
     op = NULL;
+    vm->cycle = CYCLE_TO_DIE;
+    vm->next_cycle_group = CYCLE_TO_DIE - CYCLE_DELTA;
     if (!(vm->map = (unsigned char*)malloc(sizeof(unsigned char) * MEM_SIZE)))
         return (-1);
     i = -1;
