@@ -85,6 +85,7 @@ typedef	struct		s_vm
 	int				next_cycle_group;
 }					t_vm;
 
+int 			mv_mem(int *pos, int move, t_vm *vm, t_op **op);
 void    		ft_opdel(t_op **op);
 t_op   			*ft_opdup(t_op op);
 //void			parse_args(int ac, char **av, t_opts *opts);

@@ -1,13 +1,48 @@
 #include "vm.h"
 
-int mv_mem(int *pos, int move, t_vm *vm)
+void check_op(t_op **op)
 {
+    t_op *tmp;
+    t_op *tmp2;
+
+    if (!*op)
+        return ;
+    tmp = *op;
+    if (tmp)
+        tmp2 = tmp->next;
+    while (tmp)
+    {
+        tmp->dur--;
+        if (tmp->dur == 0)
+        {
+            ft_opdel(&tmp);
+            tmp = tmp2;
+        }
+        else
+            tmp = tmp->next;
+        if (tmp)
+            tmp2 = tmp->next;
+    }
+   :q ft_printf("hello");
+}
+
+int mv_mem(int *pos, int move, t_vm *vm, t_op **op)
+{
+    t_op tmp;
+
+    tmp = **op;
     *pos = *pos + move;
     if (*pos >= MEM_SIZE)
+    {
+        check_op(op);
         vm->cycle--;
+    }
     if (vm->cycle == 0 && vm->next_cycle_group > 0)
+    {
         vm->cycle = vm->next_cycle_group;
-    else if (vm->next_cycle_group == 0)
+        vm->next_cycle_group -= CYCLE_DELTA;
+    }
+    else if (vm->next_cycle_group <= 0)
         return (-1);
     *pos = *pos % MEM_SIZE;
     return(1);
@@ -19,14 +54,21 @@ int start_game(t_vm *vm, t_op **op)
     t_op *new;
 
     i = 0;
-    while (i < MEM_SIZE)
+    while (1)
     {
         if (vm->map[i] == 9 || vm->map[i] == 15 || vm->map[i] == 12 || vm->map[i] == 1)
-            save_op(op, &i, vm, 0);
+        {
+            if (save_op(op, &i, vm, 0))
+                break;
+        }
         else if (vm->map[i] > 1 && vm->map[i] < 17)
-            save_op(op, &i, vm, 1);
+        {
+            if (save_op(op, &i, vm, 1))
+                break;
+        }
         else
-            i++;
+            if (mv_mem(&i, 1, vm, op) < 0)
+                break ;
     }
     new = *op;
     while (new)

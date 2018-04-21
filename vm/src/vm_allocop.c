@@ -60,18 +60,26 @@ int save_op(t_op **op, int *i, t_vm *vm, int flag)
         new->next = *op;
         *op = new;
         k = (vm->map[*i] == 1) ? 4 : 2;
-        (*i)++;
+        if (mv_mem(i, 1, vm, op) < 0)
+            return (1);
         (*op)->params[0] = toint(vm, *i, k);
-        (*i) += k;
+        if (mv_mem(i, k, vm, op) < 0)
+            return (1);
         return(0);
     }
     new = ft_opdup(g_optab[vm->map[*i] - 1]);
     new->next = *op;
     *op = new;
-    (*i)++;
-    k = vm->map[(*i)++];
-    *i += main_decript(decript_ocp((k & PARAM_C) >> 6), vm->map + *i, 0, op);
-    *i += main_decript(decript_ocp((k & PARAM_B) >> 4), vm->map + *i, 1, op);
-    *i += main_decript(decript_ocp((k & PARAM_A) >> 2), vm->map + *i, 2, op);
+    if (mv_mem(i, 1, vm, op) < 0)
+        return (1);
+    k = vm->map[*i];
+    if (mv_mem(i, 1, vm, op) < 0)
+        return (1);
+    if (mv_mem(i, main_decript(decript_ocp((k & PARAM_C) >> 6), vm->map + *i, 0, op), vm, op) < 0)
+        return (1);
+    if (mv_mem(i, main_decript(decript_ocp((k & PARAM_B) >> 4), vm->map + *i, 1, op), vm, op) < 0)
+        return (1);
+    if (mv_mem(i, main_decript(decript_ocp((k & PARAM_A) >> 2), vm->map + *i, 2, op), vm, op) < 0)
+        return (1);
     return (0);
 }
