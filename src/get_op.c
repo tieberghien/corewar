@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/11 15:59:20 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/04/18 16:16:57 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/04/23 14:17:48 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,19 @@ static int	setup_filldata(t_ops *ops, char *line, int index)
 	return (i);
 }
 
+static char	*is_type(char *type)
+{
+	if (!type)
+		return (NULL);
+	else if (type[0] == 'r')
+		return ("register");
+	else if (type[0] == '%')
+		return ("direct");
+	else if (ft_isdigit(type[0]))
+		return ("indirect");
+	return (NULL);
+}
+
 static int	fill_opdata(t_ops *ops, char *line, int index)
 {
 	int	count;
@@ -115,7 +128,7 @@ static int	fill_opdata(t_ops *ops, char *line, int index)
 		if (g_op_tab[index].params[count] & T_IND)
 			fill_value(line + i, ops, count, &cb);
 		if (ret == ops->pc)
-			return_invparams(count, "eh", g_op_tab[index].name);
+			return_invparams(count, is_type(line + i), g_op_tab[index].name);
 		if ((count + 1 < g_op_tab[index].argc && (ret = go_next_param(line + i)) == -1))
 			return_failure(PARAMS_NO, g_op_tab[index].name);
 		i += ret;
