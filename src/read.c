@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/13 12:40:17 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/04/23 14:32:04 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/04/23 15:50:42 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ static int	check_at_top(t_am *a)
 			j++;
 		if (!quote || quote == 2)
 		{
+// TA PA LE DROI DE FEERRRR SA
 			if (STRCMP_NAME && STRCMP_CMNT)
 				return (0);
 			if (quote == 2)
