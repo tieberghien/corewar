@@ -6,7 +6,7 @@
 #    By: etieberg <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/04/11 16:50:44 by etieberg          #+#    #+#              #
-#    Updated: 2018/04/17 13:48:03 by etieberg         ###   ########.fr        #
+#    Updated: 2018/04/23 17:00:31 by etieberg         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 	
@@ -23,8 +23,10 @@ INCS		=	-I $(INC_DIR) -I $(LIB_PATH)/includes/.
 
 SRC_DIR 	= 	src
 
-SRC		=	dis_main.c	\
-			read_champ.c
+SRC		=	dis_main.c		\
+			read_champ.c	\
+			ft_itoabase.c	\
+			op.c
 
 OBJ_DIR		=	obj
 

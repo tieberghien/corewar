@@ -6,7 +6,7 @@
 /*   By: etieberg <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 13:14:21 by etieberg          #+#    #+#             */
-/*   Updated: 2018/04/23 15:05:40 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/04/23 17:05:48 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,20 @@ typedef struct		s_champ
 	unsigned char	*instructions;
 }					t_champs;
 
+typedef struct s_op
+{
+	char	*name;
+	int		argc;
+	int		params[3];	
+	int		op_code;
+	int		dur;
+	char	effect[100];
+	int		carry;
+	int		small;
+//	int		ocp;
+}				t_op;
+
 int			oc_file(t_champs *champs);
+char		*ft_itoabase(intmax_t n, int base, char *s);
 
 #endif
