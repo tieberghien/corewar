@@ -64,19 +64,19 @@ int	oc_file(t_champs *champs, t_opts *opts)
     {
         champs[i].fd = open(champs[i].file_name, O_RDONLY);
         if (champs[i].fd == -1)
-            return (ft_printf("File not open"));
+            return (ft_printf("File not open\n"));
         if (lseek(champs[i].fd, 4, SEEK_SET) == -1)
-            return(ft_printf("champion %s is a lie!", champs[i].file_name));
+            return(ft_printf("champion %s is a lie!\n", champs[i].file_name));
         if (lseek(champs[i].fd, PROG_NAME_LENGTH, SEEK_CUR) == -1)
-            return(ft_printf("champion %s is a lie!", champs[i].file_name));
+            return(ft_printf("champion %s is a lie!\n", champs[i].file_name));
         if (lseek(champs[i].fd, 4, SEEK_SET) == -1)
-            return(ft_printf("champion %s is a lie!", champs[i].file_name));
+            return(ft_printf("champion %s is a lie!\n", champs[i].file_name));
         if (lseek(champs[i].fd, 4, SEEK_CUR) == -1)
-            return(ft_printf("champion %s is a lie!", champs[i].file_name));    
+            return(ft_printf("champion %s is a lie!\n", champs[i].file_name));    
         if (lseek(champs[i].fd, COMMENT_LENGTH, SEEK_CUR) == -1)
-            return(ft_printf("champion %s is a lie!", champs[i].file_name));
+            return(ft_printf("champion %s is a lie!\n", champs[i].file_name));
         if (lseek(champs[i].fd, 4, SEEK_SET) == -1)
-            return(ft_printf("champion %s is a lie!", champs[i].file_name));
+            return(ft_printf("champion %s is a lie!\n", champs[i].file_name));
         lseek(champs[i].fd, 0, SEEK_SET);
         if(read_file(champs + i) > 0)
             return (1);

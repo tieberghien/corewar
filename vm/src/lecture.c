@@ -1,6 +1,6 @@
 #include "vm.h"
 
-int start_game(t_vm *vm)
+int readintr(t_vm *vm)
 {
     int i;
     int par;

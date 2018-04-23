@@ -42,14 +42,14 @@ int	display_intro(t_champs *champs, t_opts opts)
 	return(0);
 }
 
-void	verbose_zero(t_champs champ)
+void	verbose_zero(t_champs *champ)
 {
-	ft_putstr("le joueur");
-	ft_putnbr(champ.player_id);
-	ft_putchar('(');
-	ft_putstr(champ.name);
+	ft_putstr("le joueur ");
+	ft_putnbr(champ->player_id);
+	ft_putstr(" (");
+	ft_putstr(champ->name);
 	ft_putchar(')');
-	ft_putstr(" a gagne");	
+	ft_putstr(" a gagne\n");	
 }
 
 void print_vm_mem(t_vm *vm)

@@ -2,13 +2,10 @@
 
 void    ft_opdel(t_op **op)
 {
-    t_op *tmp;
-
     if (!*op)
         return ;
-    tmp = *op;
-    *op = (*op)->next;
-    free (tmp);
+    free(*op);
+    *op = NULL;
 }
 
 t_op   *ft_opdup(t_op op)

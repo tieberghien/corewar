@@ -45,6 +45,7 @@ int parsing_arg_c(char *av, t_opts *opts, t_champs *champ, int *j)
 		if (ft_strcmp(".cor",par) || par[-1] == '/')
 			return(ft_printf("invalid player"));
 		champ[opts->n_players].file_name = av;
+		champ[opts->n_players].alive = 0;
 		if (champ[opts->n_players].player_id == 0)
 			champ[opts->n_players].player_id = 1 + opts->n_players;
 		opts->n_players++;
