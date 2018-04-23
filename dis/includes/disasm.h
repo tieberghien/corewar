@@ -6,7 +6,7 @@
 /*   By: etieberg <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 13:14:21 by etieberg          #+#    #+#             */
-/*   Updated: 2018/04/17 15:21:55 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/04/23 15:05:40 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ typedef struct		s_champ
 	unsigned int	size;
 	char			*name;
 	char			*comment;
-	char			*file;
+	char			*file_name;
 	int				fd;
 	unsigned char	*instructions;
 }					t_champs;

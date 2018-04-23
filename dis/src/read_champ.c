@@ -6,13 +6,26 @@
 /*   By: etieberg <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 13:29:18 by etieberg          #+#    #+#             */
-/*   Updated: 2018/04/17 16:30:19 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/04/23 15:10:20 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "disasm.h"
 
-static int readstr(char **str, int buffsize, char *buf, int fd)
+static int cpyinst(unsigned char **str, int buffsize, unsigned char *buf, int fd)
+{
+	int i;
+
+	i = read(fd, buf, buffsize);
+	if (i != buffsize)
+		return (-1);
+	if (!(*str = (unsigned char*)malloc(sizeof(unsigned char) * buffsize)))
+		return (-1);
+	*str = ft_memcpy((char*)*str, (char*)buf, buffsize);
+	return (i);
+}
+
+static int readstr(char **str, int buffsize, unsigned char *buf, int fd)
 {
 	int i;
 
@@ -20,7 +33,7 @@ static int readstr(char **str, int buffsize, char *buf, int fd)
 	if (!(*str = (char*)malloc(sizeof(char) * buffsize + 1)))
 		return (-1);
 	(*str)[buffsize] = '\0';
-	*str = ft_strncpy(*str, buf, buffsize);
+	*str = ft_strncpy(*str, (char*)buf, buffsize);
 	return (i);
 }
 
@@ -28,7 +41,7 @@ static int read_file(t_champs *champs)
 {
 	int i;
 	int j;
-	char buf[COMMENT_LENGTH];
+	unsigned char buf[COMMENT_LENGTH];
 
 	j = 0;
 	i = read(champs->fd, buf, 4);
@@ -38,37 +51,43 @@ static int read_file(t_champs *champs)
 	if((i = readstr(&champs->name, PROG_NAME_LENGTH, buf, champs->fd)) < 0)
 		ft_printf("malloc error");
 	j += i;
+	lseek(champs->fd, 4, SEEK_CUR);
 	i = read(champs->fd, buf, 4);
-	if (buf[0] != 0 ||  buf[1] != 0 || buf[2] * 256 + buf[3] > CHAMP_MAX_SIZE)
+	if ((champs->size = buf[2] * 256 + buf[3]) == 0)
+		return (ft_printf("champion empty"));
+	if (buf [0] != 0 || buf[1] != 0 || champs->size > CHAMP_MAX_SIZE)
 		return (ft_printf("%s is too big", champs->name));
-	if ((i = readstr(&champs->comment, COMMENT_LENGTH, buf, champs->fd)) < 0)
+	if((i = readstr(&champs->comment, COMMENT_LENGTH, buf, champs->fd)) < 0)
 		ft_printf("malloc error");
 	j += i;
-	if (i)
-		return (ft_printf("number of data read = %d\n", j));
+	lseek(champs->fd, 4, SEEK_CUR);
+	if((i = cpyinst(&champs->instructions, champs->size, buf, champs->fd)) < 0)
+		ft_printf("malloc error");
+	j += i;
 	return (0);
 }
 
 int	oc_file(t_champs *champs)
 {
-	unsigned int i;
-
-	i = 0;
-	champs->fd = open(champs->file, O_RDONLY);
+	champs->fd = open(champs->file_name, O_RDONLY);
 	if (champs->fd == -1)
 		return (ft_printf("File not open"));
 	if (lseek(champs->fd, 4, SEEK_SET) == -1)
-		return(ft_printf("champion %s is a lie!", champs->file));
+		return(ft_printf("champion %s is a lie!", champs->file_name));
 	if (lseek(champs->fd, PROG_NAME_LENGTH, SEEK_CUR) == -1)
-		return(ft_printf("champion %s is a lie!", champs->file));
+		return(ft_printf("champion %s is a lie!", champs->file_name));
+	if (lseek(champs->fd, 4, SEEK_SET) == -1)
+		return(ft_printf("champion %s is a lie!", champs->file_name));
 	if (lseek(champs->fd, 4, SEEK_CUR) == -1)
-		return(ft_printf("champion %s is a lie!", champs->file));    
+		return(ft_printf("champion %s is a lie!", champs->file_name));    
 	if (lseek(champs->fd, COMMENT_LENGTH, SEEK_CUR) == -1)
-		return(ft_printf("champion %s is a lie!", champs->file));
+		return(ft_printf("champion %s is a lie!", champs->file_name));
+	if (lseek(champs->fd, 4, SEEK_SET) == -1)
+		return(ft_printf("champion %s is a lie!", champs->file_name));
 	lseek(champs->fd, 0, SEEK_SET);
-	read_file(champs);
-//	ft_printf("%s\n", champs->comment);
+	if(read_file(champs) > 0)
+		return (1);
 	close(champs->fd);
-	i++;
-	return (0);
+	ft_printf("%s\n%s\n%s\n", champs->name, champs->comment, champs->instructions);
+	return (1);
 }
