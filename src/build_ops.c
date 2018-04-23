@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/10 19:44:10 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/04/23 13:54:33 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/04/23 19:30:15 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	match_labels(t_label *l, t_ops *ops)
 				tmp = tmp->nxt;
 			}
 			if (!tmp)
-				return (0);
+				return (-1);
 		}
 		ops = ops->nxt;
 	}
