@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/11 15:59:20 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/04/23 14:17:48 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/04/23 14:45:26 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ static char	*is_type(char *type)
 		return ("register");
 	else if (type[0] == '%')
 		return ("direct");
-	else if (ft_isdigit(type[0]))
+	else if (ft_isdigit(type[0]) || type[0] == '-' || type[0] == ':')
 		return ("indirect");
 	return (NULL);
 }
