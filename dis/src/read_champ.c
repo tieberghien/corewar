@@ -6,7 +6,7 @@
 /*   By: etieberg <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 13:29:18 by etieberg          #+#    #+#             */
-/*   Updated: 2018/04/23 15:10:20 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/04/23 17:05:47 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,14 @@ int	oc_file(t_champs *champs)
 	if(read_file(champs) > 0)
 		return (1);
 	close(champs->fd);
-	ft_printf("%s\n%s\n%s\n", champs->name, champs->comment, champs->instructions);
+	size_t	i = 0;
+	char *str = malloc(champs->size);
+	while (i < champs->size)
+	{
+		ft_printf("HHX %hhx\n", champs->instructions[i]);
+		str = ft_itoabase(champs->instructions[i], 16, str);
+		ft_printf("STR %s\n", str);
+		i++;
+	}
 	return (1);
 }
