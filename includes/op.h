@@ -6,7 +6,7 @@
 /*   By: zaz <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:33:27 by zaz               #+#    #+#             */
-/*   Updated: 2018/04/13 20:34:21 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/04/23 17:45:08 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@
 #define NAME_CMD_STRING			".name"
 #define COMMENT_CMD_STRING		".comment"
 
-#define REG_NUMBER				16
+#define REG_NUMBER				99
 
 #define CYCLE_TO_DIE			1536
 #define CYCLE_DELTA				50
