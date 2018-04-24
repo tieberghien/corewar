@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/09 18:54:22 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/04/23 14:30:10 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/04/24 16:21:10 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,18 +85,17 @@ int			get_name(t_am *a)
 	int	count;
 
 	count = 0;
-	i = 0;
-	while (i < a->lc)
+	i = -1;
+	while (++i < a->lc)
 	{
 		j = 0;
 		while (a->lines[i][j] == '\t' || a->lines[i][j] == ' ')
 			j++;
-		if (!STRCMP_NAME)
+		if (!(ft_strncmp(a->lines[i] + j, N_STRING, ft_strlen(N_STRING))))
 		{
 			count++;
 			name_i = i;
 		}
-		i++;
 	}
 	if (count != 1 || !(a->name = read_name_comm(a, name_i)))
 		return (0);
@@ -114,19 +113,18 @@ int			get_comment(t_am *a)
 	int	comment_i;
 	int	count;
 
-	i = 0;
+	i = -1;
 	count = 0;
-	while (i < a->lc)
+	while (++i < a->lc)
 	{
 		j = 0;
 		while (a->lines[i][j] == '\t' || a->lines[i][j] == ' ')
 			j++;
-		if (!STRCMP_CMNT)
+		if (!(ft_strncmp(a->lines[i] + j, C_STRING, ft_strlen(C_STRING))))
 		{
 			count++;
 			comment_i = i;
 		}
-		i++;
 	}
 	if (count != 1 || !(a->comment = read_name_comm(a, comment_i)))
 		return (0);
