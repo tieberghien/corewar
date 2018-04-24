@@ -6,7 +6,7 @@
 /*   By: etieberg <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 13:14:21 by etieberg          #+#    #+#             */
-/*   Updated: 2018/04/23 17:36:48 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/04/24 13:32:40 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,6 @@ typedef struct s_op
 
 int			oc_file(t_champs *champs);
 char		*ft_itoabase(intmax_t n, int base, char *s);
+int			disassembler(unsigned char *instr, size_t size);
 
 #endif

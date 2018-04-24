@@ -6,7 +6,7 @@
 /*   By: etieberg <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 13:29:18 by etieberg          #+#    #+#             */
-/*   Updated: 2018/04/23 18:51:17 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/04/24 13:38:47 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,8 @@ int	oc_file(t_champs *champs)
 	if(read_file(champs) > 0)
 		return (1);
 	close(champs->fd);
+	disassembler(champs->instructions, champs->size);
+	/*
 	size_t	i = 0;
 	char *str = malloc(champs->size);
 	char *bin = malloc(champs->size);
@@ -98,7 +100,9 @@ int	oc_file(t_champs *champs)
 		ft_printf("STR %s\n", str);
 		bin = ft_itoabase(champs->instructions[i], 2, str);
 		ft_printf("BIN %s\n", bin);
+		ft_printf("---------------------------------------\n");
 		i++;
 	}
+	*/
 	return (1);
 }
