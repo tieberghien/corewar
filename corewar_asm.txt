@@ -1,0 +1,8 @@
+_ Gestion des guillemets dans le nom/commentaire. (Asm Zaz ne fait pas)
+_ ex: live%1 <- marche
+	str1,r2 <- marche pas
+Manque de cohérence
+_ Raffiner les erreurs de syntax et de lexique
+_ Ne pas matcher le même label plusieurs fois
+	ex: pouet: live %:live
+	    pouet:
