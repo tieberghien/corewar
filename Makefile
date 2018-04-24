@@ -6,7 +6,7 @@
 #    By: etieberg <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/04/11 16:50:44 by etieberg          #+#    #+#              #
-#    Updated: 2018/04/13 15:04:58 by etieberg         ###   ########.fr        #
+#    Updated: 2018/04/24 17:14:41 by etieberg         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 	
@@ -24,6 +24,7 @@ INCS		=	-I $(INC_DIR) -I $(LIB_PATH)/includes/.
 SRC_DIR 	= 	src
 
 SRC		=	main.c			\
+			op.c			\
 			assembler.c		\
 			read.c			\
 			ops_datafill.c	\
