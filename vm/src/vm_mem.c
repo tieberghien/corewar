@@ -14,8 +14,8 @@ void check_op(t_op **op, int flag, t_vm *vm)
         tmp->dur--;
         if (tmp->dur <= 0 || flag == 1)
         {
-            if (tmp->op_code == 1 && flag == 0)
-                vm->carry = live(vm, tmp);
+            if (tmp->op_code <= 3 && flag == 0)
+                vm->carry = g_op[tmp->op_code - 1](vm, tmp);
             if (!tmp2)
                 (*op) = tmp->next;
             else
@@ -70,12 +70,12 @@ int start_game(t_vm *vm, t_op **op)
     {
         if (vm->map[i] == 9 || vm->map[i] == 15 || vm->map[i] == 12 || vm->map[i] == 1)
         {
-            if ((alive = save_op(op, &i, vm, 0)) <= 1)
+            if ((alive = save_op_spec(op, &i, vm)) <= 1)
                 break;
         }
         else if (vm->map[i] > 1 && vm->map[i] < 16)
         {
-            if ((alive = save_op(op, &i, vm, 1)) <= 1)
+            if ((alive = save_op(op, &i, vm)) <= 1)
                 break;
         }
         else
@@ -123,6 +123,10 @@ int install_champion(t_champs *champs, t_opts *opts, t_vm *vm)
         pos = i * gap;
         while (++j < (int)champs[i].size)
             vm->map[j + pos] = champs[i].instructions[j];
+        j = -1;
+        pos = i * gap;
+        while (++j < (int)champs[i].size)
+            vm->players_map[j + pos] = champs[i].player_id;
     }
     return (0);
 }
@@ -146,13 +150,43 @@ int init_vm(t_champs *champs, t_opts *opts, t_vm *vm)
     vm->carry = 0;
     if (!(vm->map = (unsigned char*)malloc(sizeof(unsigned char) * MEM_SIZE)))
         return (-1);
+    if (!(vm->players_map = (int *)malloc(sizeof(int) * MEM_SIZE)))
+        return (-1);
     i = -1;
     while (++i < MEM_SIZE)
+    {
         vm->map[i] = 0;
+        vm->players_map[i] = 0;
+    }
     if (install_champion(champs, opts, vm))
         return (ft_printf("Error, the map is not initilisated\n"));
-    //print_vm_mem(vm);
+    print_vm_mem(vm);
     if (start_game(vm, &op) < 0)
         return (ft_printf("Error, he doesn't have a game\n"));
+    //print_vm_mem(vm);
     return (0);
 }
+/*
+void    choose_players()
+{
+    if (players_one == 1)
+    {
+        player_one == 0;
+        player_two = 1;
+    }
+    else if (players_two == 1)
+    {
+        player_two == 0;
+        player_three = 1;
+    }
+    else if (players_three == 1)
+    {
+        player_three == 0;
+        player_four = 1;
+    }
+    else if (players_four == 1)
+    {
+        player_four == 0;
+        player_one = 1;
+    }
+}*/

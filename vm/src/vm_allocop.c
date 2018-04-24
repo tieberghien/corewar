@@ -49,31 +49,39 @@ int decript_ocp(unsigned char opc)
     return (0);
 }
 
-int save_op(t_op **op, int *i, t_vm *vm, int flag)
+int save_op_spec(t_op **op, int *i, t_vm *vm)
 {
     int     k;
     int     alive;
     t_op    *new;
 
-    if (flag == 0)
-    {
-        new = ft_opdup(g_optab[vm->map[*i] - 1]);
-        new->next = *op;
-        *op = new;
-        k = (vm->map[*i] == 1) ? 4 : 2;
-        if ((alive = mv_mem(i, 1, vm, op)) <= 1)
-            return (alive);
-        (*op)->params[0] = toint(vm, *i, k);
-        if ((alive = mv_mem(i, k, vm, op)) <= 1)
-            return (alive);
-        return(alive);
-    }
     new = ft_opdup(g_optab[vm->map[*i] - 1]);
     new->next = *op;
     *op = new;
+    (*op)->pc = *i;
+    k = (vm->map[*i] == 1) ? 4 : 2;
+    if ((alive = mv_mem(i, 1, vm, op)) <= 1)
+        return (alive);
+    (*op)->params[0] = toint(vm, *i, k);
+    if ((alive = mv_mem(i, k, vm, op)) <= 1)
+        return (alive);
+    return(alive);
+}
+
+int save_op(t_op **op, int *i, t_vm *vm)
+{
+    int     k;
+    int     alive;
+    t_op    *new;
+
+    new = ft_opdup(g_optab[vm->map[*i] - 1]);
+    new->next = *op;
+    *op = new;
+    (*op)->pc = *i;
     if ((alive = mv_mem(i, 1, vm, op)) <= 1)
         return (alive);
     k = vm->map[*i];
+    (*op)->ocp = k;
     if ((alive = mv_mem(i, 1, vm, op)) <= 1)
         return (alive);
     if ((alive = mv_mem(i, main_decript(decript_ocp((k & PARAM_C) >> 6), vm->map + *i, 0, op), vm, op)) <= 1)

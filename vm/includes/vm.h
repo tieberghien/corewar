@@ -36,6 +36,7 @@ typedef struct		s_champ
 	int				fd;
 	unsigned char	*instructions;
 	int				alive;
+	int				registre[REG_NUMBER];
 }					t_champs;
 
 typedef struct 		s_op
@@ -47,7 +48,7 @@ typedef struct 		s_op
 	int				dur;
 	char			effect[100];
 	int				carry;
-	int				ocp;
+	unsigned char	ocp;
 	struct s_op		*next;
 	int				pc;
 }					t_op;
@@ -55,6 +56,7 @@ typedef struct 		s_op
 typedef	struct		s_vm
 {
 	unsigned char	*map;
+	int				*players_map;
 	int			 	cycle;
 	int				next_cycle_group;
 	int				carry;
@@ -89,6 +91,7 @@ static t_op			g_optab[17] =
 	{0, 0, {0}, 0, 0, "0", 0, 0, NULL, 0}
 };
 
+void			tointhex(unsigned int num, unsigned char **tmp);
 int 			mv_mem(int *pos, int move, t_vm *vm, t_op **op);
 void    		ft_opdel(t_op **op);
 t_op   			*ft_opdup(t_op op);
@@ -100,8 +103,13 @@ int				oc_file(t_champs *champs, t_opts *opts);
 int 			fun_exit(char *str, t_champs *champs, t_opts *opts);
 int 			init_vm(t_champs *champs, t_opts *opts, t_vm *vm);
 void			print_vm_mem(t_vm *vm);
-int				save_op(t_op **op, int *i, t_vm *vm, int flag);
+int				save_op(t_op **op, int *i, t_vm *vm);
+int				save_op_spec(t_op **op, int *i, t_vm *vm);
 int 			check_alive(t_vm *vm);
 int 			live(t_vm *vm, t_op *op);
+int				ld(t_vm *vm, t_op *op);
+int st(t_vm *vm, t_op *op);
+
+static int			(*g_op[])(t_vm *,t_op *) = {&live, &ld, &st};
 
 #endif

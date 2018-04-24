@@ -1,5 +1,15 @@
 #include "vm.h"
 
+void	init_reg(t_champs *champs, t_opts *opts)
+{
+	int i;
+
+	i = 0;
+	champs[opts->n_players].registre[0] = champs[opts->n_players].player_id;
+	while (++i < 16)
+		champs[opts->n_players].registre[i] = 0;
+}
+
 int	parsing_arg_b(char *str, t_opts *opts, int *j, t_champs *champs)
 {
 	int	k;
@@ -48,6 +58,7 @@ int parsing_arg_c(char *av, t_opts *opts, t_champs *champ, int *j)
 		champ[opts->n_players].alive = 0;
 		if (champ[opts->n_players].player_id == 0)
 			champ[opts->n_players].player_id = 1 + opts->n_players;
+		
 		opts->n_players++;
 		if (opts->n_players> MAX_PLAYERS)
 			return (ft_printf("too many player\n"));
