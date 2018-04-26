@@ -137,6 +137,7 @@ int start_game(t_vm *vm)
             i = -1;
             while (process)
             {
+                //ft_printf("%d\n", process->champ);
                 if (vm->champs[process->champ].alive >= 0)
                     p_turn(&(vm->champs[process->champ]), vm, process);
                 process = process->next;
@@ -146,7 +147,6 @@ int start_game(t_vm *vm)
         if ((i = check_alive(vm, 0)) == 1)
         {
             i = -1;
-            ft_printf("coucou\n");
             while ((unsigned)++i < vm->opts->n_players)
                 if (vm->champs[i].alive == 1)
                     return(ft_printf("jouer %s a gagne\n", vm->champs[i].name));

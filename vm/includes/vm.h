@@ -49,9 +49,6 @@ typedef struct		s_champ
 	unsigned char	*instructions;
 	int				alive;
 	unsigned int	registre[REG_NUMBER];
-	int				pc;
-	int				stop;
-	t_op			op;
 }					t_champs;
 
 typedef struct		s_process
@@ -74,6 +71,10 @@ typedef	struct		s_vm
 	t_process		*process;
 
 }					t_vm;
+
+/*
+**we need to change all the operation so that they will take t_processes instead of t_champs;
+*/
 
 static t_op			g_optab[17] =
 {
@@ -118,18 +119,18 @@ void			print_vm_mem(t_vm *vm);
 int				save_op(t_champs *champ, t_vm *vm);
 int				save_op_spec(t_champs *champ, t_vm *vm);
 int 			check_alive(t_vm *vm, int flag);
-int 			live(t_vm *vm, t_op *op, t_champs *champ);
-int				ld(t_vm *vm, t_op *op, t_champs *champ);
-int 			st(t_vm *vm, t_op *op, t_champs *champ);
-int				add(t_vm *vm, t_op *op, t_champs *champ);
-int 			sub(t_vm *vm, t_op *op, t_champs *champ);
-int				op_and(t_vm *vm, t_op *op, t_champs *champ);
-int 			op_or(t_vm *vm, t_op *op, t_champs *champ);
-int 			op_xor(t_vm *vm, t_op *op, t_champs *champ);
-int 			zjmp(t_vm *vm, t_op *op, t_champs *champ);
-int 			ldi(t_vm *vm, t_op *op, t_champs *champ);
-int 			sti(t_vm *vm, t_op *op, t_champs *champ);
+int 			live(t_vm *vm, t_op *op, t_process *process);
+int				ld(t_vm *vm, t_op *op, t_process *process);
+int 			st(t_vm *vm, t_op *op, t_process *process);
+int				add(t_vm *vm, t_op *op, t_process *process);
+int 			sub(t_vm *vm, t_op *op, t_process *process);
+int				op_and(t_vm *vm, t_op *op, t_process *process);
+int 			op_or(t_vm *vm, t_op *op, t_process *process);
+int 			op_xor(t_vm *vm, t_op *op, t_process *process);
+int 			zjmp(t_vm *vm, t_op *op, t_process *process);
+int 			ldi(t_vm *vm, t_op *op, t_process *process);
+int 			sti(t_vm *vm, t_op *op, t_process *process);
 
-static int			(*g_op[])(t_vm *,t_op *, t_champs *) = {&live, &ld, &st, &add, &sub, &op_and, &op_or, &op_xor, &zjmp, &ldi, &sti};
+static int			(*g_op[])(t_vm *,t_op *, t_process *) = {&live, &ld, &st, &add, &sub, &op_and, &op_or, &op_xor, &zjmp, &ldi, &sti};
 
 #endif

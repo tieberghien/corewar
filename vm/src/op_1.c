@@ -32,7 +32,7 @@ int ldi(t_vm *vm, t_op *op)
 }
 */
 
-int sti(t_vm *vm, t_op *op, t_champs *champ)
+int sti(t_vm *vm, t_op *op, t_process *process)
 {
     unsigned int par_a;
     unsigned int par_b;
@@ -54,7 +54,7 @@ int sti(t_vm *vm, t_op *op, t_champs *champ)
     return (vm->carry);
 }
 
-int ldi(t_vm *vm, t_op *op, t_champs *champ)
+int ldi(t_vm *vm, t_op *op, t_process *process)
 {
     int par_a;
     int par_b;
@@ -71,7 +71,7 @@ int ldi(t_vm *vm, t_op *op, t_champs *champ)
     return (vm->carry);
 }
 
-int zjmp(t_vm *vm, t_op *op, t_champs *champ)
+int zjmp(t_vm *vm, t_op *op, t_process *process)
 {
     unsigned int i;
 
@@ -85,7 +85,7 @@ int zjmp(t_vm *vm, t_op *op, t_champs *champ)
     return (vm->carry);
 }
 
-int op_xor(t_vm *vm, t_op *op, t_champs *champ)
+int op_xor(t_vm *vm, t_op *op, t_process *process)
 {
     int par_a;
     int par_b;
@@ -108,7 +108,7 @@ int op_xor(t_vm *vm, t_op *op, t_champs *champ)
     return (vm->carry);
 }
 
-int op_or(t_vm *vm, t_op *op, t_champs *champ)
+int op_or(t_vm *vm, t_op *op, t_process *process)
 {
     int par_a;
     int par_b;
@@ -131,7 +131,7 @@ int op_or(t_vm *vm, t_op *op, t_champs *champ)
     return (vm->carry);
 }
 
-int op_and(t_vm *vm, t_op *op, t_champs *champ)
+int op_and(t_vm *vm, t_op *op, t_process *process)
 {
     int par_a;
     int par_b;
@@ -154,7 +154,7 @@ int op_and(t_vm *vm, t_op *op, t_champs *champ)
     return (vm->carry);
 }
 
-int sub(t_vm *vm, t_op *op, t_champs *champ)
+int sub(t_vm *vm, t_op *op, t_process *process)
 {
     if (op->params[0] >= REG_NUMBER)
         return (vm->carry);
@@ -170,7 +170,7 @@ int sub(t_vm *vm, t_op *op, t_champs *champ)
     return (vm->carry);
 }
 
-int add(t_vm *vm, t_op *op, t_champs *champ)
+int add(t_vm *vm, t_op *op, t_process *process)
 {
     unsigned int par_a;
     unsigned int par_b;
@@ -191,7 +191,7 @@ int add(t_vm *vm, t_op *op, t_champs *champ)
     return (vm->carry);
 }
 
-int st(t_vm *vm, t_op *op, t_champs *champ)
+int st(t_vm *vm, t_op *op, t_process *process)
 {
     unsigned char *idx_val;
     int k;
@@ -216,7 +216,7 @@ int st(t_vm *vm, t_op *op, t_champs *champ)
     return (vm->carry);
 }
 
-int ld(t_vm *vm, t_op *op, t_champs *champ)
+int ld(t_vm *vm, t_op *op, t_process *process)
 {
     if (op->params[0] == 0)
         vm->carry = 1;
@@ -227,12 +227,12 @@ int ld(t_vm *vm, t_op *op, t_champs *champ)
     return (vm->carry);
 }
 
-int live(t_vm *vm, t_op *op, t_champs *champ)
+int live(t_vm *vm, t_op *op, t_process *process)
 {
     int i;
 
+    process->champ = process->champ;
     i = -1;
-    champ->stop = 1;
     while ((unsigned)++i < vm->opts->n_players)
         if (op->params[0] == vm->champs[i].player_id)
         {
