@@ -54,6 +54,14 @@ typedef struct		s_champ
 	t_op			op;
 }					t_champs;
 
+typedef struct		s_process
+{
+	int					pc;
+	t_op				op;
+	int					champ;
+	struct s_process	*next;
+}					t_process;
+
 typedef	struct		s_vm
 {
 	unsigned char	*map;
@@ -63,15 +71,9 @@ typedef	struct		s_vm
 	int				carry;
 	t_opts			*opts;
 	t_champs		*champs;
-}					t_vm;
+	t_process		*process;
 
-typedef struct		s_process
-{
-	int					pc;
-	t_op				op;
-	int					champ;
-	struct s_process	process;
-}					t_process;
+}					t_vm;
 
 static t_op			g_optab[17] =
 {
@@ -92,7 +94,7 @@ static t_op			g_optab[17] =
 	{"sti", 3, {T_REG, T_REG | T_DIR | T_IND, T_DIR | T_REG}, 11, 25,
 		"store index", 1, 1},
 	{"fork", 1, {T_DIR}, 12, 800, "fork", 0, 1},
-	{"lld", 2, {T_DIR | T_IND, T_REG}, 13, 10, "long load", 1, 0,NULL, 0},
+	{"lld", 2, {T_DIR | T_IND, T_REG}, 13, 10, "long load", 1, 0},
 	{"lldi", 3, {T_REG | T_DIR | T_IND, T_DIR | T_REG, T_REG}, 14, 50,
 		"long load index", 1, 1},
 	{"lfork", 1, {T_DIR}, 15, 1000, "long fork", 0, 1},

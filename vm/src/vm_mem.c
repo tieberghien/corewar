@@ -95,47 +95,52 @@ int start_game(t_vm *vm, t_op **op)
     return (0);
 }*/
 
-void p_turn(t_champs *champ, t_vm *vm)
+void p_turn(t_champs *champ, t_vm *vm, t_process *process)
 {
     int j;
 
     j = 0;
-    if (champ->op.dur > 1)
-        champ->op.dur--;
-    else if(champ->op.dur == 0)
+    if (process->op.dur > 1)
+        process->op.dur--;
+    else if(process->op.dur == 0)
     {
-        if (vm->map[champ->pc] > 0 && vm->map[champ->pc] < 16)
-            champ->op = g_optab[vm->map[champ->pc] - 1];
+        if (vm->map[process->pc] > 0 && vm->map[process->pc] < 16)
+            process->op = g_optab[vm->map[process->pc] - 1];
         else
-            champ->pc = (champ->pc + 1) % MEM_SIZE;
+            process->pc = (process->pc + 1) % MEM_SIZE;
     }
-    else if (champ->op.dur == 1)
+    else if (process->op.dur == 1)
     {
-        if (vm->map[champ->pc] == 9 || vm->map[champ->pc] == 15 || vm->map[champ->pc] == 12 || vm->map[champ->pc] == 1)
+        if (vm->map[process->pc] == 9 || vm->map[process->pc] == 15 || vm->map[process->pc] == 12 || vm->map[process->pc] == 1)
             j = save_op_spec(champ, vm);
-        else if (vm->map[champ->pc] > 1 && vm->map[champ->pc] < 16)
+        else if (vm->map[process->pc] > 1 && vm->map[process->pc] < 16)
             j = save_op(champ, vm);
-        if (vm->map[champ->pc] > 0 && vm->map[champ->pc] <= 11)
-            g_op[vm->map[champ->pc] - 1](vm, &(champ->op), champ);
-        if (champ->op.op_code != 9)
-            champ->pc = (champ->pc + j) % MEM_SIZE;
-        champ->op.dur--;
+        if (vm->map[process->pc] > 0 && vm->map[process->pc] <= 11)
+            g_op[vm->map[process->pc] - 1](vm, &(process->op), champ);
+        if (process->op.op_code != 9)
+            process->pc = (process->pc + j) % MEM_SIZE;
+        process->op.dur--;
     }
 }
 
 int start_game(t_vm *vm)
 {
     int i;
+    t_process *process;
 
     while (vm->next_cycle_group > 0)
     {
         vm->next_cycle_group -= CYCLE_DELTA;
         while (vm->cycle > 0)
         {
+            process = vm->process;
             i = -1;
-            while ((unsigned)++i < vm->opts->n_players)
-                if (vm->champs[i].alive >= 0)
-                    p_turn(&(vm->champs[i]), vm);
+            while (process)
+            {
+                if (vm->champs[process->champ].alive >= 0)
+                    p_turn(&(vm->champs[process->champ]), vm, process);
+                process = process->next;
+            }
             vm->cycle--;
         }
         if ((i = check_alive(vm, 0)) == 1)
@@ -160,18 +165,20 @@ int install_champion(t_champs *champs, t_opts *opts, t_vm *vm)
     int gap;
     int pos;
     int j;
-    t_op *op;
+    t_process *process;
 
-    op = NULL;
     i = -1;
     gap = MEM_SIZE / opts->n_players;
     while ((unsigned int)++i < opts->n_players)
     {
-        
         j = -1;
         pos = i * gap;
-        champs[i].pc = pos;
-        ft_memalloc(sizeof(t_process))
+        process = ft_memalloc(sizeof(t_process));
+        process->pc = pos;
+        process->champ = i;
+        process->op = g_optab[16];
+        process->next = vm->process;
+        vm->process = process;
         while (++j < (int)champs[i].size)
             vm->map[j + pos] = champs[i].instructions[j];
     }
@@ -189,7 +196,7 @@ int init_vm(t_champs *champs, t_opts *opts, t_vm *vm)
     vm->opts = opts;
     vm->champs = champs;
     vm->carry = 0;
-    vm->processes = NULL;
+    vm->process = NULL;
     /*
     if (opts->n_players == 1)
     {
@@ -200,17 +207,20 @@ int init_vm(t_champs *champs, t_opts *opts, t_vm *vm)
     if (!(vm->map = (unsigned char*)malloc(sizeof(unsigned char) * MEM_SIZE)))
         return (-1);
     i = -1;
+    while ((unsigned int)++i < opts->n_players)
+        ft_printf("%s\n", champs[i].name);
+    i = -1;
     while (++i < MEM_SIZE)
         vm->map[i] = 0;
     if (install_champion(champs, opts, vm))
         return (ft_printf("Error, the map is not initilisated\n"));
-    //print_vm_mem(vm);
+    print_vm_mem(vm);
     //ft_printf("id joueur zork %d\n", champs[0].player_id);
     if (start_game(vm) < 0)
     {
-        print_vm_mem(vm);
+        //print_vm_mem(vm);
         return (ft_printf("Error, he doesn't have a game\n"));
     }
-    print_vm_mem(vm);
+    //print_vm_mem(vm);
     return (0);
 }
