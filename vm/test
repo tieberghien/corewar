@@ -1,0 +1,151 @@
+player test_files/ex.cor id 10
+player test_files/zork.cor id 20
+number of player: 2
+Introducing contestants...
+* Player 10, weighing 23 bytes, "zork" ("just a basic living prog") !
+* Player 20, weighing 23 bytes, "zork" ("I'M ALIIIIVE") !
+PC player 10 -> 2 for a movment of  2
+PC player 20 -> 2050 for a movment of  2
+PC player 10 -> 7 for a movment of  5
+PC player 20 -> 2055 for a movment of  5
+PC player 10 -> 9 for a movment of  2
+PC player 20 -> 2057 for a movment of  2
+le joueur zork est en vie
+PC player 10 -> 14 for a movment of  5
+le joueur zork est en vie
+PC player 20 -> 2062 for a movment of  5
+PC player 10 -> 19 for a movment of  5
+PC player 20 -> 2067 for a movment of  5
+PC player 10 -> 24 for a movment of  5
+PC player 20 -> 2072 for a movment of  5
+PC player 10 -> 2050 for a movment of  2
+PC player 20 -> 2 for a movment of  2
+PC player 10 -> 2055 for a movment of  5
+PC player 20 -> 7 for a movment of  5
+PC player 10 -> 2057 for a movment of  2
+PC player 20 -> 9 for a movment of  2
+PC player 10 -> 2062 for a movment of  5
+PC player 20 -> 14 for a movment of  5
+PC player 10 -> 2067 for a movment of  5
+PC player 20 -> 19 for a movment of  5
+PC player 10 -> 2072 for a movment of  5
+PC player 20 -> 24 for a movment of  5
+PC player 10 -> 2 for a movment of  2
+PC player 20 -> 2050 for a movment of  2
+PC player 10 -> 7 for a movment of  5
+PC player 20 -> 2055 for a movment of  5
+PC player 10 -> 9 for a movment of  2
+PC player 20 -> 2057 for a movment of  2
+le joueur zork est en vie
+PC player 10 -> 14 for a movment of  5
+le joueur zork est en vie
+PC player 20 -> 2062 for a movment of  5
+PC player 10 -> 19 for a movment of  5
+PC player 20 -> 2067 for a movment of  5
+PC player 10 -> 24 for a movment of  5
+PC player 20 -> 2072 for a movment of  5
+PC player 10 -> 2050 for a movment of  2
+PC player 20 -> 2 for a movment of  2
+PC player 10 -> 2055 for a movment of  5
+PC player 20 -> 7 for a movment of  5
+PC player 10 -> 2057 for a movment of  2
+PC player 20 -> 9 for a movment of  2
+PC player 10 -> 2062 for a movment of  5
+PC player 20 -> 14 for a movment of  5
+PC player 10 -> 2067 for a movment of  5
+PC player 20 -> 19 for a movment of  5
+PC player 10 -> 2072 for a movment of  5
+PC player 20 -> 24 for a movment of  5
+PC player 10 -> 2 for a movment of  2
+PC player 20 -> 2050 for a movment of  2
+PC player 10 -> 7 for a movment of  5
+PC player 20 -> 2055 for a movment of  5
+PC player 10 -> 9 for a movment of  2
+PC player 20 -> 2057 for a movment of  2
+le joueur zork est en vie
+PC player 10 -> 14 for a movment of  5
+le joueur zork est en vie
+PC player 20 -> 2062 for a movment of  5
+PC player 10 -> 19 for a movment of  5
+PC player 20 -> 2067 for a movment of  5
+PC player 10 -> 24 for a movment of  5
+PC player 20 -> 2072 for a movment of  5
+PC player 10 -> 2050 for a movment of  2
+PC player 20 -> 2 for a movment of  2
+PC player 10 -> 2055 for a movment of  5
+PC player 20 -> 7 for a movment of  5
+PC player 10 -> 2057 for a movment of  2
+PC player 20 -> 9 for a movment of  2
+PC player 10 -> 2062 for a movment of  5
+PC player 20 -> 14 for a movment of  5
+PC player 10 -> 2067 for a movment of  5
+PC player 20 -> 19 for a movment of  5
+PC player 10 -> 2072 for a movment of  5
+PC player 20 -> 24 for a movment of  5
+PC player 10 -> 2 for a movment of  2
+PC player 20 -> 2050 for a movment of  2
+PC player 10 -> 7 for a movment of  5
+PC player 20 -> 2055 for a movment of  5
+PC player 10 -> 9 for a movment of  2
+PC player 20 -> 2057 for a movment of  2
+le joueur zork est en vie
+PC player 10 -> 14 for a movment of  5
+le joueur zork est en vie
+PC player 20 -> 2062 for a movment of  5
+PC player 10 -> 19 for a movment of  5
+PC player 20 -> 2067 for a movment of  5
+PC player 10 -> 24 for a movment of  5
+PC player 20 -> 2072 for a movment of  5
+PC player 10 -> 2050 for a movment of  2
+PC player 20 -> 2 for a movment of  2
+PC player 10 -> 2055 for a movment of  5
+PC player 20 -> 7 for a movment of  5
+PC player 10 -> 2057 for a movment of  2
+PC player 20 -> 9 for a movment of  2
+PC player 10 -> 2062 for a movment of  5
+PC player 20 -> 14 for a movment of  5
+PC player 10 -> 2067 for a movment of  5
+PC player 20 -> 19 for a movment of  5
+PC player 10 -> 2072 for a movment of  5
+PC player 20 -> 24 for a movment of  5
+PC player 10 -> 2 for a movment of  2
+PC player 20 -> 2050 for a movment of  2
+PC player 10 -> 7 for a movment of  5
+PC player 20 -> 2055 for a movment of  5
+PC player 10 -> 9 for a movment of  2
+PC player 20 -> 2057 for a movment of  2
+le joueur zork est en vie
+PC player 10 -> 14 for a movment of  5
+le joueur zork est en vie
+PC player 20 -> 2062 for a movment of  5
+PC player 10 -> 19 for a movment of  5
+PC player 20 -> 2067 for a movment of  5
+PC player 10 -> 24 for a movment of  5
+PC player 20 -> 2072 for a movment of  5
+PC player 10 -> 2050 for a movment of  2
+PC player 20 -> 2 for a movment of  2
+PC player 10 -> 2055 for a movment of  5
+PC player 20 -> 7 for a movment of  5
+PC player 10 -> 2057 for a movment of  2
+PC player 20 -> 9 for a movment of  2
+PC player 10 -> 2062 for a movment of  5
+PC player 20 -> 14 for a movment of  5
+PC player 10 -> 2067 for a movment of  5
+PC player 20 -> 19 for a movment of  5
+PC player 10 -> 2072 for a movment of  5
+PC player 20 -> 24 for a movment of  5
+PC player 10 -> 2 for a movment of  2
+PC player 20 -> 2050 for a movment of  2
+PC player 10 -> 7 for a movment of  5
+PC player 20 -> 2055 for a movment of  5
+PC player 10 -> 9 for a movment of  2
+PC player 20 -> 2057 for a movment of  2
+le joueur zork est en vie
+PC player 10 -> 14 for a movment of  5
+le joueur zork est en vie
+PC player 20 -> 2062 for a movment of  5
+PC player 10 -> 19 for a movment of  5
+PC player 20 -> 2067 for a movment of  5
+PC player 10 -> 24 for a movment of  5
+PC player 20 -> 2072 for a movment of  5
+Error, he doesn't have a game

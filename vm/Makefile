@@ -6,7 +6,8 @@ SRC_NAME = vm_main.c \
 		vm_mem.c \
 		vm_allocop.c \
 		free_and_dup.c \
-		op_1.c
+		op_1.c \
+		op_extra.c
 
 OBJ_PATH = obj
 
@@ -26,7 +27,7 @@ NAME = corewar
 
 all : library $(NAME)
 
-$(NAME): $(OBJ)
+$(NAME): $(OBJ) Makefile
 	gcc $(FLAGS) -o $@ $(OBJ) $(LIB)
 
 library :

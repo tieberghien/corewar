@@ -64,12 +64,12 @@ void print_vm_mem(t_vm *vm)
     {
         if (i % 64 == 0)
             ft_printf("%#.4x : ", i);
-		if (vm->players_map[i])
-			ft_printf("\x1B[3%dm", color + (vm->players_map[i] % 7));
+		//if (vm->players_map[i])
+		//	ft_printf("\x1B[3%dm", color + (vm->players_map[i] % 7));
         if (vm->map[i] < 16)
             ft_putchar('0');
-        ft_printf("%hhx-%d", vm->map[i], vm->players_map[i]);
-		ft_putstr("\x1B[0m");
+        ft_printf("%hhx", vm->map[i]);
+		//ft_putstr("\x1B[0m");
         i++;
         if (i % 1 == 0)
             ft_putchar(' ');

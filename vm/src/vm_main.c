@@ -6,7 +6,7 @@ void	init_reg(t_champs *champs, t_opts *opts)
 
 	i = 0;
 	champs[opts->n_players].registre[0] = champs[opts->n_players].player_id;
-	while (++i < 16)
+	while (++i < REG_NUMBER)
 		champs[opts->n_players].registre[i] = 0;
 }
 
@@ -56,9 +56,10 @@ int parsing_arg_c(char *av, t_opts *opts, t_champs *champ, int *j)
 			return(ft_printf("invalid player"));
 		champ[opts->n_players].file_name = av;
 		champ[opts->n_players].alive = 0;
+		champ[opts->n_players].op = g_optab[16];
 		if (champ[opts->n_players].player_id == 0)
 			champ[opts->n_players].player_id = 1 + opts->n_players;
-		
+		init_reg(champ, opts);
 		opts->n_players++;
 		if (opts->n_players> MAX_PLAYERS)
 			return (ft_printf("too many player\n"));

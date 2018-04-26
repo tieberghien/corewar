@@ -26,19 +26,6 @@ typedef struct		s_opts
 	unsigned int	verbosity;
 }					t_opts;
 
-typedef struct		s_champ
-{
-	int				player_id;
-	unsigned int	size;
-	char			*name;
-	char			*comment;
-	char			*file_name;
-	int				fd;
-	unsigned char	*instructions;
-	int				alive;
-	int				registre[REG_NUMBER];
-}					t_champs;
-
 typedef struct 		s_op
 {
 	char			*name;
@@ -49,9 +36,23 @@ typedef struct 		s_op
 	char			effect[100];
 	int				carry;
 	unsigned char	ocp;
-	struct s_op		*next;
-	int				pc;
 }					t_op;
+
+typedef struct		s_champ
+{
+	int				player_id;
+	unsigned int	size;
+	char			*name;
+	char			*comment;
+	char			*file_name;
+	int				fd;
+	unsigned char	*instructions;
+	int				alive;
+	unsigned int	registre[REG_NUMBER];
+	int				pc;
+	int				stop;
+	t_op			op;
+}					t_champs;
 
 typedef	struct		s_vm
 {
@@ -64,33 +65,42 @@ typedef	struct		s_vm
 	t_champs		*champs;
 }					t_vm;
 
+typedef struct		s_process
+{
+	int					pc;
+	t_op				op;
+	int					champ;
+	struct s_process	process;
+}					t_process;
+
 static t_op			g_optab[17] =
 {
-	{"live", 1, {T_DIR}, 1, 10, "alive", 0, 0, NULL, 0},
-	{"ld", 2, {T_DIR | T_IND, T_REG}, 2, 5, "load", 1, 0, NULL, 0},
-	{"st", 2, {T_REG, T_IND | T_REG}, 3, 5, "store", 1, 0, NULL, 0},
-	{"add", 3, {T_REG, T_REG, T_REG}, 4, 10, "addition", 1, 0, NULL, 0},
-	{"sub", 3, {T_REG, T_REG, T_REG}, 5, 10, "soustraction", 1, 0, NULL, 0},
+	{"live", 1, {T_DIR}, 1, 10, "alive", 0, 0},
+	{"ld", 2, {T_DIR | T_IND, T_REG}, 2, 5, "load", 1, 0},
+	{"st", 2, {T_REG, T_IND | T_REG}, 3, 5, "store", 1, 0},
+	{"add", 3, {T_REG, T_REG, T_REG}, 4, 10, "addition", 1, 0},
+	{"sub", 3, {T_REG, T_REG, T_REG}, 5, 10, "soustraction", 1, 0},
 	{"and", 3, {T_REG | T_DIR | T_IND, T_REG | T_IND | T_DIR, T_REG}, 6, 6,
-		"et (and  r1, r2, r3   r1&r2 -> r3", 1, 0, NULL, 0},
+		"et (and  r1, r2, r3   r1&r2 -> r3", 1, 0},
 	{"or", 3, {T_REG | T_IND | T_DIR, T_REG | T_IND | T_DIR, T_REG}, 7, 6,
-		"ou  (or   r1, r2, r3   r1 | r2 -> r3", 1, 0, NULL, 0},
+		"ou  (or   r1, r2, r3   r1 | r2 -> r3", 1, 0},
 	{"xor", 3, {T_REG | T_IND | T_DIR, T_REG | T_IND | T_DIR, T_REG}, 8, 6,
-		"ou (xor  r1, r2, r3   r1^r2 -> r3", 1, 0, NULL, 0},
-	{"zjmp", 1, {T_DIR}, 9, 20, "jump if zero", 0, 1, NULL, 0},
+		"ou (xor  r1, r2, r3   r1^r2 -> r3", 1, 0},
+	{"zjmp", 1, {T_DIR}, 9, 20, "jump if zero", 0, 1},
 	{"ldi", 3, {T_REG | T_DIR | T_IND, T_DIR | T_REG, T_REG}, 10, 25,
-		"load index", 1, 1, NULL, 0},
+		"load index", 1, 1},
 	{"sti", 3, {T_REG, T_REG | T_DIR | T_IND, T_DIR | T_REG}, 11, 25,
-		"store index", 1, 1, NULL, 0},
-	{"fork", 1, {T_DIR}, 12, 800, "fork", 0, 1, NULL, 0},
+		"store index", 1, 1},
+	{"fork", 1, {T_DIR}, 12, 800, "fork", 0, 1},
 	{"lld", 2, {T_DIR | T_IND, T_REG}, 13, 10, "long load", 1, 0,NULL, 0},
 	{"lldi", 3, {T_REG | T_DIR | T_IND, T_DIR | T_REG, T_REG}, 14, 50,
-		"long load index", 1, 1, NULL, 0},
-	{"lfork", 1, {T_DIR}, 15, 1000, "long fork", 0, 1, NULL, 0},
-	{"aff", 1, {T_REG}, 16, 2, "aff", 1, 0, NULL, 0},
-	{0, 0, {0}, 0, 0, "0", 0, 0, NULL, 0}
+		"long load index", 1, 1},
+	{"lfork", 1, {T_DIR}, 15, 1000, "long fork", 0, 1},
+	{"aff", 1, {T_REG}, 16, 2, "aff", 1, 0},
+	{0, 0, {0}, 0, 0, "0", 0, 0}
 };
 
+unsigned int    rest_address(t_champs *champ, unsigned int num);
 void			tointhex(unsigned int num, unsigned char **tmp);
 int 			mv_mem(int *pos, int move, t_vm *vm, t_op **op);
 void    		ft_opdel(t_op **op);
@@ -103,13 +113,21 @@ int				oc_file(t_champs *champs, t_opts *opts);
 int 			fun_exit(char *str, t_champs *champs, t_opts *opts);
 int 			init_vm(t_champs *champs, t_opts *opts, t_vm *vm);
 void			print_vm_mem(t_vm *vm);
-int				save_op(t_op **op, int *i, t_vm *vm);
-int				save_op_spec(t_op **op, int *i, t_vm *vm);
-int 			check_alive(t_vm *vm);
-int 			live(t_vm *vm, t_op *op);
-int				ld(t_vm *vm, t_op *op);
-int st(t_vm *vm, t_op *op);
+int				save_op(t_champs *champ, t_vm *vm);
+int				save_op_spec(t_champs *champ, t_vm *vm);
+int 			check_alive(t_vm *vm, int flag);
+int 			live(t_vm *vm, t_op *op, t_champs *champ);
+int				ld(t_vm *vm, t_op *op, t_champs *champ);
+int 			st(t_vm *vm, t_op *op, t_champs *champ);
+int				add(t_vm *vm, t_op *op, t_champs *champ);
+int 			sub(t_vm *vm, t_op *op, t_champs *champ);
+int				op_and(t_vm *vm, t_op *op, t_champs *champ);
+int 			op_or(t_vm *vm, t_op *op, t_champs *champ);
+int 			op_xor(t_vm *vm, t_op *op, t_champs *champ);
+int 			zjmp(t_vm *vm, t_op *op, t_champs *champ);
+int 			ldi(t_vm *vm, t_op *op, t_champs *champ);
+int 			sti(t_vm *vm, t_op *op, t_champs *champ);
 
-static int			(*g_op[])(t_vm *,t_op *) = {&live, &ld, &st};
+static int			(*g_op[])(t_vm *,t_op *, t_champs *) = {&live, &ld, &st, &add, &sub, &op_and, &op_or, &op_xor, &zjmp, &ldi, &sti};
 
 #endif

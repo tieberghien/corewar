@@ -44,7 +44,7 @@
 # define NAME_CMD_STRING			".name"
 # define COMMENT_CMD_STRING		".comment"
 
-# define REG_NUMBER				16
+# define REG_NUMBER				100
 
 # define CYCLE_TO_DIE			1536
 # define CYCLE_DELTA				50
