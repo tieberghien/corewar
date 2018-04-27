@@ -56,7 +56,7 @@ int parsing_arg_c(char *av, t_opts *opts, t_champs *champ, int *j)
 			return(ft_printf("invalid player"));
 		champ[opts->n_players].file_name = av;
 		champ[opts->n_players].alive = 0;
-		champ[opts->n_players].op = g_optab[16];
+		//champ[opts->n_players].op = g_optab[16];
 		if (champ[opts->n_players].player_id == 0)
 			champ[opts->n_players].player_id = 1 + opts->n_players;
 		init_reg(champ, opts);

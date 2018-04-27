@@ -47,8 +47,8 @@ typedef struct		s_champ
 	char			*file_name;
 	int				fd;
 	unsigned char	*instructions;
-	int				alive;
 	unsigned int	registre[REG_NUMBER];
+	int				alive;
 }					t_champs;
 
 typedef struct		s_process
@@ -103,7 +103,7 @@ static t_op			g_optab[17] =
 	{0, 0, {0}, 0, 0, "0", 0, 0}
 };
 
-unsigned int    rest_address(t_champs *champ, unsigned int num);
+unsigned int    rest_address(t_process *process, unsigned int num);
 void			tointhex(unsigned int num, unsigned char **tmp);
 int 			mv_mem(int *pos, int move, t_vm *vm, t_op **op);
 void    		ft_opdel(t_op **op);
@@ -116,8 +116,8 @@ int				oc_file(t_champs *champs, t_opts *opts);
 int 			fun_exit(char *str, t_champs *champs, t_opts *opts);
 int 			init_vm(t_champs *champs, t_opts *opts, t_vm *vm);
 void			print_vm_mem(t_vm *vm);
-int				save_op(t_champs *champ, t_vm *vm);
-int				save_op_spec(t_champs *champ, t_vm *vm);
+int				save_op(t_process *process, t_vm *vm);
+int				save_op_spec(t_process *process, t_vm *vm);
 int 			check_alive(t_vm *vm, int flag);
 int 			live(t_vm *vm, t_op *op, t_process *process);
 int				ld(t_vm *vm, t_op *op, t_process *process);

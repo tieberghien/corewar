@@ -95,7 +95,7 @@ int start_game(t_vm *vm, t_op **op)
     return (0);
 }*/
 
-void p_turn(t_champs *champ, t_vm *vm, t_process *process)
+void p_turn(t_vm *vm, t_process *process)
 {
     int j;
 
@@ -112,11 +112,11 @@ void p_turn(t_champs *champ, t_vm *vm, t_process *process)
     else if (process->op.dur == 1)
     {
         if (vm->map[process->pc] == 9 || vm->map[process->pc] == 15 || vm->map[process->pc] == 12 || vm->map[process->pc] == 1)
-            j = save_op_spec(champ, vm);
+            j = save_op_spec(process, vm);
         else if (vm->map[process->pc] > 1 && vm->map[process->pc] < 16)
-            j = save_op(champ, vm);
+            j = save_op(process, vm);
         if (vm->map[process->pc] > 0 && vm->map[process->pc] <= 11)
-            g_op[vm->map[process->pc] - 1](vm, &(process->op), champ);
+            g_op[vm->map[process->pc] - 1](vm, &(process->op), process);
         if (process->op.op_code != 9)
             process->pc = (process->pc + j) % MEM_SIZE;
         process->op.dur--;
@@ -133,13 +133,12 @@ int start_game(t_vm *vm)
         vm->next_cycle_group -= CYCLE_DELTA;
         while (vm->cycle > 0)
         {
-            process = vm->process;
             i = -1;
+            process = vm->process;
             while (process)
             {
-                //ft_printf("%d\n", process->champ);
                 if (vm->champs[process->champ].alive >= 0)
-                    p_turn(&(vm->champs[process->champ]), vm, process);
+                    p_turn(vm, process);
                 process = process->next;
             }
             vm->cycle--;
@@ -171,7 +170,7 @@ int install_champion(t_champs *champs, t_opts *opts, t_vm *vm)
     gap = MEM_SIZE / opts->n_players;
     while ((unsigned int)++i < opts->n_players)
     {
-        j = -1;
+        j = 0;
         pos = i * gap;
         process = ft_memalloc(sizeof(t_process));
         process->pc = pos;
@@ -179,6 +178,7 @@ int install_champion(t_champs *champs, t_opts *opts, t_vm *vm)
         process->op = g_optab[16];
         process->next = vm->process;
         vm->process = process;
+        j = -1;
         while (++j < (int)champs[i].size)
             vm->map[j + pos] = champs[i].instructions[j];
     }
@@ -203,7 +203,6 @@ int init_vm(t_champs *champs, t_opts *opts, t_vm *vm)
         verbose_zero(champs);
         return (0);
     }*/
-    vm->carry = 0;
     if (!(vm->map = (unsigned char*)malloc(sizeof(unsigned char) * MEM_SIZE)))
         return (-1);
     i = -1;
@@ -214,13 +213,12 @@ int init_vm(t_champs *champs, t_opts *opts, t_vm *vm)
         vm->map[i] = 0;
     if (install_champion(champs, opts, vm))
         return (ft_printf("Error, the map is not initilisated\n"));
-    print_vm_mem(vm);
-    //ft_printf("id joueur zork %d\n", champs[0].player_id);
+    //print_vm_mem(vm);
     if (start_game(vm) < 0)
     {
-        //print_vm_mem(vm);
+        print_vm_mem(vm);
         return (ft_printf("Error, he doesn't have a game\n"));
     }
-    //print_vm_mem(vm);
+    print_vm_mem(vm);
     return (0);
 }

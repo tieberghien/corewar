@@ -23,14 +23,14 @@ int check_alive(t_vm *vm, int flag)
     return (somme);
 }
 
-unsigned int     rest_address(t_champs *champ, unsigned int num)
+unsigned int     rest_address(t_process *process, unsigned int num)
 {
     int somme;
 
-    somme = champ->pc + num;
-    somme = somme - champ->pc;
+    somme = process->pc + num;
+    somme = somme - process->pc;
     somme = somme % IDX_MOD;
-    return (champ->pc + somme);
+    return (process->pc + somme);
 }
 
 void    tointhex(unsigned int num, unsigned char **tmp)

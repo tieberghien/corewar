@@ -49,43 +49,43 @@ int decript_ocp(unsigned char opc)
     return (0);
 }
 
-int save_op_spec(t_champs *champ, t_vm *vm)
+int save_op_spec(t_process *process, t_vm *vm)
 {
     int     k;
     int     j;
     int     alive;
     
-    k = champ->pc;
+    k = process->pc;
     j = 0;
     alive = (vm->map[k] == 1) ? 4 : 2;
     k = (k + 1) % MEM_SIZE;
     j++;
-    champ->op.params[0] = toint(vm, k, alive);
+    process->op.params[0] = toint(vm, k, alive);
     k = (k + alive) % MEM_SIZE;
     j += alive;
-    return(j);
+    return (j);
 }
 
-int save_op(t_champs *champ, t_vm *vm)
+int save_op(t_process *process, t_vm *vm)
 {
     int     k;
     int     j;
     int     alive; 
 
-    k = champ->pc;
+    k = process->pc;
     j = 0;
     k = (k + 1) % MEM_SIZE;
     j++;
-    champ->op.ocp = vm->map[k];
+    process->op.ocp = vm->map[k];
     k = (k + 1) % MEM_SIZE;
     j++;
-    alive = main_decript(decript_ocp((champ->op.ocp & PARAM_C) >> 6), vm->map + k, 0, &(champ->op));
+    alive = main_decript(decript_ocp((process->op.ocp & PARAM_C) >> 6), vm->map + k, 0, &(process->op));
     k = (k + alive) % MEM_SIZE;
     j += alive;
-    alive = main_decript(decript_ocp((champ->op.ocp & PARAM_B) >> 4), vm->map + k, 1, &(champ->op));
+    alive = main_decript(decript_ocp((process->op.ocp & PARAM_B) >> 4), vm->map + k, 1, &(process->op));
     k = (k + alive) % MEM_SIZE;
     j += alive;
-    alive = main_decript(decript_ocp((champ->op.ocp & PARAM_A) >> 2), vm->map + k, 2, &(champ->op));
+    alive = main_decript(decript_ocp((process->op.ocp & PARAM_A) >> 2), vm->map + k, 2, &(process->op));
     k = (k + alive) % MEM_SIZE;
     j += alive;
     return (j);
