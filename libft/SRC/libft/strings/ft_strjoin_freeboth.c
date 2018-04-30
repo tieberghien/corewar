@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/15 11:17:30 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/01/22 14:14:10 by slynn-ev         ###   ########.fr       */
+/*   Updated: 2018/04/30 15:49:16 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 char	*ft_strjoin_freeboth(char const *s1, char const *s2)
 {
-	int			len;
-	char		*dst;
-	int			i;
-	int			j;	
+	int		len;
+	char	*dst;
+	int		i;
+	int		j;
 
 	i = 0;
 	if (s2 == NULL || s1 == NULL)
@@ -31,7 +31,7 @@ char	*ft_strjoin_freeboth(char const *s1, char const *s2)
 			dst[i++] = s1[j++];
 		j = 0;
 		while (s2[j])
-			dst[i++] =s2[j++];
+			dst[i++] = s2[j++];
 		dst[i] = '\0';
 		free((void *)s1);
 		free((void *)s2);
