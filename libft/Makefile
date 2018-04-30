@@ -6,7 +6,7 @@
 #    By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/05 21:56:14 by slynn-ev          #+#    #+#              #
-#    Updated: 2018/03/13 12:38:38 by slynn-ev         ###   ########.fr        #
+#    Updated: 2018/04/30 14:34:18 by slynn-ev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -143,6 +143,6 @@ fclean: clean
 	rm -f $(NAME)
 
 re:
-	$(MAKE) fclean
-	$(MAKE) all
+	make fclean
+	make all
 
