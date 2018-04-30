@@ -140,20 +140,19 @@ int start_game(t_vm *vm)
 
     while (vm->next_cycle_group > 0)
     {
-        ft_printf("\n%d\n", vm->next_cycle_group);
+        ft_printf("cycle to die -> %d\n", vm->next_cycle_group);
         vm->next_cycle_group -= CYCLE_DELTA;
         while (vm->cycle > 0)
         {
-            //ft_printf("\t%d ", vm->cycle);
             i = -1;
             process = vm->process;
             while (process)
             {
-                //t_printf("%d player_id -> %d pc\n", process->champ, process->pc);
                 if (vm->champs[process->champ].alive >= 0)
                     p_turn(vm, process);
                 process = process->next;
             }
+            ft_printf("cycle -> %d\n", vm->cycle);
             vm->cycle--;
         }
         if ((i = check_alive(vm, 0)) == 1)
@@ -207,7 +206,7 @@ int init_vm(t_champs *champs, t_opts *opts, t_vm *vm)
 
     op = NULL;
     vm->cycle = CYCLE_TO_DIE;
-    vm->next_cycle_group = CYCLE_TO_DIE - CYCLE_DELTA;
+    vm->next_cycle_group = CYCLE_TO_DIE;
     vm->opts = opts;
     vm->champs = champs;
     vm->process = NULL;

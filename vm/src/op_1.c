@@ -106,19 +106,14 @@ int sti(t_vm *vm, t_op *op, t_process *process)
     vm->map[0] = vm->map[0];
     par_a = ((err = ((op->ocp & PARAM_B) >> 4)) == 1) ? process->registre[op->params[1] - 1] : op->params[1];
     par_b =op->params[2];
-    ft_printf("param -> %d\n", par_a);
     tointhex((unsigned int)process->registre[op->params[0] - 1], &idx_val);
-    if ((par_a = process->pc + (par_a + par_b) % IDX_MOD) == 0)
+    if ((par_a = process->pc + ((par_a + par_b) % IDX_MOD)) == 0)
         process->carry = 1;
     else
         process->carry = 0;
     k = -1;
     while (++k < 4)
-    {
-        ft_printf("%hhx \n", idx_val[k]);
         vm->map[(par_a + k) % MEM_SIZE] = idx_val[k];
-    }
-    ft_putchar('\n');
     ft_memdel((void**)&idx_val);
     return (process->carry);
 }
@@ -321,9 +316,9 @@ int live(t_vm *vm, t_op *op, t_process *process)
 {
     unsigned int i;
 
+    //ft_printf("joueur : %s paramatre : %d\n", vm->champs[process->champ].name, vm->champs->player_id);
     process->champ = process->champ;
     i = 0;
-    ft_printf("joueur : %s, carry : %d, cycle : %d, parametre : %d\n", vm->champs[process->champ].name, process->carry, vm->cycle, op->params[0]);
     while (i < vm->opts->n_players)
     {
         if (op->params[0] == vm->champs[i].player_id)

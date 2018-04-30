@@ -4,16 +4,20 @@ unsigned int toint(t_vm *vm, int i, int size)
 {
     int multiplicateur;
     unsigned int total;
+    int k;
 
+    k=0;
     total = 0;
     multiplicateur = 1;
-    //ft_printf("%d\n", size + i);
     size =  size + i - 1;
     while (size >= i)
     {
+        if (vm->map[i - 1] == 1)
+            ft_printf("%d\n", vm->map[size] * multiplicateur);
         total += vm->map[size] * multiplicateur;
         multiplicateur *= 256;
         size--;
+        k++;
     }
     return (total);
 }
@@ -62,8 +66,6 @@ int save_op_spec(t_process *process, t_vm *vm)
     k = (k + 1) % MEM_SIZE;
     j++;
     process->op.params[0] = toint(vm, k, alive);
-   // if (vm->map[k - 1] == 1)
-     //   ft_printf("%d\n", toint(vm, k, alive));
     k = (k + alive) % MEM_SIZE;
     j += alive;
     return (j);
