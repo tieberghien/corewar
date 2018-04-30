@@ -9,6 +9,8 @@ int check_alive(t_vm *vm, int flag)
     somme = 0;
     while (i < vm->opts->n_players)
     {
+//		if (vm->last_live >= vm->next_cycle_group)
+//			kill_process(vm);
         if (vm->champs[i].alive > 0)
         {
             somme = somme + vm->champs[i].alive;
