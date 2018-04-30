@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 18:34:20 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/04/30 14:38:55 by slynn-ev         ###   ########.fr       */
+/*   Updated: 2018/04/30 14:41:53 by slynn-ev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,11 +87,9 @@ int		main(int ac, char **av)
 	}
 	if (!assembler(&a, av[1], fd))
 	{
-		ft_putstr("ERRORRRRRRR!!!!!!!! AAAHHHHHHHGGGHH\n");
+		ft_putstr_fd("ERRORRRRRRR!!!!!!!! AAAHHHHHHHGGGHH\n", 2);
 		exit(0);
 	}
 	close(fd);
-	while (1)
-		;
 	return (0);
 }

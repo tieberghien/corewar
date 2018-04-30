@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/13 13:18:27 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/04/30 13:42:48 by slynn-ev         ###   ########.fr       */
+/*   Updated: 2018/04/30 14:40:47 by slynn-ev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,12 +95,12 @@ int		assembler(t_am *a, char *prog_name, int fd)
 	ops = NULL;
 	if ((res = build_operations(a, &l, &ops, a->eoc)) == 0)
 	{
-		ft_putstr("LEXICAL ERROR\n");
+		ft_putstr_fd("LEXICAL ERROR\n", 2);
 		exit(0);
 	}
 	else if (res == -1)
 	{
-		ft_putstr("Cannot match label\n");
+		ft_putstr_fd("Cannot match label\n", 2);
 		exit(0);
 	}
 	fd = create_cor(prog_name, fd);
