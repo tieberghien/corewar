@@ -6,12 +6,13 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 18:34:20 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/04/30 13:42:33 by slynn-ev         ###   ########.fr       */
+/*   Updated: 2018/04/30 15:59:51 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ASM_H
 # define ASM_H
+# define USAGE "Usage: ./asm <sourcefile.s>"
 # define NAME_LONG "Champion name too long (Max length 128)"
 # define COMMENT_LONG "Champion comment too long (Max length 2048)"
 # define PARAMS_NO "Invalid parameter count for instruction "

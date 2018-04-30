@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 18:34:20 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/04/30 15:51:12 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/04/30 15:58:35 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int		main(int ac, char **av)
 	t_am	a;
 
 	if (ac < 2)
-		return (0);
+		return_failure(USAGE, NULL);
 	fd = open(av[ac - 1], O_RDONLY);
 	if (fd == -1)
 	{
