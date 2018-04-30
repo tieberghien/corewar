@@ -170,9 +170,8 @@ int start_game(t_vm *vm)
 {
 	int i;
 	int	checks;
-//	t_process *process;
+	t_process *process;
 
-	vm->next_cycle_group = CYCLE_TO_DIE;
 	vm->cycle = 0;
 	while (vm->process)
 	{
@@ -181,7 +180,7 @@ int start_game(t_vm *vm)
 		//    while (vm->cycle > 0)
 		//  {
 		i = -1;
-//		process = vm->process;
+		process = vm->process;
 		manage_cycles(vm, vm->next_cycle_group);
 		//		while (process)
 		//		{
@@ -219,6 +218,7 @@ int start_game(t_vm *vm)
 			ft_printf("STOP");
 			return (-6);
 		}
+	//	process = process->next;
 	}
 	return (1);
 }
