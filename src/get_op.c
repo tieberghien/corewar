@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/11 15:59:20 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/04/30 13:37:47 by slynn-ev         ###   ########.fr       */
+/*   Updated: 2018/04/30 13:38:50 by slynn-ev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static int	get_opname(char *line, t_ops *ops)
 	return (-1);
 }
 
-static int		get_first_op(char *line, t_ops **ops)
+static int	get_first_op(char *line, t_ops **ops)
 {
 	int	i;
 

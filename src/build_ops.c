@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/10 19:44:10 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/04/24 17:13:18 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/04/30 14:05:21 by slynn-ev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,13 +90,11 @@ int	add_label(t_label **l, char *line, int address, int end)
 	return (check_chars(new->name));
 }
 
-int	build_operations(t_am *a, t_label **l, t_ops **ops)
+int	build_operations(t_am *a, t_label **l, t_ops **ops, int i)
 {
-	int		i;
 	int		j;
 	int		label_line;
 
-	i = a->eoc;
 	while (++i < a->lc)
 	{
 		label_line = 0;

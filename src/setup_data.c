@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/30 13:33:42 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/04/30 13:37:46 by slynn-ev         ###   ########.fr       */
+/*   Created: 2018/04/30 14:27:13 by slynn-ev          #+#    #+#             */
+/*   Updated: 2018/04/30 14:28:58 by slynn-ev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,30 @@ static int	next_param(char *line)
 	return (-1);
 }
 
+static void	check_arg_number(char *line, int index)
+{
+	int	count;
+	int	i;
+
+	i = 0;
+	count = 0;
+	while (line[i])
+	{
+		if (line[i] == ',')
+			count++;
+		i++;
+	}
+	if (count >= g_op_tab[index].argc)
+		return_failure(PARAMS_NO, g_op_tab[index].name);
+}
+
 static int	setup_filldata(t_ops *ops, char *line, int index)
 {
 	int	i;
 
+	i = 0;
 	ops->lc = 0;
+	check_arg_number(line, index);
 	ops->pc = (g_op_tab[index].ocp) ? 2 : 1;
 	ops->small = (g_op_tab[index].small) ? 2 : 4;
 	write_to_data(ops->data, g_op_tab[index].op_code, 0, 1);
@@ -55,10 +74,10 @@ static char	*is_type(char *type)
 		return ("direct");
 	else if (ft_isdigit(type[0]) || type[0] == '-' || type[0] == ':')
 		return ("indirect");
-	return (NULL);
+	return ("lexical");
 }
 
-void	fill_opdata(t_ops *ops, char *l, int index)
+void		fill_opdata(t_ops *ops, char *l, int index)
 {
 	int	c;
 	int	ret;

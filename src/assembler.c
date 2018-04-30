@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/13 13:18:27 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/04/24 17:14:12 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/04/30 13:42:48 by slynn-ev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int		assembler(t_am *a, char *prog_name, int fd)
 
 	l = NULL;
 	ops = NULL;
-	if ((res = build_operations(a, &l, &ops)) == 0)
+	if ((res = build_operations(a, &l, &ops, a->eoc)) == 0)
 	{
 		ft_putstr("LEXICAL ERROR\n");
 		exit(0);

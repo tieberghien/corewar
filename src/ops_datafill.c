@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/11 16:33:16 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/04/23 17:45:06 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/04/30 14:01:51 by slynn-ev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,18 +32,19 @@ static int	check_characters(char *line, long n)
 	return (1);
 }
 
-static void	colon_case(char *line, t_ops *ops, int size)
+static int	colon_case(char *line, t_ops *ops, int size)
 {
 	int	i;
 
 	i = 0;
 	if (!line[i])
-		return ;
+		return (0);
 	while (line[i] != ' ' && line[i] != '\t' && line[i] && line[i] != ',')
 		i++;
 	ops->labels = ft_add_charpointer(ops->labels, ft_strndup(line, i), ops->lc);
 	ops->put[ops->lc][0] = ops->pc;
 	ops->put[ops->lc++][1] = size;
+	return (1);
 }
 
 void		fill_reg(char *line, t_ops *ops, int count, int *cb)
@@ -78,7 +79,8 @@ void		fill_index(char *line, t_ops *ops, int count, int *cb)
 		return ;
 	if (line[i] == ':')
 	{
-		colon_case(line + ++i, ops, ops->small);
+		if (!(colon_case(line + ++i, ops, ops->small)))
+			return ;
 		ops->pc += ops->small;
 		*cb |= 2 << ((3 - count) * 2);
 		return ;
@@ -99,7 +101,8 @@ void		fill_value(char *line, t_ops *ops, int count, int *cb)
 	i = 0;
 	if (line[i] == ':')
 	{
-		colon_case(line + 1, ops, 2);
+		if (!(colon_case(line + 1, ops, 2)))
+			return ;
 		ops->pc += 2;
 		*cb |= 3 << ((3 - count) * 2);
 		return ;
