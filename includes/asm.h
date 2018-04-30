@@ -6,7 +6,7 @@
 /*   By: slynn-ev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 18:34:20 by slynn-ev          #+#    #+#             */
-/*   Updated: 2018/04/24 16:37:42 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/04/30 13:35:44 by slynn-ev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,5 +81,6 @@ int					assembler(t_am *a, char *prog_name, int fd);
 void				free_all(t_am *a, t_label *l);
 void				return_failure(char *str, char *op);
 void				return_invparams(int n, char *type, char *op);
+void				fill_opdata(t_ops *ops, char *l, int index);
 
 #endif

@@ -6,7 +6,7 @@
 #    By: etieberg <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/04/11 16:50:44 by etieberg          #+#    #+#              #
-#    Updated: 2018/04/24 17:14:41 by etieberg         ###   ########.fr        #
+#    Updated: 2018/04/30 13:36:07 by slynn-ev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 	
@@ -30,7 +30,8 @@ SRC		=	main.c			\
 			ops_datafill.c	\
 			build_ops.c		\
 			get_op.c		\
-			name_comments.c
+			name_comments.c	\
+			setup_data.c
 
 OBJ_DIR		=	obj
 
