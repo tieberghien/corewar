@@ -12,6 +12,7 @@ int check_alive(t_vm *vm, int flag)
         if (vm->champs[i].alive > 0)
         {
             somme = somme + vm->champs[i].alive;
+            ft_printf("alive : %d joueur : %s\n", somme, vm->champs[i].name);
             if (flag == 1)
                 vm->champs[i].alive = 0;
         }

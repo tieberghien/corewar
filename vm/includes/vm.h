@@ -56,6 +56,9 @@ typedef struct		s_process
 	int					pc;
 	t_op				op;
 	int					champ;
+	int					carry;
+	unsigned int		registre[REG_NUMBER];
+	int					count;
 	struct s_process	*next;
 }					t_process;
 
@@ -65,11 +68,9 @@ typedef	struct		s_vm
 	int				*players_map;
 	int			 	cycle;
 	int				next_cycle_group;
-	int				carry;
 	t_opts			*opts;
 	t_champs		*champs;
 	t_process		*process;
-
 }					t_vm;
 
 /*
@@ -103,6 +104,7 @@ static t_op			g_optab[17] =
 	{0, 0, {0}, 0, 0, "0", 0, 0}
 };
 
+void			init_reg(t_champs *champs, int player, t_process *process);
 unsigned int    rest_address(t_process *process, unsigned int num);
 void			tointhex(unsigned int num, unsigned char **tmp);
 int 			mv_mem(int *pos, int move, t_vm *vm, t_op **op);
@@ -111,7 +113,7 @@ t_op   			*ft_opdup(t_op op);
 //void			parse_args(int ac, char **av, t_opts *opts);
 int				display_intro(t_champs *champs, t_opts opts);
 void			verbose_zero(t_champs *champs);
-//void			verbose_one(t_champ *champs);
+void			verbose_one(t_champs champs);
 int				oc_file(t_champs *champs, t_opts *opts);
 int 			fun_exit(char *str, t_champs *champs, t_opts *opts);
 int 			init_vm(t_champs *champs, t_opts *opts, t_vm *vm);
@@ -130,7 +132,12 @@ int 			op_xor(t_vm *vm, t_op *op, t_process *process);
 int 			zjmp(t_vm *vm, t_op *op, t_process *process);
 int 			ldi(t_vm *vm, t_op *op, t_process *process);
 int 			sti(t_vm *vm, t_op *op, t_process *process);
+int 			op_fork(t_vm *vm, t_op *op, t_process *process);
+int				lld(t_vm *vm, t_op *op, t_process *process);
+int				lldi(t_vm *vm, t_op *op, t_process *process);
+int				op_lfork(t_vm *vm, t_op *op, t_process *process);
+int				aff(t_vm *vm, t_op *op, t_process *process);
 
-static int			(*g_op[])(t_vm *,t_op *, t_process *) = {&live, &ld, &st, &add, &sub, &op_and, &op_or, &op_xor, &zjmp, &ldi, &sti};
+static int			(*g_op[])(t_vm *,t_op *, t_process *) = {&live, &ld, &st, &add, &sub, &op_and, &op_or, &op_xor, &zjmp, &ldi, &sti, &op_fork, &lld, &lldi, &op_lfork, &aff};
 
 #endif

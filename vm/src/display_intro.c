@@ -1,5 +1,12 @@
 #include "vm.h"
 
+void	verbose_one(t_champs champ)
+{
+	ft_putstr("un processus dit que le joueur "); 
+	ft_putstr(champ.name);
+	ft_putstr(" est en vie\n");
+}
+
 int fun_exit(char *str, t_champs *champs, t_opts *opts)
 {
 	int i;

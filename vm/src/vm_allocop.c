@@ -54,13 +54,15 @@ int save_op_spec(t_process *process, t_vm *vm)
     int     k;
     int     j;
     int     alive;
-    
+ 
     k = process->pc;
     j = 0;
     alive = (vm->map[k] == 1) ? 4 : 2;
     k = (k + 1) % MEM_SIZE;
     j++;
     process->op.params[0] = toint(vm, k, alive);
+    if (vm->map[k - 1] == 1)
+        ft_printf("%d\n", toint(vm, k, alive));
     k = (k + alive) % MEM_SIZE;
     j += alive;
     return (j);
