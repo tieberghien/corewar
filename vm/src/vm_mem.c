@@ -227,11 +227,14 @@ int init_vm(t_champs *champs, t_opts *opts, t_vm *vm)
     if (install_champion(champs, opts, vm))
         return (ft_printf("Error, the map is not initilisated\n"));
     //print_vm_mem(vm);
-    if (start_game(vm) < 0)
+    if (start_game(vm) < -5)
     {
       //  print_vm_mem(vm);
-        return (ft_printf("Error, he doesn't have a game\n"));
+        return (ft_printf("Le joueur %s a gagner\n", vm->last));
+
     }
+    else
+        ft_printf("ok\n");
     //print_vm_mem(vm);
     return (0);
 }

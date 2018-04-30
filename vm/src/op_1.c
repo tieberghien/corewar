@@ -316,7 +316,6 @@ int live(t_vm *vm, t_op *op, t_process *process)
 {
     unsigned int i;
 
-    //ft_printf("joueur : %s paramatre : %d\n", vm->champs[process->champ].name, vm->champs->player_id);
     process->champ = process->champ;
     i = 0;
     while (i < vm->opts->n_players)
@@ -325,6 +324,9 @@ int live(t_vm *vm, t_op *op, t_process *process)
         {
             vm->champs[i].alive = 1;
             verbose_one(*(vm->champs + i));
+            if (vm->last)
+                ft_strdel(&vm->last);
+            vm->last = ft_strdup(vm->champs[i].name);
             return (process->carry);
         }
         i++;

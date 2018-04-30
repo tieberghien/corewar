@@ -6,14 +6,14 @@ unsigned int toint(t_vm *vm, int i, int size)
     unsigned int total;
     int k;
 
-    k=0;
+    k = 0;
     total = 0;
     multiplicateur = 1;
     size =  size + i - 1;
     while (size >= i)
     {
         if (vm->map[i - 1] == 1)
-            ft_printf("%d\n", vm->map[size] * multiplicateur);
+            ft_printf("%hhx\n", vm->map[size]);
         total += vm->map[size] * multiplicateur;
         multiplicateur *= 256;
         size--;

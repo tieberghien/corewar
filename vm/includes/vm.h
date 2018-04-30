@@ -65,6 +65,7 @@ typedef struct		s_process
 typedef	struct		s_vm
 {
 	unsigned char	*map;
+	char			*last;
 	int				*players_map;
 	int			 	cycle;
 	int				next_cycle_group;
