@@ -115,14 +115,21 @@ void p_turn(t_vm *vm, t_process *process)
     else if(process->op.dur == 0)
     {
         if (vm->map[process->pc] > 0 && vm->map[process->pc] <= 16)
+        {
             process->op = g_optab[vm->map[process->pc] - 1];
+            process->op.dur--;
+        }
         else
             process->pc = (process->pc + 1) % MEM_SIZE;
     }
     else if (process->op.dur == 1)
     {
         if (vm->map[process->pc] == 9 || vm->map[process->pc] == 15 || vm->map[process->pc] == 12 || vm->map[process->pc] == 1)
+        {
+            if (vm->map[process->pc] == 1)
+                process->live++;
             j = save_op_spec(process, vm);
+        }
         else if (vm->map[process->pc] > 1 && vm->map[process->pc] <= 16)
             j = save_op(process, vm);
         if (vm->map[process->pc] > 0 && vm->map[process->pc] <= 16)
@@ -137,37 +144,43 @@ int start_game(t_vm *vm)
 {
     int i;
     t_process *process;
+    int check;
+    unsigned int tot_cycle;
 
-    while (vm->next_cycle_group > 0)
+    check = 0;
+    vm->live_num = 0;
+    tot_cycle = 0;
+    while (1)
     {
-        ft_printf("cycle to die -> %d\n", vm->next_cycle_group);
-        vm->next_cycle_group -= CYCLE_DELTA;
+        vm->cycle = vm->next_cycle_group;
+        //ft_printf("cycle to die -> %d\n", vm->next_cycle_group);
         while (vm->cycle > 0)
         {
             i = -1;
             process = vm->process;
             while (process)
             {
-                if (vm->champs[process->champ].alive >= 0)
+                if (process->live >= 0)
                     p_turn(vm, process);
                 process = process->next;
             }
-            ft_printf("cycle -> %d\n", vm->cycle);
+            tot_cycle++;
+            //ft_printf("cycle -> %d\n", tot_cycle);
             vm->cycle--;
         }
-        if ((i = check_alive(vm, 0)) == 1)
+        if (check_alive(&(vm->process), 0) < 0)
+            return (-1);
+        check++;
+        if (check >= MAX_CHECKS || vm->live_num >= NBR_LIVE)
         {
-            i = -1;
-            while ((unsigned)++i < vm->opts->n_players)
-                if (vm->champs[i].alive == 1)
-                    return(ft_printf("joueur %s a gagne\n", vm->champs[i].name));
+            vm->next_cycle_group -= CYCLE_DELTA;
+            check = 0;
         }
-        else if (i < 1)
-            return(ft_printf("EVERYONE IS DEAD!\n"));
-        check_alive(vm, 1);
-        vm->cycle = vm->next_cycle_group;
+        if (vm->next_cycle_group < 0)
+            return (1);
+        //ft_printf("live for cycle   %d\n", vm->live_num);
+        vm->live_num = 0;
     }
-    return (-1);
 }
 
 int install_champion(t_champs *champs, t_opts *opts, t_vm *vm)
@@ -187,6 +200,7 @@ int install_champion(t_champs *champs, t_opts *opts, t_vm *vm)
         process = ft_memalloc(sizeof(t_process));
         process->pc = pos;
         process->carry = 0;
+        process->live = 0;
         process->champ = i;
         init_reg(champs, i, process);
         process->op = g_optab[16];
@@ -230,11 +244,17 @@ int init_vm(t_champs *champs, t_opts *opts, t_vm *vm)
     if (start_game(vm) < -5)
     {
       //  print_vm_mem(vm);
-        return (ft_printf("Le joueur %s a gagner\n", vm->last));
+        return (ft_printf("hello", vm->last));
 
     }
     else
-        ft_printf("ok\n");
+    {
+        i = 0;
+        while (champs[i].player_id != vm->last_live)
+            i++;
+        verbose_zero(champs + i);
+        check_alive(&(vm->process), 1);
+    }
     //print_vm_mem(vm);
     return (0);
 }

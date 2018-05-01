@@ -1,26 +1,51 @@
 #include "vm.h"
 
-int check_alive(t_vm *vm, int flag)
+void    ft_procdel(t_process **op)
+{
+    if (!*op)
+        return ;
+    //if ((*op)->op)
+      //  free(&(*op)->op);
+    free(*op);
+    *op = NULL;
+}
+
+int check_alive(t_process **process, int flag)
 {
     unsigned int i;
-    int somme;
+    t_process *tmp;
+    t_process *tmp2;
 
     i = 0;
-    somme = 0;
-    while (i < vm->opts->n_players)
+    if (!*process)
+        return (-1);
+    tmp = *process;
+    tmp2 = NULL;
+    while (tmp != NULL)
     {
-        if (vm->champs[i].alive > 0)
+        if ((*process)->live == 0 || flag == 1)
         {
-            somme = somme + vm->champs[i].alive;
-            if (flag == 1)
-                vm->champs[i].alive = 0;
+            if (!tmp2)
+                (*process) = tmp->next;
+            else
+                tmp2->next = tmp->next;
+            ft_procdel(&tmp);
+            if (!tmp2)
+                tmp = *process;
+            else
+                tmp = tmp2->next;
         }
         else
-            if (flag == 1)
-                vm->champs[i].alive = -1;
-        i++;
+        {
+            tmp2 = tmp;
+            tmp = tmp->next;
+            i++;
+        }
     }
-    return (somme);
+    if (i > 0)
+        return (1);
+    else 
+        return (-1);
 }
 
 unsigned int     rest_address(t_process *process, unsigned int num)

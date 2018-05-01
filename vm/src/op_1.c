@@ -23,6 +23,7 @@ int tohexint(unsigned int num)
 
 int	aff(t_vm *vm, t_op *op, t_process *process)
 {
+    //ft_printf("op : %s - params : %d_%d_%d - pc : %d\n", op->name, op->params[0], op->params[1], op->params[2], process->pc);
     vm->map[0] = vm->map[0];
 	ft_printf("%c\n", process->registre[op->params[0] - 1] % 256);
 	if (process->registre[op->params[0] - 1] == 0)
@@ -37,6 +38,7 @@ int op_lfork(t_vm *vm, t_op *op, t_process *process)
 {
     t_process   *new;
 
+    //ft_printf("op : %s - params : %d_%d_%d - pc : %d\n", op->name, op->params[0], op->params[1], op->params[2], process->pc);
     if (!(new = ft_memalloc(sizeof(t_process))))
         return (-1);
     *new = *process;
@@ -55,6 +57,7 @@ int lldi(t_vm *vm, t_op *op, t_process *process)
     int par_b;
     int err;
 
+    //ft_printf("op : %s - params : %d_%d_%d - pc : %d\n", op->name, op->params[0], op->params[1], op->params[2], process->pc);
     vm->map[0] = vm->map[0];
     par_a = ((err = ((op->ocp & PARAM_C) >> 6)) == 1) ? process->registre[op->params[0] - 1] : op->params[0];
     par_b = op->params[1];
@@ -69,6 +72,7 @@ int lldi(t_vm *vm, t_op *op, t_process *process)
 
 int lld(t_vm *vm, t_op *op, t_process *process)
 {
+    //ft_printf("op : %s - params : %d_%d_%d - pc : %d\n", op->name, op->params[0], op->params[1], op->params[2], process->pc);
     vm->map[0] = vm->map[0];
     if (op->params[0] == 0)
         process->carry = 1;
@@ -83,6 +87,7 @@ int op_fork(t_vm *vm, t_op *op, t_process *process)
 {
     t_process   *new;
 
+    //ft_printf("op : %s - params : %d_%d_%d - pc : %d\n", op->name, op->params[0], op->params[1], op->params[2], process->pc);
     if (!(new = ft_memalloc(sizeof(t_process))))
         return (-1);
     *new = *process;
@@ -103,6 +108,7 @@ int sti(t_vm *vm, t_op *op, t_process *process)
     int k;
     int err;
 
+    //ft_printf("op : %s - params : %d_%d_%d - pc : %d\n", op->name, op->params[0], op->params[1], op->params[2], process->pc);
     vm->map[0] = vm->map[0];
     par_a = ((err = ((op->ocp & PARAM_B) >> 4)) == 1) ? process->registre[op->params[1] - 1] : op->params[1];
     par_b =op->params[2];
@@ -124,6 +130,7 @@ int ldi(t_vm *vm, t_op *op, t_process *process)
     int par_b;
     int err;
 
+    //ft_printf("op : %s - params : %d_%d_%d - pc : %d\n", op->name, op->params[0], op->params[1], op->params[2], process->pc);
     vm->map[0] = vm->map[0];
     par_a = ((err = ((op->ocp & PARAM_C) >> 6)) == 1) ? process->registre[op->params[0] - 1] : process->pc + (op->params[0] % IDX_MOD);
     par_b = process->pc + (op->params[1] % IDX_MOD);
@@ -140,6 +147,7 @@ int zjmp(t_vm *vm, t_op *op, t_process *process)
 {
     unsigned int i;
 
+    //ft_printf("op : %s - params : %d_%d_%d - pc : %d\n", op->name, op->params[0], op->params[1], op->params[2], process->pc);
     vm->map[0] = vm->map[0];
     i = 0;
     if (process->carry == 1)
@@ -157,6 +165,7 @@ int op_xor(t_vm *vm, t_op *op, t_process *process)
     int par_b;
     int err;
 
+    //ft_printf("op : %s - params : %d_%d_%d - pc : %d\n", op->name, op->params[0], op->params[1], op->params[2], process->pc);
     vm->map[0] = vm->map[0];
     par_a = ((err = ((op->ocp & PARAM_C) >> 6)) == 1) ? process->registre[op->params[0] - 1] : op->params[0];
     if (err == 3)
@@ -185,6 +194,7 @@ int op_or(t_vm *vm, t_op *op, t_process *process)
     int par_b;
     int err;
 
+    //ft_printf("op : %s - params : %d_%d_%d - pc : %d\n", op->name, op->params[0], op->params[1], op->params[2], process->pc);
     vm->map[0] = vm->map[0];
     par_a = ((err = ((op->ocp & PARAM_C) >> 6)) == 1) ? process->registre[op->params[0] - 1] : op->params[0];
     if (err == 3)
@@ -213,6 +223,7 @@ int op_and(t_vm *vm, t_op *op, t_process *process)
     int par_b;
     int err;
 
+    //ft_printf("op : %s - params : %d_%d_%d - pc : %d\n", op->name, op->params[0], op->params[1], op->params[2], process->pc);
     vm->map[0] = vm->map[0];
     par_a = ((err = ((op->ocp & PARAM_C) >> 6)) == 1) ? process->registre[op->params[0] - 1] : op->params[0];
     if (err == 3)
@@ -237,6 +248,7 @@ int op_and(t_vm *vm, t_op *op, t_process *process)
 
 int sub(t_vm *vm, t_op *op, t_process *process)
 {
+    //ft_printf("op : %s - params : %d_%d_%d - pc : %d\n", op->name, op->params[0], op->params[1], op->params[2], process->pc);
     vm->map[0] = vm->map[0];
     if (op->params[0] >= REG_NUMBER)
         return (process->carry);
@@ -257,6 +269,7 @@ int add(t_vm *vm, t_op *op, t_process *process)
     unsigned int par_a;
     unsigned int par_b;
 
+    //ft_printf("op : %s - params : %d_%d_%d - pc : %d\n", op->name, op->params[0], op->params[1], op->params[2], process->pc);
     vm->map[0] = vm->map[0];
     if (op->params[0] >= REG_NUMBER)
         return (process->carry);
@@ -279,6 +292,7 @@ int st(t_vm *vm, t_op *op, t_process *process)
     unsigned char *idx_val;
     int k;
 
+    //ft_printf("op : %s - params : %d_%d_%d - pc : %d\n", op->name, op->params[0], op->params[1], op->params[2], process->pc);
     vm->map[0] = vm->map[0];
     if (op->params[0] == 0)
         process->carry = 1;
@@ -302,6 +316,7 @@ int st(t_vm *vm, t_op *op, t_process *process)
 
 int ld(t_vm *vm, t_op *op, t_process *process)
 {
+    //ft_printf("op : %s - params : %d_%d_%d - pc : %d\n", op->name, op->params[0], op->params[1], op->params[2], process->pc);
     vm->map[0] = vm->map[0];
     if (op->params[0] == 0)
         process->carry = 1;
@@ -316,17 +331,18 @@ int live(t_vm *vm, t_op *op, t_process *process)
 {
     unsigned int i;
 
+    //ft_printf("op : %s - params : %d_%d_%d - pc : %d\n", op->name, op->params[0], op->params[1], op->params[2], process->pc);
     process->champ = process->champ;
     i = 0;
+    vm->live_num++;
+    //process->live++;
     while (i < vm->opts->n_players)
     {
         if (op->params[0] == vm->champs[i].player_id)
         {
-            vm->champs[i].alive = 1;
             verbose_one(*(vm->champs + i));
-            if (vm->last)
-                ft_strdel(&vm->last);
-            vm->last = ft_strdup(vm->champs[i].name);
+            //ft_printf("cycle to die\n");
+            vm->last_live = vm->champs[i].player_id;
             return (process->carry);
         }
         i++;

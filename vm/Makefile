@@ -5,7 +5,6 @@ SRC_NAME = vm_main.c \
 		display_intro.c \
 		vm_mem.c \
 		vm_allocop.c \
-		free_and_dup.c \
 		op_1.c \
 		op_extra.c
 

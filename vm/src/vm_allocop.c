@@ -12,8 +12,6 @@ unsigned int toint(t_vm *vm, int i, int size)
     size =  size + i - 1;
     while (size >= i)
     {
-        if (vm->map[i - 1] == 1)
-            ft_printf("%hhx\n", vm->map[size]);
         total += vm->map[size] * multiplicateur;
         multiplicateur *= 256;
         size--;
