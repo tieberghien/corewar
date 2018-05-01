@@ -1,26 +1,5 @@
 #include "vm.h"
 
-/*
-int tohexint(unsigned int num)
-{
-    unsigned int total;
-    unsigned int cpy;
-    int i;
-    int somme;
-
-    i = -1;
-    total = 256 * 256;
-    somme = 0;
-    while (++i < 2)
-    {
-        cpy = num / total;
-        somme = somme + (cpy % 256);
-        total /= 256;
-    }
-    return (somme);
-}
-*/
-
 int	aff(t_vm *vm, t_op *op, t_process *process)
 {
     //ft_printf("op : %s - params : %d_%d_%d - pc : %d\n", op->name, op->params[0], op->params[1], op->params[2], process->pc);
@@ -91,10 +70,7 @@ int op_fork(t_vm *vm, t_op *op, t_process *process)
     if (!(new = ft_memalloc(sizeof(t_process))))
         return (-1);
     *new = *process;
-    if (process->registre[op->params[0] - 1] == 0)
-        new->pc = process->pc;
-    else
-       new->pc = (process->pc + (op->params[0] % IDX_MOD)) % MEM_SIZE;
+    new->pc = (process->pc + (op->params[0] % IDX_MOD)) % MEM_SIZE;
     new->next = vm->process;
     vm->process = new;
     return (0);
@@ -113,10 +89,7 @@ int sti(t_vm *vm, t_op *op, t_process *process)
     par_a = ((err = ((op->ocp & PARAM_B) >> 4)) == 1) ? process->registre[op->params[1] - 1] : op->params[1];
     par_b =op->params[2];
     tointhex((unsigned int)process->registre[op->params[0] - 1], &idx_val);
-    if ((par_a = process->pc + ((par_a + par_b) % IDX_MOD)) == 0)
-        process->carry = 1;
-    else
-        process->carry = 0;
+    par_a = process->pc + ((par_a + par_b) % IDX_MOD);
     k = -1;
     while (++k < 4)
         vm->map[(par_a + k) % MEM_SIZE] = idx_val[k];
@@ -147,7 +120,7 @@ int zjmp(t_vm *vm, t_op *op, t_process *process)
 {
     unsigned int i;
 
-    //ft_printf("op : %s - params : %d_%d_%d - pc : %d\n", op->name, op->params[0], op->params[1], op->params[2], process->pc);
+    ft_printf("op : %s - params : %x_%d_%d - pc : %d\n", op->name, op->params[0], op->params[1], op->params[2], process->pc);
     vm->map[0] = vm->map[0];
     i = 0;
     if (process->carry == 1)
@@ -294,10 +267,6 @@ int st(t_vm *vm, t_op *op, t_process *process)
 
     //ft_printf("op : %s - params : %d_%d_%d - pc : %d\n", op->name, op->params[0], op->params[1], op->params[2], process->pc);
     vm->map[0] = vm->map[0];
-    if (op->params[0] == 0)
-        process->carry = 1;
-    else
-        process->carry = 0;
     if (((op->ocp & PARAM_B) >> 4) == 1)
     process->registre[op->params[1] - 1] = process->registre[op->params[0] - 1];
     else

@@ -1,99 +1,4 @@
 #include "vm.h"
-/*
-void check_op(t_op **op, int flag, t_vm *vm)
-{
-    t_op *tmp;
-    t_op *tmp2;
-
-    if (!*op)
-        return ;
-    tmp = *op;
-    tmp2 = NULL;
-    while (tmp != NULL)
-    {
-        tmp->dur--;
-        if (tmp->dur <= 0 || flag == 1)
-        {
-            if (tmp->op_code <= 9 && flag == 0)
-                vm->carry = g_op[tmp->op_code - 1](vm, tmp);
-            if (!tmp2)
-                (*op) = tmp->next;
-            else
-                tmp2->next = tmp->next;
-            ft_opdel(&tmp);
-            if (!tmp2)
-                tmp = *op;
-            else
-                tmp = tmp2->next;
-        }
-        else
-        {
-            tmp2 = tmp;
-            tmp = tmp->next;
-        }
-    }
-}
-
-int mv_mem(int *pos, int move, t_vm *vm, t_op **op)
-{
-    t_op tmp;
-    static int k = 2;
-
-    tmp = **op;
-    *pos = *pos + move;
-    if (*pos >= MEM_SIZE)
-    {
-        check_op(op, 0, vm);
-        vm->cycle--;
-    }
-    if (vm->cycle <= 0 && vm->next_cycle_group > 0)
-    {
-        if ((k = check_alive(vm)) <= 1)
-            return (k);
-        vm->cycle = vm->next_cycle_group;
-        vm->next_cycle_group -= CYCLE_DELTA;
-    }
-    else if (vm->next_cycle_group <= 0)
-        return (-1);
-    *pos = *pos % MEM_SIZE;
-    return(k);
-}
-
-int start_game(t_vm *vm, t_op **op)
-{
-    int i;
-    int alive;
-   // t_op *new;
-
-    i = 0;
-    while (1)
-    {
-        if (vm->map[i] == 9 || vm->map[i] == 15 || vm->map[i] == 12 || vm->map[i] == 1)
-        {
-            if ((alive = save_op_spec(op, &i, vm)) <= 1)
-                break;
-        }
-        else if (vm->map[i] > 1 && vm->map[i] < 16)
-        {
-            if ((alive = save_op(op, &i, vm)) <= 1)
-                break;
-        }
-        else
-            if ((alive = mv_mem(&i, 1, vm, op)) <= 1)
-                break ;
-    }
-    if (alive == 1)
-    {
-        i = -1;
-        while ((unsigned)++i < vm->opts->n_players)
-            if (vm->champs[i].alive == 1)
-            {
-                return(ft_printf("jouer %s a gagne\n", vm->champs[i].name));
-            }
-    }
-    check_op(op, 1, vm);
-    return (0);
-}*/
 
 void	init_reg(t_champs *champs, int player, t_process *process)
 {
@@ -165,7 +70,9 @@ int start_game(t_vm *vm)
                 process = process->next;
             }
             tot_cycle++;
-            //ft_printf("cycle -> %d\n", tot_cycle);
+            if (vm->opts->s_cycles != 0 && tot_cycle >= vm->opts->s_cycles)
+                return (-6);
+            ft_printf("cycle -> %d\n", tot_cycle);
             vm->cycle--;
         }
         if (check_alive(&(vm->process), 0) < 0)
@@ -243,8 +150,8 @@ int init_vm(t_champs *champs, t_opts *opts, t_vm *vm)
     //print_vm_mem(vm);
     if (start_game(vm) < -5)
     {
-      //  print_vm_mem(vm);
-        return (ft_printf("hello", vm->last));
+        print_vm_mem(vm);
+        return (1000);
 
     }
     else
