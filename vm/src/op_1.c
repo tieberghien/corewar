@@ -71,6 +71,7 @@ int op_fork(t_vm *vm, t_op *op, t_process *process)
         return (-1);
     *new = *process;
     new->pc = (process->pc + (op->params[0] % IDX_MOD)) % MEM_SIZE;
+    new->op.dur = 0;
     new->next = vm->process;
     vm->process = new;
     return (0);
@@ -120,7 +121,7 @@ int zjmp(t_vm *vm, t_op *op, t_process *process)
 {
     unsigned int i;
 
-    ft_printf("op : %s - params : %x_%d_%d - pc : %d\n", op->name, op->params[0], op->params[1], op->params[2], process->pc);
+    //t_printf("op : %s - params : %x_%d_%d - pc : %d\n", op->name, op->params[0], op->params[1], op->params[2], process->pc);
     vm->map[0] = vm->map[0];
     i = 0;
     if (process->carry == 1)
