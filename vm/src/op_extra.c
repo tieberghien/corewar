@@ -1,45 +1,61 @@
 #include "vm.h"
 
-/*
-void	kill_process(t_vm *vm)
+int res_add(unsigned int param)
 {
-	free(vm->process);
-}
-*/
+    int hello;
 
-int check_alive(t_vm *vm, int flag)
+    hello = (short)param;
+    return ((hello >= 0) ? hello % IDX_MOD :  MEM_SIZE - (-hello % IDX_MOD));
+}
+
+void    ft_procdel(t_process **op)
+{
+    if (!*op)
+        return ;
+    //if ((*op)->op)
+      //  free(&(*op)->op);
+    free(*op);
+    *op = NULL;
+}
+
+int check_alive(t_process **process, int flag)
 {
     unsigned int i;
-    int somme;
+    t_process *tmp;
+    t_process *tmp2;
 
     i = 0;
-    somme = 0;
-    while (i < vm->opts->n_players)
+    if (!*process)
+        return (-1);
+    tmp = *process;
+    tmp2 = NULL;
+    while (tmp != NULL)
     {
-	//	if (vm->last_live >= vm->next_cycle_group)
-	//		kill_process(vm);
-        if (vm->champs[i].alive > 0)
+        
+        if (tmp->live == 0 || flag == 1)
         {
-            somme = somme + vm->champs[i].alive;
-            if (flag == 1)
-                vm->champs[i].alive = 0;
+            if (!tmp2)
+                (*process) = tmp->next;
+            else
+                tmp2->next = tmp->next;
+            ft_procdel(&tmp);
+            if (!tmp2)
+                tmp = *process;
+            else
+                tmp = tmp2->next;
         }
         else
-            if (flag == 1)
-                vm->champs[i].alive = -1;
-        i++;
+        {
+            tmp->live = 0;
+            tmp2 = tmp;
+            tmp = tmp->next;
+            i++;
+        }
     }
-    return (somme);
-}
-
-unsigned int     rest_address(t_process *process, unsigned int num)
-{
-    int somme;
-
-    somme = process->pc + num;
-    somme = somme - process->pc;
-    somme = somme % IDX_MOD;
-    return (process->pc + somme);
+    if (i > 0)
+        return (1);
+    else 
+        return (-1);
 }
 
 void    tointhex(unsigned int num, unsigned char **tmp)

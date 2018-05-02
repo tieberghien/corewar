@@ -57,6 +57,7 @@ typedef struct		s_process
 	t_op				op;
 	int					champ;
 	int					carry;
+	int					live;
 	unsigned int		registre[REG_NUMBER];
 	int					count;
 	struct s_process	*next;
@@ -69,10 +70,11 @@ typedef	struct		s_vm
 	int				*players_map;
 	int			 	cycle;
 	int				next_cycle_group;
+	int				live_num;
+	int				last_live;
 	t_opts			*opts;
 	t_champs		*champs;
 	t_process		*process;
-	int				last_live;
 }					t_vm;
 
 /*
@@ -122,7 +124,8 @@ int 			init_vm(t_champs *champs, t_opts *opts, t_vm *vm);
 void			print_vm_mem(t_vm *vm);
 int				save_op(t_process *process, t_vm *vm);
 int				save_op_spec(t_process *process, t_vm *vm);
-int 			check_alive(t_vm *vm, int flag);
+int 			check_alive(t_process **process, int flag);
+int				res_add(unsigned int param);
 int 			live(t_vm *vm, t_op *op, t_process *process);
 int				ld(t_vm *vm, t_op *op, t_process *process);
 int 			st(t_vm *vm, t_op *op, t_process *process);
