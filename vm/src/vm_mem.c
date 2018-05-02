@@ -58,7 +58,7 @@ int start_game(t_vm *vm)
     while (1)
     {
         vm->cycle = vm->next_cycle_group;
-        //ft_printf("cycle to die -> %d\n", vm->next_cycle_group);
+        ft_printf("cycle to die -> %d\n", vm->next_cycle_group);
         while (vm->cycle > 0)
         {
             i = -1;

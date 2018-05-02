@@ -1,5 +1,13 @@
 #include "vm.h"
 
+int res_add(unsigned int param)
+{
+    int hello;
+
+    hello = (short)param;
+    return ((hello >= 0) ? hello % IDX_MOD :  MEM_SIZE - (-hello % IDX_MOD));
+}
+
 void    ft_procdel(t_process **op)
 {
     if (!*op)
@@ -47,16 +55,6 @@ int check_alive(t_process **process, int flag)
         return (1);
     else 
         return (-1);
-}
-
-unsigned int     rest_address(t_process *process, unsigned int num)
-{
-    int somme;
-
-    somme = process->pc + num;
-    somme = somme - process->pc;
-    somme = somme % IDX_MOD;
-    return (process->pc + somme);
 }
 
 void    tointhex(unsigned int num, unsigned char **tmp)
