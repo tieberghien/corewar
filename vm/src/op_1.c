@@ -68,9 +68,10 @@ int op_fork(t_vm *vm, t_op *op, t_process *process)
     if (!(new = ft_memalloc(sizeof(t_process))))
         return (-1);
     *new = *process;
+    //new->live = 0;
     new->pc = (process->pc + res_add(op->params[0])) % MEM_SIZE;
     new->op.dur = 0;
-    new->next = vm->process;
+    new->next = vm->process; 
     vm->process = new;
     return (0);
 }
@@ -85,8 +86,8 @@ int sti(t_vm *vm, t_op *op, t_process *process)
 
     //ft_printf("op : %s - params : %d_%d_%d - pc : %d\n", op->name, op->params[0], op->params[1], op->params[2], process->pc);
     vm->map[0] = vm->map[0];
-    par_a = ((err = ((op->ocp & PARAM_B) >> 4)) == 1) ? process->registre[op->params[1] - 1] : op->params[1];
-    par_b = op->params[2];
+    par_a = (short)((err = ((op->ocp & PARAM_B) >> 4)) == 1) ? process->registre[op->params[1] - 1] : op->params[1];
+    par_b = (short)op->params[2];
     tointhex((unsigned int)process->registre[op->params[0] - 1], &idx_val);
     par_a = process->pc + res_add(par_a + par_b);
     if (!idx_val)
@@ -269,7 +270,7 @@ int st(t_vm *vm, t_op *op, t_process *process)
     //ft_printf("op : %s - params : %d_%d_%d - pc : %d\n", op->name, op->params[0], op->params[1], op->params[2], process->pc);
     vm->map[0] = vm->map[0];
     if (((op->ocp & PARAM_B) >> 4) == 1)
-        process->registre[op->params[1] - 1] = process->registre[op->params[0] - 1];
+        process->registre[op->params[1] - 1] = (short)process->registre[op->params[0] - 1];
     else
     {
         op->params[1] = (process->pc + res_add(op->params[1])) % MEM_SIZE;
@@ -295,6 +296,10 @@ int ld(t_vm *vm, t_op *op, t_process *process)
     //ft_printf("register : %d       avamt : %ld       ", op->params[1], process->registre[op->params[1] - 1]);    
     if (op->params[1] < REG_NUMBER)
         process->registre[op->params[1] - 1] = (((op->ocp & PARAM_C) >> 6) == 2) ? op->params[0] : process->pc + res_add(op->params[0]);
+    if (process->registre[op->params[1] - 1] == 0)
+        process->carry = 1;
+    else
+        process->carry = 0;
     //ft_printf("apres : %ld  carry : %d\n", process->registre[op->params[1] - 1], process->carry);
     return (process->carry);
 }

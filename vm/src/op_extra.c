@@ -73,7 +73,5 @@ void    tointhex(unsigned int num, unsigned char **tmp)
         cpy = num / total;
         (*tmp)[i] = (unsigned char)(cpy % 256);
         total /= 256;
-        if ((*tmp)[i] == 13)
-            ft_printf("ok");
     }
 }

@@ -74,7 +74,7 @@ int start_game(t_vm *vm)
             tot_cycle++;
             if (vm->opts->s_cycles != 0 && tot_cycle >= vm->opts->s_cycles)
                 return (-6);
-            ft_printf("cycle -> %d\n", tot_cycle);
+            //ft_printf("cycle -> %d\n", tot_cycle);
             vm->cycle--;
         }
         if (check_alive(&(vm->process), 0) < 0)
@@ -142,8 +142,8 @@ int init_vm(t_champs *champs, t_opts *opts, t_vm *vm)
     if (!(vm->map = (unsigned char*)malloc(sizeof(unsigned char) * MEM_SIZE)))
         return (-1);
     i = -1;
-    while ((unsigned int)++i < opts->n_players)
-        ft_printf("%s\n", champs[i].name);
+    //while ((unsigned int)++i < opts->n_players)
+      //  ft_printf("%s\n", champs[i].name);
     i = -1;
     while (++i < MEM_SIZE)
         vm->map[i] = 0;
