@@ -65,14 +65,16 @@ int start_game(t_vm *vm)
             process = vm->process;
             while (process)
             {
+                //ft_printf("process_id - %d\n", process->champ);
                 if (process->live >= 0)
                     p_turn(vm, process);
                 process = process->next;
             }
+            //ft_printf("\n");
             tot_cycle++;
             if (vm->opts->s_cycles != 0 && tot_cycle >= vm->opts->s_cycles)
                 return (-6);
-            ft_printf("cycle -> %d\n", tot_cycle);
+            //ft_printf("cycle -> %d\n", tot_cycle);
             vm->cycle--;
         }
         if (check_alive(&(vm->process), 0) < 0)

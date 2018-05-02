@@ -21,10 +21,7 @@ int op_lfork(t_vm *vm, t_op *op, t_process *process)
     if (!(new = ft_memalloc(sizeof(t_process))))
         return (-1);
     *new = *process;
-    if (process->registre[op->params[0] - 1] == 0)
-        new->pc = process->pc;
-    else
-       new->pc = (process->pc + op->params[0]) % MEM_SIZE;
+    new->pc = (process->pc + op->params[0]) % MEM_SIZE;
     new->next = vm->process;
     vm->process = new;
     return (0);
@@ -277,6 +274,7 @@ int st(t_vm *vm, t_op *op, t_process *process)
         if (!idx_val)
             return (process->carry);
         k = -1;
+        ft_printf("%d\n", op->params[1]);
         while (++k < 4)
             vm->map[(op->params[1] + k) % MEM_SIZE] = idx_val[k];
         ft_memdel((void**)&idx_val);

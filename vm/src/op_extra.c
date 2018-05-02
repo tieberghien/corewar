@@ -23,6 +23,7 @@ int check_alive(t_process **process, int flag)
     tmp2 = NULL;
     while (tmp != NULL)
     {
+        
         if ((*process)->live == 0 || flag == 1)
         {
             if (!tmp2)
