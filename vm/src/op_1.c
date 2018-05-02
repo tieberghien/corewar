@@ -262,19 +262,22 @@ int st(t_vm *vm, t_op *op, t_process *process)
 {
     unsigned char *idx_val;
     int k;
+    int hello;
 
     //ft_printf("op : %s - params : %d_%d_%d - pc : %d\n", op->name, op->params[0], op->params[1], op->params[2], process->pc);
     vm->map[0] = vm->map[0];
     if (((op->ocp & PARAM_B) >> 4) == 1)
-    process->registre[op->params[1] - 1] = process->registre[op->params[0] - 1];
+        process->registre[op->params[1] - 1] = process->registre[op->params[0] - 1];
     else
     {
-        op->params[1] = process->pc + (op->params[1] % IDX_MOD);
+        hello = (short)(op->params[1]);
+        ft_printf("%d\n", hello);
+        hello = (hello >= 0) ? hello % IDX_MOD :  MEM_SIZE - (-hello % IDX_MOD);
+        op->params[1] = (process->pc + hello) % MEM_SIZE;
         tointhex((unsigned int)process->registre[op->params[0] - 1], &idx_val);
         if (!idx_val)
             return (process->carry);
         k = -1;
-        ft_printf("%d\n", op->params[1]);
         while (++k < 4)
             vm->map[(op->params[1] + k) % MEM_SIZE] = idx_val[k];
         ft_memdel((void**)&idx_val);

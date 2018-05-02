@@ -74,7 +74,7 @@ int start_game(t_vm *vm)
             tot_cycle++;
             if (vm->opts->s_cycles != 0 && tot_cycle >= vm->opts->s_cycles)
                 return (-6);
-            //ft_printf("cycle -> %d\n", tot_cycle);
+            ft_printf("cycle -> %d\n", tot_cycle);
             vm->cycle--;
         }
         if (check_alive(&(vm->process), 0) < 0)
@@ -149,7 +149,7 @@ int init_vm(t_champs *champs, t_opts *opts, t_vm *vm)
         vm->map[i] = 0;
     if (install_champion(champs, opts, vm))
         return (ft_printf("Error, the map is not initilisated\n"));
-    //print_vm_mem(vm);
+    print_vm_mem(vm);
     if (start_game(vm) < -5)
     {
         print_vm_mem(vm);

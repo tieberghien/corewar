@@ -3,7 +3,7 @@
 int toint(t_vm *vm, int i, int size)
 {
     int multiplicateur;
-    int total;
+    unsigned int total;
     int k;
 
     k = 0;
@@ -17,7 +17,6 @@ int toint(t_vm *vm, int i, int size)
         size--;
         k++;
     }
-    ft_printf("%d = %u\n", total, total);
     return (total);
 }
 
