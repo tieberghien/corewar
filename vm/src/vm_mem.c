@@ -101,7 +101,7 @@ int install_champion(t_champs *champs, t_opts *opts, t_vm *vm)
     t_process *process;
 
     i = -1;
-    gap = MEM_SIZE / opts->n_players;
+    gap = (MEM_SIZE / opts->n_players);
     while ((unsigned int)++i < opts->n_players)
     {
         j = 0;
@@ -149,7 +149,7 @@ int init_vm(t_champs *champs, t_opts *opts, t_vm *vm)
         vm->map[i] = 0;
     if (install_champion(champs, opts, vm))
         return (ft_printf("Error, the map is not initilisated\n"));
-    print_vm_mem(vm);
+    //print_vm_mem(vm);
     if (start_game(vm) < -5)
     {
         print_vm_mem(vm);

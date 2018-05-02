@@ -125,6 +125,7 @@ void			print_vm_mem(t_vm *vm);
 int				save_op(t_process *process, t_vm *vm);
 int				save_op_spec(t_process *process, t_vm *vm);
 int 			check_alive(t_process **process, int flag);
+int				res_add(unsigned int param);
 int 			live(t_vm *vm, t_op *op, t_process *process);
 int				ld(t_vm *vm, t_op *op, t_process *process);
 int 			st(t_vm *vm, t_op *op, t_process *process);

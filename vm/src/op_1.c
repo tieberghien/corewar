@@ -22,6 +22,7 @@ int op_lfork(t_vm *vm, t_op *op, t_process *process)
         return (-1);
     *new = *process;
     new->pc = (process->pc + op->params[0]) % MEM_SIZE;
+    new->op.dur = 0;
     new->next = vm->process;
     vm->process = new;
     return (0);
@@ -55,7 +56,7 @@ int lld(t_vm *vm, t_op *op, t_process *process)
     else
         process->carry = 0;
     if (op->params[1] < REG_NUMBER)
-    process->registre[op->params[1] - 1] = op->params[0];
+        process->registre[op->params[1] - 1] = (((op->ocp & PARAM_C) >> 6) == 2) ? op->params[0] : process->pc + op->params[0];
     return (process->carry);
 }
 

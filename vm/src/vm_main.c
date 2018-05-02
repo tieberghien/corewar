@@ -9,7 +9,7 @@ int	parsing_arg_b(char *str, t_opts *opts, int *j, t_champs *champs)
 		k++;
 	while (str[k] >= '0' && str[k] <= '9')
 		k++;
-	if (str[k] || (str[0] == '1' && k == 1))
+	if (str[k])
 		return (ft_printf("not a number\n"));
 	if (*j == 1)
 	{
