@@ -86,9 +86,11 @@ int sti(t_vm *vm, t_op *op, t_process *process)
     //ft_printf("op : %s - params : %d_%d_%d - pc : %d\n", op->name, op->params[0], op->params[1], op->params[2], process->pc);
     vm->map[0] = vm->map[0];
     par_a = ((err = ((op->ocp & PARAM_B) >> 4)) == 1) ? process->registre[op->params[1] - 1] : op->params[1];
-    par_b =op->params[2];
+    par_b = op->params[2];
     tointhex((unsigned int)process->registre[op->params[0] - 1], &idx_val);
     par_a = process->pc + res_add(par_a + par_b);
+    if (!idx_val)
+        return (process->carry);
     k = -1;
     while (++k < 4)
         vm->map[(par_a + k) % MEM_SIZE] = idx_val[k];
@@ -290,8 +292,10 @@ int ld(t_vm *vm, t_op *op, t_process *process)
         process->carry = 1;
     else
         process->carry = 0;
+    //ft_printf("register : %d       avamt : %ld       ", op->params[1], process->registre[op->params[1] - 1]);    
     if (op->params[1] < REG_NUMBER)
-    process->registre[op->params[1] - 1] = (((op->ocp & PARAM_C) >> 6) == 2) ? op->params[0] : process->pc + res_add(op->params[0]);
+        process->registre[op->params[1] - 1] = (((op->ocp & PARAM_C) >> 6) == 2) ? op->params[0] : process->pc + res_add(op->params[0]);
+    //ft_printf("apres : %ld  carry : %d\n", process->registre[op->params[1] - 1], process->carry);
     return (process->carry);
 }
 

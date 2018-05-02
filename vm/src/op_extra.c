@@ -32,7 +32,7 @@ int check_alive(t_process **process, int flag)
     while (tmp != NULL)
     {
         
-        if ((*process)->live == 0 || flag == 1)
+        if (tmp->live == 0 || flag == 1)
         {
             if (!tmp2)
                 (*process) = tmp->next;
@@ -46,6 +46,7 @@ int check_alive(t_process **process, int flag)
         }
         else
         {
+            tmp->live = 0;
             tmp2 = tmp;
             tmp = tmp->next;
             i++;
@@ -72,5 +73,7 @@ void    tointhex(unsigned int num, unsigned char **tmp)
         cpy = num / total;
         (*tmp)[i] = (unsigned char)(cpy % 256);
         total /= 256;
+        if ((*tmp)[i] == 13)
+            ft_printf("ok");
     }
 }
