@@ -12,6 +12,9 @@ void	init_reg(t_champs *champs, int player, t_process *process)
 
 void p_turn(t_vm *vm, t_process *process)
 {
+    int j;
+
+    j = 0;
     if (process->op.dur > 1)
         process->op.dur--;
     else if(process->op.dur == 0)
@@ -19,14 +22,6 @@ void p_turn(t_vm *vm, t_process *process)
         if (vm->map[process->pc] > 0 && vm->map[process->pc] <= 16)
         {
             process->op = g_optab[vm->map[process->pc] - 1];
-            if (vm->map[process->pc] == 9 || vm->map[process->pc] == 15 || vm->map[process->pc] == 12 || vm->map[process->pc] == 1)
-            {
-                if (vm->map[process->pc] == 1)
-                    process->live++;
-                process->mv = save_op_spec(process, vm);
-            }
-            else if (vm->map[process->pc] > 1 && vm->map[process->pc] <= 16)
-                process->mv = save_op(process, vm);
             process->op.dur--;
         }
         else
@@ -34,11 +29,18 @@ void p_turn(t_vm *vm, t_process *process)
     }
     else if (process->op.dur == 1)
     {
+        if (vm->map[process->pc] == 9 || vm->map[process->pc] == 15 || vm->map[process->pc] == 12 || vm->map[process->pc] == 1)
+        {
+            if (vm->map[process->pc] == 1)
+                process->live++;
+            j = save_op_spec(process, vm);
+        }
+        else if (vm->map[process->pc] > 1 && vm->map[process->pc] <= 16)
+            j = save_op(process, vm);
         if (vm->map[process->pc] > 0 && vm->map[process->pc] <= 16)
-            g_op[process->op.op_code - 1](vm, &(process->op), process);
+            g_op[vm->map[process->pc] - 1](vm, &(process->op), process);
         if (process->op.op_code != 9)
-            process->pc = (process->pc + process->mv) % MEM_SIZE;
-        //ft_printf("%d \n",process->pc);
+            process->pc = (process->pc + j) % MEM_SIZE;
         process->op.dur--;
     }
 }
@@ -72,7 +74,7 @@ int start_game(t_vm *vm)
             tot_cycle++;
             if (vm->opts->s_cycles != 0 && tot_cycle >= vm->opts->s_cycles)
                 return (-6);
-            ft_printf("cycle -> %d\n", tot_cycle);
+            //ft_printf("cycle -> %d\n", tot_cycle);
             vm->cycle--;
         }
         if (check_alive(&(vm->process), 0) < 0)
@@ -109,7 +111,6 @@ int install_champion(t_champs *champs, t_opts *opts, t_vm *vm)
         process->carry = 0;
         process->live = 0;
         process->champ = i;
-        process->mv = 0;
         init_reg(champs, i, process);
         process->op = g_optab[16];
         process->next = vm->process;

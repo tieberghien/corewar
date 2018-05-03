@@ -90,6 +90,7 @@ int	main(int ac, char **av)
 		ft_printf("MAX_PLAYERS not properly defined");
 	opts.s_cycles = 0;
 	opts.n_players = 0;
+	ft_printf("%d\n", 1879310335);
 	if (parsing_arg_a(ac, av, &opts, champs))
 		return (1);
 	while (i < opts.n_players)

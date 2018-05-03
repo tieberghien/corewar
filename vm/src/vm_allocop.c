@@ -30,12 +30,12 @@ int main_decript(int par, unsigned char *vm, int j, t_op *new)
     if (par > 1)
     {
         k = (par == 2 && (new->op_code < 9 || new->op_code == 13)) ? 4 : 2;
-        new->params[j] = (int)toint(&map , 0, k);
+        new->params[j] = (par == 2) ? toint(&map , 0, k) : (short)toint(&map , 0, k);
         return (k);
     }
     else if (par == 1)
     {
-        new->params[j] = (int)toint(&map, 0, 1);
+        new->params[j] = toint(&map, 0, 1);
         return (1);
     }
     return (0);
@@ -63,7 +63,7 @@ int save_op_spec(t_process *process, t_vm *vm)
     alive = (vm->map[k] == 1) ? 4 : 2;
     k = (k + 1) % MEM_SIZE;
     j++;
-    process->op.params[0] = (int)toint(vm, k, alive);
+    process->op.params[0] = toint(vm, k, alive);
     k = (k + alive) % MEM_SIZE;
     j += alive;
     return (j);

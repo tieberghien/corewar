@@ -58,20 +58,23 @@ int check_alive(t_process **process, int flag)
         return (-1);
 }
 
-void    tointhex(unsigned int num, unsigned char **tmp)
+void    tointhex(unsigned long int num, unsigned char **tmp)
 {
     unsigned int total;
     unsigned int cpy;
+    unsigned char *new;
     int i;
 
     i = -1;
-    if (!(*tmp = (unsigned char*)malloc(sizeof(unsigned char) * 4)))
+    if (!(new = (unsigned char*)malloc(sizeof(unsigned char) * 4)))
         return ;
     total = 256 * 256 * 256;
     while (++i < 4)
     {
         cpy = num / total;
-        (*tmp)[i] = (unsigned char)(cpy % 256);
+        new[i] = (unsigned char)(cpy % 256);
         total /= 256;
     }
+    *tmp = new;
 }
+

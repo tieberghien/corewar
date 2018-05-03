@@ -55,6 +55,7 @@ typedef struct		s_process
 {
 	int					pc;
 	t_op				op;
+	int					mv;
 	int					champ;
 	int					carry;
 	int					live;
@@ -110,7 +111,7 @@ static t_op			g_optab[17] =
 
 void			init_reg(t_champs *champs, int player, t_process *process);
 unsigned int    rest_address(t_process *process, unsigned int num);
-void			tointhex(unsigned int num, unsigned char **tmp);
+void			tointhex(unsigned long int num, unsigned char **tmp);
 int 			mv_mem(int *pos, int move, t_vm *vm, t_op **op);
 void    		ft_opdel(t_op **op);
 t_op   			*ft_opdup(t_op op);
