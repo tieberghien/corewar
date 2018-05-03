@@ -34,8 +34,7 @@ void p_turn(t_vm *vm, t_process *process)
     }
     else if (process->op.dur == 1)
     {
-        if (vm->map[process->pc] > 0 && vm->map[process->pc] <= 16)
-            g_op[process->op.op_code - 1](vm, &(process->op), process);
+        g_op[process->op.op_code - 1](vm, &(process->op), process);
         if (process->op.op_code != 9)
             process->pc = (process->pc + process->mv) % MEM_SIZE;
         //ft_printf("%d \n",process->pc);
