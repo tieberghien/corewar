@@ -25,6 +25,8 @@ int op_lfork(t_vm *vm, t_op *op, t_process *process)
     new->op.dur = 0;
     new->next = vm->process;
     vm->process = new;
+        vm->ping++;
+        process->number = vm->ping;
     return (0);
 }
 
@@ -64,6 +66,7 @@ int op_fork(t_vm *vm, t_op *op, t_process *process)
 {
     t_process   *new;
 
+
     //ft_printf("op : %s - params : %d_%d_%d - pc : %d\n", op->name, op->params[0], op->params[1], op->params[2], process->pc);
     if (!(new = ft_memalloc(sizeof(t_process))))
         return (-1);
@@ -73,6 +76,8 @@ int op_fork(t_vm *vm, t_op *op, t_process *process)
     new->op.dur = 0;
     new->next = vm->process; 
     vm->process = new;
+    vm->ping++;
+    process->number = vm->ping;
     //ft_printf("op : %s - params : %d - pc : %d\n", op->name, op->params[0], new->pc);
     return (0);
 }
@@ -89,7 +94,7 @@ int sti(t_vm *vm, t_op *op, t_process *process)
     par_a = (((op->ocp & PARAM_B) >> 4) == 1) ? process->registre[op->params[1] - 1] : op->params[1];
     par_b = op->params[2];
     tointhex((unsigned int)process->registre[op->params[0] - 1], &idx_val);
-    par_a = (process->pc + res_add(par_a + par_b)) %MEM_SIZE;
+    par_a = (process->pc + res_add(par_a + par_b)) % MEM_SIZE;
     if (!idx_val)
         return (process->carry);
     k = -1;
@@ -124,13 +129,13 @@ int zjmp(t_vm *vm, t_op *op, t_process *process)
 {
     unsigned int i;
 
-    //t_printf("op : %s - params : %x_%d_%d - pc : %d\n", op->name, op->params[0], op->params[1], op->params[2], process->pc);
+    //ft_printf("op : %s - params : %x_%d_%d - pc : %d\n", op->name, op->params[0], op->params[1], op->params[2], process->pc);
     vm->map[0] = vm->map[0];
     i = 0;
     if (process->carry == 1)
     {
-        process->pc = (process->pc + op->params[0]) % MEM_SIZE;
-        //ft_printf("op : %s - params : %d - pc : %d\n", op->name, op->params[0], process->pc);
+        process->pc = (process->pc + res_add(op->params[0])) % MEM_SIZE;
+        ft_printf("params : %d - pc : %d          process : %d\n", op->params[0], process->pc, process->number);
         return (process->carry);
     }
     process->pc = (process->pc + 3)  % MEM_SIZE;
@@ -274,7 +279,9 @@ int st(t_vm *vm, t_op *op, t_process *process)
     //ft_printf("op : %s - params : %d_%d- pc : %d\n", op->name, op->params[0], op->params[1], process->pc);
     vm->map[0] = vm->map[0];
     if (((op->ocp & PARAM_B) >> 4) == 1)
+    {
         process->registre[op->params[1] - 1] = process->registre[op->params[0] - 1];
+    }
     else
     {
         //ft_printf("params%d : %d    param[1] = %d     pc -> %d\n", op->params[0], process->registre[op->params[0] - 1], op->params[1], process->pc);
@@ -300,7 +307,7 @@ int ld(t_vm *vm, t_op *op, t_process *process)
     //ft_printf("op : %s - params : %d_%d - pc : %d\n", op->name, op->params[0], op->params[1], process->pc);
     vm->map[0] = vm->map[0];
     //ft_printf("register : %d       avamt : %ld       ", op->params[1], process->registre[op->params[1] - 1]);    
-    //ft_printf("op : %s - params : %d_%d - pc : %d\n", op->name, op->params[0], op->params[1], process->pc);
+    //ft_printf("params : %d      %d\n", op->params[0], op->params[1]);
     if (op->params[1] <= REG_NUMBER)
         process->registre[op->params[1] - 1] = (((op->ocp & PARAM_C) >> 6) == 2) ? op->params[0] : process->pc + res_add(op->params[0]);
     if (op->params[0] == 0)

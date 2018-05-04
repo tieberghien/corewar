@@ -53,6 +53,7 @@ typedef struct		s_champ
 
 typedef struct		s_process
 {
+	int					number;
 	int					pc;
 	t_op				op;
 	int					mv;
@@ -66,6 +67,7 @@ typedef struct		s_process
 
 typedef	struct		s_vm
 {
+	int 			ping;
 	unsigned char	*map;
 	char			*last;
 	int				*players_map;
