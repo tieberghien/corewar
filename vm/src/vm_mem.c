@@ -13,8 +13,10 @@ void	init_reg(t_champs *champs, int player, t_process *process)
 void p_turn(t_vm *vm, t_process *process)
 {
     int j;
+    int k;
 
     j = 0;
+    k = 0;
     if (process->op.dur > 1)
         process->op.dur--;
     else if(process->op.dur == 0)
@@ -38,9 +40,11 @@ void p_turn(t_vm *vm, t_process *process)
         else if (vm->map[process->pc] > 1 && vm->map[process->pc] <= 16)
             j = save_op(process, vm);
         if (vm->map[process->pc] > 0 && vm->map[process->pc] <= 16)
-            g_op[vm->map[process->pc] - 1](vm, &(process->op), process);
-        if (process->op.op_code != 9)
+            k = g_op[vm->map[process->pc] - 1](vm, &(process->op), process);
+        if (process->op.op_code != 9 && k >= 0 && j > 0)
             process->pc = (process->pc + j) % MEM_SIZE;
+        else if (k < 0 || j < 1)
+            process->pc = (process->pc + 1) % MEM_SIZE;
         process->op.dur--;
     }
 }
@@ -72,6 +76,7 @@ int start_game(t_vm *vm)
             }
             //ft_printf("\n");
             tot_cycle++;
+            vm->c = tot_cycle;
             if (vm->opts->s_cycles != 0 && tot_cycle >= vm->opts->s_cycles)
                 return (-6);
             //ft_printf("cycle -> %d\n", tot_cycle);
@@ -118,9 +123,13 @@ int install_champion(t_champs *champs, t_opts *opts, t_vm *vm)
         process->number = vm->ping;
         process->next = vm->process;
         vm->process = process;
+        vm->last_live = champs[i].player_id;
         j = -1;
         while (++j < (int)champs[i].size)
+        {
             vm->map[j + pos] = champs[i].instructions[j];
+            vm->color[j+pos] = i+1;
+        }
     }
     return (0);
 }
@@ -145,12 +154,17 @@ int init_vm(t_champs *champs, t_opts *opts, t_vm *vm)
     }*/
     if (!(vm->map = (unsigned char*)malloc(sizeof(unsigned char) * MEM_SIZE)))
         return (-1);
+    if (!(vm->color = (int*)malloc(sizeof(unsigned char) * MEM_SIZE)))
+        return (-1);
     i = -1;
     //while ((unsigned int)++i < opts->n_players)
       //  ft_printf("%s\n", champs[i].name);
     i = -1;
     while (++i < MEM_SIZE)
+    {
         vm->map[i] = 0;
+        vm->color[i] = 0;
+    }
     if (install_champion(champs, opts, vm))
         return (ft_printf("Error, the map is not initilisated\n"));
     //print_vm_mem(vm);

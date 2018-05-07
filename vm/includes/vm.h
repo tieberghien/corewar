@@ -69,10 +69,12 @@ typedef	struct		s_vm
 {
 	int 			ping;
 	unsigned char	*map;
+	int				*color;
 	char			*last;
 	int				*players_map;
 	int			 	cycle;
 	int				next_cycle_group;
+	int				c;
 	int				live_num;
 	int				last_live;
 	t_opts			*opts;
@@ -113,7 +115,7 @@ static t_op			g_optab[17] =
 
 void			init_reg(t_champs *champs, int player, t_process *process);
 unsigned int    rest_address(t_process *process, unsigned int num);
-void			tointhex(unsigned long int num, unsigned char **tmp);
+void			tointhex(unsigned long int num, unsigned char **tmp, t_vm *vm);
 int 			mv_mem(int *pos, int move, t_vm *vm, t_op **op);
 void    		ft_opdel(t_op **op);
 t_op   			*ft_opdup(t_op op);
@@ -128,7 +130,7 @@ void			print_vm_mem(t_vm *vm);
 int				save_op(t_process *process, t_vm *vm);
 int				save_op_spec(t_process *process, t_vm *vm);
 int 			check_alive(t_process **process, int flag);
-int				res_add(unsigned int param);
+int				res_add(unsigned int param, int pc);
 int 			live(t_vm *vm, t_op *op, t_process *process);
 int				ld(t_vm *vm, t_op *op, t_process *process);
 int 			st(t_vm *vm, t_op *op, t_process *process);

@@ -1,11 +1,15 @@
 #include "vm.h"
 
-int res_add(unsigned int param)
+int res_add(unsigned int param, int pc)
 {
     int hello;
 
     hello = (short)param;
-    return ((hello >= 0) ? hello % IDX_MOD :  MEM_SIZE - (-hello % IDX_MOD));
+    hello = (hello >= 0) ? hello % IDX_MOD : - (-hello % IDX_MOD);
+    hello = pc + hello;
+    hello = (hello >= 0) ? hello % MEM_SIZE : MEM_SIZE - (-hello % MEM_SIZE);
+    //ft_printf("%d\n", hello);
+    return (hello);
 }
 
 void    ft_procdel(t_process **op)
@@ -23,20 +27,8 @@ int check_alive(t_process **process, int flag)
     unsigned int i;
     t_process *tmp;
     t_process *tmp2;
-    t_process *tmp3;
-    int k;
-    int j;
 
     i = 0;
-    k = 0;
-    j = 0;
-    tmp3 = *process;
-    while (tmp3)
-    {
-        if (tmp3)
-            k++;
-        tmp3 = tmp3->next;
-    }
     if (!*process)
         return (-1);
     tmp = *process;
@@ -54,7 +46,6 @@ int check_alive(t_process **process, int flag)
                 tmp = *process;
             else
                 tmp = tmp2->next;
-                        j++;
         }
         else
         {
@@ -62,22 +53,15 @@ int check_alive(t_process **process, int flag)
             tmp2 = tmp;
             tmp = tmp->next;
             i++;
-                    j++;
         }
     }
-    /*if (k)
-    {
-        ft_printf("k : %d\n", k);
-    }
-    if (j)
-        ft_printf("j : %d\n", j);
-    */if (i > 0)
+    if (i > 0)
         return (1);
     else 
         return (-1);
 }
 
-void    tointhex(unsigned long int num, unsigned char **tmp)
+void    tointhex(unsigned long int num, unsigned char **tmp, t_vm *vm)
 {
     unsigned int total;
     unsigned int cpy;
@@ -94,6 +78,12 @@ void    tointhex(unsigned long int num, unsigned char **tmp)
         new[i] = (unsigned char)(cpy % 256);
         total /= 256;
     }
+    if (vm->c == 22679)
+    {
+        i = -1;
+        //while (++i < 4)
+          //  ft_printf("%hhx ", new[i]);
+        //ft_printf("\n");
+    }
     *tmp = new;
 }
-

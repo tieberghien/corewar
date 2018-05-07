@@ -90,15 +90,14 @@ int	main(int ac, char **av)
 		ft_printf("MAX_PLAYERS not properly defined");
 	opts.s_cycles = 0;
 	opts.n_players = 0;
-	ft_printf("%d\n", 1879310335);
 	if (parsing_arg_a(ac, av, &opts, champs))
 		return (1);
-	while (i < opts.n_players)
-	{
-		ft_printf("player %s id %d\n", champs[i].file_name, champs[i].player_id);
-		i++;
-	}
-	ft_printf("number of player: %d\n", opts.n_players);
+	//while (i < opts.n_players)
+	//{
+	//	ft_printf("player %s id %d\n", champs[i].file_name, champs[i].player_id);
+	//	i++;
+	//}
+	//ft_printf("number of player: %d\n", opts.n_players);
 	if (oc_file(champs, &opts) > 0)
 		return (fun_exit(NULL, champs, &opts));
 	if (init_vm(champs, &opts, &vm))

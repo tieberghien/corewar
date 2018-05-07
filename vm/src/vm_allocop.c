@@ -73,16 +73,22 @@ int save_op(t_process *process, t_vm *vm)
 {
     int     k;
     int     j;
-    int     alive; 
+    int     alive;
+    int     err;
 
+    err = 1;
     k = process->pc;
     j = 0;
     k = (k + 1) % MEM_SIZE;
     j++;
     process->op.ocp = vm->map[k];
+    if (process->op.ocp == 0)
+        return (-1);
     k = (k + 1) % MEM_SIZE;
     j++;
-    alive = main_decript(decript_ocp((process->op.ocp & PARAM_C) >> 6), vm->map + k, 0, &(process->op));
+    alive = main_decript(decript_ocp((err = (process->op.ocp & PARAM_C) >> 6)), vm->map + k, 0, &(process->op));
+    if (err == 0)
+        return (-1);
     k = (k + alive) % MEM_SIZE;
     j += alive;
     alive = main_decript(decript_ocp((process->op.ocp & PARAM_B) >> 4), vm->map + k, 1, &(process->op));
@@ -90,6 +96,8 @@ int save_op(t_process *process, t_vm *vm)
     j += alive;
     alive = main_decript(decript_ocp((process->op.ocp & PARAM_A) >> 2), vm->map + k, 2, &(process->op));
     k = (k + alive) % MEM_SIZE;
+    if ((process->op.ocp & 3) != 0)
+        return (-1);
     j += alive;
     return (j);
 }
