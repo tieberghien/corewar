@@ -147,6 +147,7 @@ int				lld(t_vm *vm, t_op *op, t_process *process);
 int				lldi(t_vm *vm, t_op *op, t_process *process);
 int				op_lfork(t_vm *vm, t_op *op, t_process *process);
 int				aff(t_vm *vm, t_op *op, t_process *process);
+void			verb_adv(t_vm *vm, t_process *process, int l);
 
 static int			(*g_op[])(t_vm *,t_op *, t_process *) = {&live, &ld, &st, &add, &sub, &op_and, &op_or, &op_xor, &zjmp, &ldi, &sti, &op_fork, &lld, &lldi, &op_lfork, &aff};
 

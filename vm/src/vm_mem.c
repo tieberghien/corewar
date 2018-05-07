@@ -24,23 +24,26 @@ void p_turn(t_vm *vm, t_process *process)
         if (vm->map[process->pc] > 0 && vm->map[process->pc] <= 16)
         {
             process->op = g_optab[vm->map[process->pc] - 1];
+            process->op.ocp = vm->map[(process->pc + 1) % MEM_SIZE];
             process->op.dur--;
         }
         else
+        {
             process->pc = (process->pc + 1) % MEM_SIZE;
+        }
     }
     else if (process->op.dur == 1)
     {
-        if (vm->map[process->pc] == 9 || vm->map[process->pc] == 15 || vm->map[process->pc] == 12 || vm->map[process->pc] == 1)
+        if (process->op.op_code == 9 || process->op.op_code == 15 || process->op.op_code == 12 || process->op.op_code == 1)
         {
-            if (vm->map[process->pc] == 1)
+            if (process->op.op_code == 1)
                 process->live++;
             j = save_op_spec(process, vm);
         }
-        else if (vm->map[process->pc] > 1 && vm->map[process->pc] <= 16)
+        else if (process->op.op_code > 1 && process->op.op_code <= 16)
             j = save_op(process, vm);
-        if (vm->map[process->pc] > 0 && vm->map[process->pc] <= 16)
-            k = g_op[vm->map[process->pc] - 1](vm, &(process->op), process);
+        if (process->op.op_code > 0 && process->op.op_code <= 16)
+            k = g_op[process->op.op_code - 1](vm, &(process->op), process);
         if (process->op.op_code != 9 && k >= 0 && j > 0)
             process->pc = (process->pc + j) % MEM_SIZE;
         else if (k < 0 || j < 1)
