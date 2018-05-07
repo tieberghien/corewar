@@ -27,16 +27,20 @@ int check_alive(t_process **process, int flag)
     unsigned int i;
     t_process *tmp;
     t_process *tmp2;
+    int fexit;
 
     i = 0;
     if (!*process)
         return (-1);
     tmp = *process;
     tmp2 = NULL;
+    fexit = 0;
     while (tmp != NULL)
     {
         if (tmp->live == 0 || flag == 1)
         {
+            fexit = 1;
+            //ft_printf("%d ", tmp->number);
             if (!tmp2)
                 (*process) = tmp->next;
             else
@@ -49,12 +53,17 @@ int check_alive(t_process **process, int flag)
         }
         else
         {
+            //ft_printf("%d ", tmp->number);
             tmp->live = 0;
             tmp2 = tmp;
             tmp = tmp->next;
             i++;
         }
     }
+    //ft_putchar('\n');
+    //ft_putchar('\n');
+ //   if (fexit)
+ //       exit(1);
     if (i > 0)
         return (1);
     else 

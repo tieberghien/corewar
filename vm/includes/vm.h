@@ -79,7 +79,7 @@ typedef	struct		s_vm
 	int				last_live;
 	t_opts			*opts;
 	t_champs		*champs;
-	t_process		*process;
+	t_process		**process;
 }					t_vm;
 
 /*

@@ -59,14 +59,15 @@ int start_game(t_vm *vm)
     check = 0;
     vm->live_num = 0;
     tot_cycle = 0;
+    //ft_printf("Cycle to die is now %d\n", vm->next_cycle_group);
     while (1)
     {
         vm->cycle = vm->next_cycle_group;
-        //ft_printf("cycle to die -> %d\n", vm->next_cycle_group);
         while (vm->cycle > 0)
         {
+            ft_printf("It is now cycle %d\n", tot_cycle + 1);
             i = -1;
-            process = vm->process;
+            process = *(vm->process);
             while (process)
             {
                 //ft_printf("process_id - %d\n", process->champ);
@@ -79,15 +80,16 @@ int start_game(t_vm *vm)
             vm->c = tot_cycle;
             if (vm->opts->s_cycles != 0 && tot_cycle >= vm->opts->s_cycles)
                 return (-6);
-            //ft_printf("cycle -> %d\n", tot_cycle);
+
             vm->cycle--;
         }
-        if (check_alive(&(vm->process), 0) < 0)
+        if (check_alive(vm->process, 0) < 0)
             return (-1);
         check++;
         if (check >= MAX_CHECKS || vm->live_num >= NBR_LIVE)
         {
             vm->next_cycle_group -= CYCLE_DELTA;
+            ft_printf("Cycle to die is now %d\n", vm->next_cycle_group);
             check = 0;
         }
         if (vm->next_cycle_group < 0)
@@ -109,7 +111,6 @@ int install_champion(t_champs *champs, t_opts *opts, t_vm *vm)
     gap = (MEM_SIZE / opts->n_players);
     while ((unsigned int)++i < opts->n_players)
     {
-
         j = 0;
         pos = i * gap;
         process = ft_memalloc(sizeof(t_process));
@@ -121,8 +122,8 @@ int install_champion(t_champs *champs, t_opts *opts, t_vm *vm)
         process->op = g_optab[16];
         vm->ping++;
         process->number = vm->ping;
-        process->next = vm->process;
-        vm->process = process;
+        process->next = *(vm->process);
+        *(vm->process) = process;
         vm->last_live = champs[i].player_id;
         j = -1;
         while (++j < (int)champs[i].size)
@@ -138,6 +139,7 @@ int init_vm(t_champs *champs, t_opts *opts, t_vm *vm)
 {
     int i;
     t_op *op;
+    t_process *proc;
 
     op = NULL;
     vm->cycle = CYCLE_TO_DIE;
@@ -145,20 +147,12 @@ int init_vm(t_champs *champs, t_opts *opts, t_vm *vm)
     vm->next_cycle_group = CYCLE_TO_DIE;
     vm->opts = opts;
     vm->champs = champs;
-    vm->process = NULL;
-    /*
-    if (opts->n_players == 1)
-    {
-        verbose_zero(champs);
-        return (0);
-    }*/
+    proc = NULL;
+    vm->process = &proc;
     if (!(vm->map = (unsigned char*)malloc(sizeof(unsigned char) * MEM_SIZE)))
         return (-1);
     if (!(vm->color = (int*)malloc(sizeof(unsigned char) * MEM_SIZE)))
         return (-1);
-    i = -1;
-    //while ((unsigned int)++i < opts->n_players)
-      //  ft_printf("%s\n", champs[i].name);
     i = -1;
     while (++i < MEM_SIZE)
     {
@@ -171,8 +165,8 @@ int init_vm(t_champs *champs, t_opts *opts, t_vm *vm)
     if (start_game(vm) < -5)
     {
         print_vm_mem(vm);
+        check_alive(vm->process, 1);
         return (1000);
-
     }
     else
     {
@@ -180,7 +174,7 @@ int init_vm(t_champs *champs, t_opts *opts, t_vm *vm)
         while (champs[i].player_id != vm->last_live)
             i++;
         verbose_zero(champs + i);
-        check_alive(&(vm->process), 1);
+        check_alive(vm->process, 1);
     }
     //print_vm_mem(vm);
     return (0);
