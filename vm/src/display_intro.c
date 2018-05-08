@@ -56,7 +56,7 @@ void	verbose_zero(t_champs *champ)
 	ft_putstr(" (");
 	ft_putstr(champ->name);
 	ft_putchar(')');
-	ft_putstr(" a gagne\n");	
+	ft_putstr(" a gagne\n");
 }
 
 void print_vm_mem(t_vm *vm)

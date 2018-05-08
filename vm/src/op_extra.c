@@ -39,7 +39,7 @@ int check_alive(t_process **process, int flag)
     {
         if (tmp->live == 0 || flag == 1)
         {
-            fexit = 1;
+            //fexit = 1;
             //ft_printf("%d ", tmp->number);
             if (!tmp2)
                 (*process) = tmp->next;

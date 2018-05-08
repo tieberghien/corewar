@@ -60,7 +60,7 @@ int save_op_spec(t_process *process, t_vm *vm)
  
     k = process->pc;
     j = 0;
-    alive = (vm->map[k] == 1) ? 4 : 2;
+    alive = (process->op.op_code == 1) ? 4 : 2;
     k = (k + 1) % MEM_SIZE;
     j++;
     process->op.params[0] = toint(vm, k, alive);

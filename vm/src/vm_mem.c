@@ -19,21 +19,10 @@ void p_turn(t_vm *vm, t_process *process)
     k = 0;
     if (process->op.dur > 1)
         process->op.dur--;
-    else if(process->op.dur == 0)
-    {
-        if (vm->map[process->pc] > 0 && vm->map[process->pc] <= 16)
-        {
-            process->op = g_optab[vm->map[process->pc] - 1];
-            process->op.ocp = vm->map[(process->pc + 1) % MEM_SIZE];
-            process->op.dur--;
-        }
-        else
-        {
-            process->pc = (process->pc + 1) % MEM_SIZE;
-        }
-    }
     else if (process->op.dur == 1)
-    {
+    {   
+        k = 0;
+        process->op.dur--;
         if (process->op.op_code == 9 || process->op.op_code == 15 || process->op.op_code == 12 || process->op.op_code == 1)
         {
             if (process->op.op_code == 1)
@@ -44,13 +33,30 @@ void p_turn(t_vm *vm, t_process *process)
             j = save_op(process, vm);
         if (process->op.op_code > 0 && process->op.op_code <= 16)
             k = g_op[process->op.op_code - 1](vm, &(process->op), process);
-        if (process->op.op_code != 9 && k >= 0 && j > 0)
+        if (process->op.op_code != 9 && k >= 0)
             process->pc = (process->pc + j) % MEM_SIZE;
-        else if (k < 0 || j < 1)
-            process->pc = (process->pc + 1) % MEM_SIZE;
-        process->op.dur--;
+        else if (k < 0)
+            process->pc = (process->pc + 2) % MEM_SIZE;
+        //if (vm->c + 1 == 22694)
+          //  ft_printf("process : %d ocp : %d op : %d map : %d dur : %d\n", process->number, process->op.ocp, process->op.op_code, process->pc);
     }
+    else if (process->op.dur <= 0)
+    {
+        if (vm->map[process->pc] > 0 && vm->map[process->pc] <= 16)
+        {
+            process->op = g_optab[vm->map[process->pc] - 1];
+            process->op.ocp = vm->map[(process->pc + 1) % MEM_SIZE];
+            process->op.dur--;
+            
+        }
+        else
+            process->pc = (process->pc + 1) % MEM_SIZE;
+
+    }
+    //if (process->number == 1241)
+      //  ft_printf("process : %d dur : %d op : %d map : %d\n", process->number, process->op.dur, process->op.op_code, process->pc);
 }
+
 
 int start_game(t_vm *vm)
 {
@@ -73,9 +79,7 @@ int start_game(t_vm *vm)
             process = *(vm->process);
             while (process)
             {
-                //ft_printf("process_id - %d\n", process->champ);
-                if (process->live >= 0)
-                    p_turn(vm, process);
+                p_turn(vm, process);
                 process = process->next;
             }
             //ft_printf("\n");
@@ -83,7 +87,6 @@ int start_game(t_vm *vm)
             vm->c = tot_cycle;
             if (vm->opts->s_cycles != 0 && tot_cycle >= vm->opts->s_cycles)
                 return (-6);
-
             vm->cycle--;
         }
         if (check_alive(vm->process, 0) < 0)
