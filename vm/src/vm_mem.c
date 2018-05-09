@@ -74,7 +74,6 @@ void p_turn(t_vm *vm, t_process *process)
       //  ft_printf("process : %d dur : %d op : %d map : %d\n", process->number, process->op.dur, process->op.op_code, process->pc);
 }
 
-
 int start_game(t_vm *vm)
 {
     int i;
@@ -105,6 +104,8 @@ int start_game(t_vm *vm)
             if (vm->opts->s_cycles != 0 && tot_cycle >= vm->opts->s_cycles)
                 return (-6);
             vm->cycle--;
+            if (vm->next_cycle_group < 0)
+                return (1);
         }
         if (check_alive(vm->process, 0) < 0)
             return (-1);
@@ -114,9 +115,9 @@ int start_game(t_vm *vm)
             vm->next_cycle_group -= CYCLE_DELTA;
             ft_printf("Cycle to die is now %d\n", vm->next_cycle_group);
             check = 0;
-        }
+        }/*
         if (vm->next_cycle_group < 0)
-            return (1);
+            return (1);*/
         //ft_printf("live for cycle   %d\n", vm->live_num);
         vm->live_num = 0;
     }
