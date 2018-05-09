@@ -274,20 +274,12 @@ int sti(t_vm *vm, t_op *op, t_process *process)
     unsigned char *idx_val;
     int k;
 
+    if (((op->ocp & PARAM_C) >> 6) != 1 || ((op->ocp & PARAM_B) >> 4) == 0 || ((op->ocp & PARAM_A) >> 2) < 2)
+       return (0);
     if (op->params[0] <= 0 || op->params[0] > REG_NUMBER)
-        return (-1);
+        return (0);
     //ft_printf("op : %s - params : %d_%d_%d - pc : %d\n", op->name, op->params[0], op->params[1], op->params[2], process->pc);
     vm->map[0] = vm->map[0];
-    k = 3;
-    if (((op->ocp & PARAM_B) >> 4) == 1)
-        k++;
-    if (((op->ocp & PARAM_B) >> 4) != 1)
-        k += 2;
-    if (((op->ocp & PARAM_A) >> 2) == 1)
-        k += 1;
-    if (((op->ocp & PARAM_A) >> 2) != 1)
-        k += 2;
-    //verb_adv(vm, process, k++);
     par_a = (((op->ocp & PARAM_B) >> 4) == 1) ? process->registre[op->params[1] - 1] : op->params[1];
     par_b = (((op->ocp & PARAM_A) >> 2) == 1) ? process->registre[op->params[2] - 1] : op->params[2];
     tointhex((unsigned int)process->registre[op->params[0] - 1], &idx_val, vm);
@@ -332,14 +324,12 @@ int st(t_vm *vm, t_op *op, t_process *process)
     //ft_printf("op : %s - params : %d_%d- pc : %d\n", op->name, op->params[0], op->params[1], process->pc);
     if (((op->ocp & PARAM_C) >> 6) != 1 || ((op->ocp & PARAM_B) >> 4) == 2 || ((op->ocp & PARAM_A) >> 2) != 0)
        return (0);
-    //if (((op->ocp & PARAM_C) >> 6) == 0)
-      //  return (0);
     if (((op->ocp & PARAM_B) >> 4) == 1)
         process->registre[op->params[1] - 1] = process->registre[op->params[0] - 1];
     else
     {
         
-        if ((op->params[0] <= 0 || op->params[0] > REG_NUMBER) && ((op->ocp & PARAM_C) >> 6) == 1)
+        if ((op->params[0] <= 0 || op->params[0] > REG_NUMBER))
         {
             //verb_adv(vm, process, 5);
             return (0);
@@ -367,10 +357,8 @@ int st(t_vm *vm, t_op *op, t_process *process)
 
 int ld(t_vm *vm, t_op *op, t_process *process)
 {
-    if (((op->ocp & PARAM_C) >> 6) == 1 || ((op->ocp & PARAM_B) >> 4) > 1 || ((op->ocp & PARAM_A) >> 2) != 0)
+    if (((op->ocp & PARAM_C) >> 6) < 2 || ((op->ocp & PARAM_B) >> 4) > 1 || ((op->ocp & PARAM_A) >> 2) != 0)
        return (0);
-    if (((op->ocp & PARAM_C) >> 6) == 0)
-        return (0);
     vm->map[0] = vm->map[0];
     if (op->params[1] > 0 && op->params[1] < REG_NUMBER)
         process->registre[op->params[1] - 1] = (((op->ocp & PARAM_C) >> 6) == 2) ? op->params[0] : res_add(op->params[0], process->pc);
