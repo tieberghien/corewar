@@ -30,13 +30,31 @@ void p_turn(t_vm *vm, t_process *process)
             j = save_op_spec(process, vm);
         }
         else if (process->op.op_code > 1 && process->op.op_code <= 16)
+        {
+            process->op.ocp = vm->map[(process->pc + 1) % MEM_SIZE];
             j = save_op(process, vm);
+        }
+        if (process->op.op_code != 9 &&  process->op.op_code != 3  &&  process->op.op_code != 11)
+        {
+            if (j >= 0)
+                verb_adv(vm, process, j);
+            else 
+                verb_adv(vm, process, 2);
+        }
         if (process->op.op_code > 0 && process->op.op_code <= 16)
             k = g_op[process->op.op_code - 1](vm, &(process->op), process);
-        if (process->op.op_code != 9 && k >= 0)
+        if (process->op.op_code != 9 &&  (process->op.op_code == 3  ||  process->op.op_code == 11))
+        {
+            if (j >= 0)
+                verb_adv(vm, process, j);
+            else 
+                verb_adv(vm, process, 2);
+        }
+        if (process->op.op_code != 9 && k >= 0 && j >= 0)
             process->pc = (process->pc + j) % MEM_SIZE;
-        else if (k < 0)
+        else if (k < 0 || j < 0)
             process->pc = (process->pc + 2) % MEM_SIZE;
+       
         //if (vm->c + 1 == 22694)
           //  ft_printf("process : %d ocp : %d op : %d map : %d dur : %d\n", process->number, process->op.ocp, process->op.op_code, process->pc);
     }
@@ -45,7 +63,6 @@ void p_turn(t_vm *vm, t_process *process)
         if (vm->map[process->pc] > 0 && vm->map[process->pc] <= 16)
         {
             process->op = g_optab[vm->map[process->pc] - 1];
-            process->op.ocp = vm->map[(process->pc + 1) % MEM_SIZE];
             process->op.dur--;
             
         }
