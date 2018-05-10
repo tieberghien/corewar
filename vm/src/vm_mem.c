@@ -6,7 +6,7 @@
 /*   By: syboeuf <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:39:56 by syboeuf           #+#    #+#             */
-/*   Updated: 2018/05/10 16:45:32 by syboeuf          ###   ########.fr       */
+/*   Updated: 2018/05/10 19:40:41 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	p_turn(t_vm *vm, t_process *process)
 	}
 }
 
-int		start_game(t_vm *vm)
+int		start_game(t_vm *vm, t_opts *opts)
 {
 	int				i;
 	t_process		*process;
@@ -87,7 +87,7 @@ int		start_game(t_vm *vm)
 		vm->cycle = vm->next_cycle_group;
 		while (vm->cycle > 0)
 		{
-			ft_printf("It is now cycle %d\n", tot_cycle + 1);
+			cycle_to_die(opts, tot_cycle, 1);
 			i = -1;
 			process = *(vm->process);
 			while (process)
@@ -107,7 +107,7 @@ int		start_game(t_vm *vm)
 		if (check >= MAX_CHECKS || vm->live_num >= NBR_LIVE)
 		{
 			vm->next_cycle_group -= CYCLE_DELTA;
-			ft_printf("Cycle to die is now %d\n", vm->next_cycle_group);
+			cycle_to_die(opts, vm->next_cycle_group, 2);
 			check = 0;
 		}
 		if (vm->next_cycle_group < 0)
@@ -174,7 +174,7 @@ int		init_vm(t_champs *champs, t_opts *opts, t_vm *vm)
 	}
 	if (install_champion(champs, opts, vm))
 		return (ft_printf("Error, the map is not initilisated\n"));
-	if (start_game(vm) < -5)
+	if (start_game(vm, opts) < -5)
 	{
 		print_vm_mem(vm);
 		check_alive(vm->process, 1);

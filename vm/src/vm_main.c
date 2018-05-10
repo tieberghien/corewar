@@ -6,7 +6,7 @@
 /*   By: syboeuf <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:35:43 by syboeuf           #+#    #+#             */
-/*   Updated: 2018/05/10 19:07:22 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/05/10 19:40:15 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,18 @@ int		parsing_arg_b(char *str, t_opts *opts, int *j, t_champs *champs)
 	return (0);
 }
 
+int		parsing_arg_d(t_champs *champ, t_opts *opts, int *j)
+{
+	champ[opts->n_players].alive = 0;
+	if (champ[opts->n_players].player_id == 0)
+		champ[opts->n_players].player_id = -(1 + opts->n_players);
+	opts->n_players++;
+	if (opts->n_players > MAX_PLAYERS)
+		return (ft_printf("too many player\n"));
+	*j = 0;
+	return (0);
+}
+
 int		parsing_arg_c(char *av, t_opts *opts, t_champs *champ, int *j)
 {
 	char *par;
@@ -59,13 +71,7 @@ int		parsing_arg_c(char *av, t_opts *opts, t_champs *champ, int *j)
 		if (ft_strcmp(".cor", par) || par[-1] == '/')
 			return (ft_printf("invalid player"));
 		champ[opts->n_players].file_name = av;
-		champ[opts->n_players].alive = 0;
-		if (champ[opts->n_players].player_id == 0)
-			champ[opts->n_players].player_id = -(1 + opts->n_players);
-		opts->n_players++;
-		if (opts->n_players > MAX_PLAYERS)
-			return (ft_printf("too many player\n"));
-		*j = 0;
+		parsing_arg_d(champ, opts, j);
 	}
 	else
 		return (ft_printf("invalid player\n"));

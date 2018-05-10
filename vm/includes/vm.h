@@ -126,7 +126,6 @@ int				toint(t_vm *vm, int i, int size);
 int 			mv_mem(int *pos, int move, t_vm *vm, t_op **op);
 void    		ft_opdel(t_op **op);
 t_op   			*ft_opdup(t_op op);
-//void			parse_args(int ac, char **av, t_opts *opts);
 int				display_intro(t_champs *champs, t_opts opts);
 void			verbose_zero(t_champs *champs);
 void			verbose_one(t_champs champs);
@@ -156,6 +155,8 @@ int				aff(t_vm *vm, t_op *op, t_process *process);
 void			verb_adv(t_vm *vm, t_process *process, int l);
 void			return_failure(char *str, char *op);
 void			free_vm(t_vm *vm, t_opts opts);
+void			cycle_to_die(t_opts *opts, unsigned int tot_cycle, int flag);
+int				start_game(t_vm *vm, t_opts *opts);
 
 static int			(*g_op[])(t_vm *,t_op *, t_process *) = {&live, &ld, &st, &add, &sub, &op_and, &op_or, &op_xor, &zjmp, &ldi, &sti, &op_fork, &lld, &lldi, &op_lfork, &aff};
 

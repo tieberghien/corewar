@@ -6,7 +6,7 @@
 /*   By: syboeuf <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:50:19 by syboeuf           #+#    #+#             */
-/*   Updated: 2018/05/10 18:37:55 by syboeuf          ###   ########.fr       */
+/*   Updated: 2018/05/10 19:24:42 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ int		live(t_vm *vm, t_op *op, t_process *process)
 	{
 		if (op->params[0] == vm->champs[i].player_id)
 		{
-			//verbose_one(*(vm->champs + i));
+			verbose_one(*(vm->champs + i));
 			vm->last_live = vm->champs[i].player_id;
 			return (process->carry);
 		}
