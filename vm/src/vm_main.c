@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   vm_main.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: syboeuf <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/05/10 16:35:43 by syboeuf           #+#    #+#             */
+/*   Updated: 2018/05/10 16:39:35 by syboeuf          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "vm.h"
 
-int	parsing_arg_b(char *str, t_opts *opts, int *j, t_champs *champs)
+int		parsing_arg_b(char *str, t_opts *opts, int *j, t_champs *champs)
 {
 	int	k;
 
@@ -26,7 +38,7 @@ int	parsing_arg_b(char *str, t_opts *opts, int *j, t_champs *champs)
 	return (0);
 }
 
-int parsing_arg_c(char *av, t_opts *opts, t_champs *champ, int *j)
+int		parsing_arg_c(char *av, t_opts *opts, t_champs *champ, int *j)
 {
 	char *par;
 
@@ -42,14 +54,14 @@ int parsing_arg_c(char *av, t_opts *opts, t_champs *champ, int *j)
 	else if (ft_strcmp(av, ".cor") &&
 			(par = ft_strstr(av, ".cor")) && *j < 1)
 	{
-		if (ft_strcmp(".cor",par) || par[-1] == '/')
-			return(ft_printf("invalid player"));
+		if (ft_strcmp(".cor", par) || par[-1] == '/')
+			return (ft_printf("invalid player"));
 		champ[opts->n_players].file_name = av;
 		champ[opts->n_players].alive = 0;
 		if (champ[opts->n_players].player_id == 0)
 			champ[opts->n_players].player_id = -(1 + opts->n_players);
 		opts->n_players++;
-		if (opts->n_players> MAX_PLAYERS)
+		if (opts->n_players > MAX_PLAYERS)
 			return (ft_printf("too many player\n"));
 		*j = 0;
 	}
@@ -58,11 +70,10 @@ int parsing_arg_c(char *av, t_opts *opts, t_champs *champ, int *j)
 	return (0);
 }
 
-int	parsing_arg_a(int ac, char **av, t_opts *opts, t_champs *champ)
+int		parsing_arg_a(int ac, char **av, t_opts *opts, t_champs *champ)
 {
 	int	i;
 	int j;
-
 
 	i = 0;
 	j = 0;
@@ -74,13 +85,13 @@ int	parsing_arg_a(int ac, char **av, t_opts *opts, t_champs *champ)
 	return (0);
 }
 
-int	main(int ac, char **av)
+int		main(int ac, char **av)
 {
-	t_opts opts;
-	t_champs champs[MAX_PLAYERS];
-	t_vm vm;
-	unsigned int i;
-	int j;
+	t_opts			opts;
+	t_champs		champs[MAX_PLAYERS];
+	t_vm			vm;
+	unsigned int	i;
+	int				j;
 
 	i = 0;
 	j = -1;
@@ -92,12 +103,6 @@ int	main(int ac, char **av)
 	opts.n_players = 0;
 	if (parsing_arg_a(ac, av, &opts, champs))
 		return (1);
-	//while (i < opts.n_players)
-	//{
-	//	ft_printf("player %s id %d\n", champs[i].file_name, champs[i].player_id);
-	//	i++;
-	//}
-	//ft_printf("number of player: %d\n", opts.n_players);
 	if (oc_file(champs, &opts) > 0)
 		return (fun_exit(NULL, champs, &opts));
 	if (init_vm(champs, &opts, &vm))

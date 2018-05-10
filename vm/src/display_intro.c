@@ -1,13 +1,25 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   display_intro.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: syboeuf <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/05/10 16:13:17 by syboeuf           #+#    #+#             */
+/*   Updated: 2018/05/10 16:17:07 by syboeuf          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "vm.h"
 
 void	verbose_one(t_champs champ)
 {
-	ft_putstr("un processus dit que le joueur "); 
+	ft_putstr("un processus dit que le joueur ");
 	ft_putstr(champ.name);
 	ft_putstr(" est en vie\n");
 }
 
-int fun_exit(char *str, t_champs *champs, t_opts *opts)
+int		fun_exit(char *str, t_champs *champs, t_opts *opts)
 {
 	int i;
 
@@ -26,7 +38,7 @@ int fun_exit(char *str, t_champs *champs, t_opts *opts)
 	return (1);
 }
 
-int	display_intro(t_champs *champs, t_opts opts)
+int		display_intro(t_champs *champs, t_opts opts)
 {
 	int i;
 	int j;
@@ -46,7 +58,7 @@ int	display_intro(t_champs *champs, t_opts opts)
 		ft_putstr(champs[i].comment);
 		ft_putendl("\") !");
 	}
-	return(0);
+	return (0);
 }
 
 void	verbose_zero(t_champs *champ)
@@ -59,29 +71,25 @@ void	verbose_zero(t_champs *champ)
 	ft_putstr(" a gagne\n");
 }
 
-void print_vm_mem(t_vm *vm)
+void	print_vm_mem(t_vm *vm)
 {
-    int i;
-	int color;
+	int	i;
+	int	color;
 
-    i = 0;
+	i = 0;
 	color = 1;
-    ft_putstr("0x");
-    while (i < MEM_SIZE)
-    {
-        if (i % 64 == 0)
-            ft_printf("%#.4x : ", i);
-		//if (vm->color[i])
-		//	ft_printf("\x1B[3%dm", vm->color[i]);
-        if (vm->map[i] < 16)
-            ft_putchar('0');
-        ft_printf("%hhx", vm->map[i]);
-		
-        i++;
-        if (i % 1 == 0)
-            ft_putchar(' ');
-        if (i % 64 == 0)
-            ft_putchar('\n');
-		//ft_putstr("\x1B[0m");
-    }
+	ft_putstr("0x");
+	while (i < MEM_SIZE)
+	{
+		if (i % 64 == 0)
+			ft_printf("%#.4x : ", i);
+		if (vm->map[i] < 16)
+			ft_putchar('0');
+		ft_printf("%hhx", vm->map[i]);
+		i++;
+		if (i % 1 == 0)
+			ft_putchar(' ');
+		if (i % 64 == 0)
+			ft_putchar('\n');
+	}
 }
