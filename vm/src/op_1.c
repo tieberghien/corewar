@@ -84,7 +84,7 @@ int lldi(t_vm *vm, t_op *op, t_process *process)
     if ((k = (((op->ocp & PARAM_B)) >> 4) == 1) && (op->params[1] >= REG_NUMBER || op->params[1] < 1))
         return (process->carry);
     par_b = (k == 1) ? process->registre[op->params[1] - 1] : (short)op->params[1];
-    process->registre[op->params[2] - 1] = toint(vm , par_a + par_b, 4);
+    process->registre[op->params[2] - 1] = toint(vm ,par_a + par_b, 4);
     if (process->registre[op->params[2] - 1] == 0)
         process->carry = 1;
     else
@@ -344,7 +344,6 @@ int sti(t_vm *vm, t_op *op, t_process *process)
     while (++k < 4)
     {
         vm->map[(par_a + k) % MEM_SIZE] = idx_val[k];
-        vm->color[(par_a + k) % MEM_SIZE] = process->champ + 1;
     }    
     ft_memdel((void**)&idx_val);
     return (process->carry);
@@ -395,7 +394,6 @@ int st(t_vm *vm, t_op *op, t_process *process)
         while (++k < 4)
         {
             vm->map[(op->params[1] + k) % MEM_SIZE] = idx_val[k];
-            vm->color[(op->params[1] + k) % MEM_SIZE] = process->champ + 1;
             //ft_printf("%hhx ", idx_val[k]);
         }
         ft_memdel((void**)&idx_val);

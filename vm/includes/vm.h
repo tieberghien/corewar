@@ -69,7 +69,6 @@ typedef	struct		s_vm
 {
 	int 			ping;
 	unsigned char	*map;
-	int				*color;
 	char			*last;
 	int				*players_map;
 	int			 	cycle;

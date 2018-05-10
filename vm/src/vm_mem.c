@@ -36,23 +36,17 @@ void p_turn(t_vm *vm, t_process *process)
         }
         if (process->op.op_code != 9 &&  process->op.op_code != 3  &&  process->op.op_code != 11)
         {
-            if (j >= 0)
                 verb_adv(vm, process, j);
-            else 
-                verb_adv(vm, process, 2);
         }
         if (process->op.op_code > 0 && process->op.op_code <= 16)
             k = g_op[process->op.op_code - 1](vm, &(process->op), process);
         if (process->op.op_code != 9 &&  (process->op.op_code == 3  ||  process->op.op_code == 11))
         {
-            if (j >= 0)
                 verb_adv(vm, process, j);
-            else 
-                verb_adv(vm, process, 2);
         }
-        if (process->op.op_code != 9 && k >= 0 && j >= 0)
+        if (process->op.op_code != 9 && k >= 0)
             process->pc = (process->pc + j) % MEM_SIZE;
-        else if (k < 0 || j < 0)
+        else if (k < 0)
             process->pc = (process->pc + 2) % MEM_SIZE;
        
         //if (vm->c + 1 == 22694)
@@ -70,8 +64,8 @@ void p_turn(t_vm *vm, t_process *process)
             process->pc = (process->pc + 1) % MEM_SIZE;
 
     }
-    //if (process->number == 1241)
-      //  ft_printf("process : %d dur : %d op : %d map : %d\n", process->number, process->op.dur, process->op.op_code, process->pc);
+    //if (process->number == 82)
+    //    ft_printf("process : %d ocp : %d op : %d map : %d\n", process->number, process->op.ocp, process->op.op_code, process->pc);
 }
 
 int start_game(t_vm *vm)
@@ -151,7 +145,6 @@ int install_champion(t_champs *champs, t_opts *opts, t_vm *vm)
         while (++j < (int)champs[i].size)
         {
             vm->map[j + pos] = champs[i].instructions[j];
-            vm->color[j+pos] = i+1;
         }
     }
     return (0);
@@ -173,13 +166,10 @@ int init_vm(t_champs *champs, t_opts *opts, t_vm *vm)
     vm->process = &proc;
     if (!(vm->map = (unsigned char*)malloc(sizeof(unsigned char) * MEM_SIZE)))
         return (-1);
-    if (!(vm->color = (int*)malloc(sizeof(unsigned char) * MEM_SIZE)))
-        return (-1);
     i = -1;
     while (++i < MEM_SIZE)
     {
         vm->map[i] = 0;
-        vm->color[i] = 0;
     }
     if (install_champion(champs, opts, vm))
         return (ft_printf("Error, the map is not initilisated\n"));

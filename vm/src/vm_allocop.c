@@ -84,8 +84,8 @@ int save_op(t_process *process, t_vm *vm)
     k = (k + 1) % MEM_SIZE;
     j++;
     alive = main_decript(decript_ocp((err = (process->op.ocp & PARAM_C) >> 6)), vm->map + k, 0, &(process->op));
-    if (err == 0)
-        return (-1);
+    //if (err == 0)
+    //    return (-1);
     k = (k + alive) % MEM_SIZE;
     j += alive;
     if (process->op.argc > 1)
