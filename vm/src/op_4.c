@@ -6,7 +6,7 @@
 /*   By: syboeuf <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 18:32:36 by syboeuf           #+#    #+#             */
-/*   Updated: 2018/05/10 19:06:13 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/05/10 19:10:54 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int		aff(t_vm *vm, t_op *op, t_process *process)
 
 int		op_lfork(t_vm *vm, t_op *op, t_process *process)
 {
-	t_process   *new;
+	t_process	*new;
 
 	if (!(new = ft_memalloc(sizeof(t_process))))
 		return (-1);

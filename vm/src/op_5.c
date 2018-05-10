@@ -6,7 +6,7 @@
 /*   By: syboeuf <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 18:36:35 by syboeuf           #+#    #+#             */
-/*   Updated: 2018/05/10 18:37:36 by syboeuf          ###   ########.fr       */
+/*   Updated: 2018/05/10 18:58:08 by syboeuf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int		op_fork(t_vm *vm, t_op *op, t_process *process)
 {
-	t_process   *new;
+	t_process	*new;
 
 	if (!(new = ft_memalloc(sizeof(t_process))))
 		return (-1);
@@ -47,10 +47,10 @@ int		sti2(t_op *op, int *k)
 
 int		sti(t_vm *vm, t_op *op, t_process *process)
 {
-	unsigned int    par_a;
-	unsigned int    par_b;
-	unsigned char   *idx_val;
-	int             k;
+	unsigned int	par_a;
+	unsigned int	par_b;
+	unsigned char	*idx_val;
+	int				k;
 
 	if (sti2(op, &k) == 0)
 		return (0);
