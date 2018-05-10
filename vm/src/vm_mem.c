@@ -47,10 +47,11 @@ void p_turn(t_vm *vm, t_process *process)
         if (process->op.op_code != 9 && k >= 0)
             process->pc = (process->pc + j) % MEM_SIZE;
         else if (k < 0)
+     
             process->pc = (process->pc + 2) % MEM_SIZE;
        
-        //if (vm->c + 1 == 22694)
-          //  ft_printf("process : %d ocp : %d op : %d map : %d dur : %d\n", process->number, process->op.ocp, process->op.op_code, process->pc);
+        //if (vm->c + 1 == 11248)
+        //    ft_printf("process : %d ocp : %d op : %d map : %d dur : %d\n", process->number, process->op.ocp, process->op.op_code, process->pc);
     }
     else if (process->op.dur <= 0)
     {
@@ -58,14 +59,13 @@ void p_turn(t_vm *vm, t_process *process)
         {
             process->op = g_optab[vm->map[process->pc] - 1];
             process->op.dur--;
-            
         }
         else
             process->pc = (process->pc + 1) % MEM_SIZE;
 
     }
     //if (process->number == 82)
-    //    ft_printf("process : %d ocp : %d op : %d map : %d\n", process->number, process->op.ocp, process->op.op_code, process->pc);
+      //  ft_printf("process : %d ocp : %d op : %d map : %d\n", process->number, process->op.ocp, process->op.op_code, process->pc);
 }
 
 int start_game(t_vm *vm)
@@ -78,6 +78,8 @@ int start_game(t_vm *vm)
     check = 0;
     vm->live_num = 0;
     tot_cycle = 0;
+
+
     //ft_printf("Cycle to die is now %d\n", vm->next_cycle_group);
     while (1)
     {

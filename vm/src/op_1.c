@@ -26,10 +26,8 @@ void	verb_adv(t_vm *vm, t_process *process, int l)
 
 int	aff(t_vm *vm, t_op *op, t_process *process)
 {
-    if (((op->ocp & PARAM_C) >> 6) == 1 || ((op->ocp & PARAM_B) >> 4) != 0 || ((op->ocp & PARAM_A) >> 2) != 0)
+    if (((op->ocp & PARAM_C) >> 6) != 1 || ((op->ocp & PARAM_B) >> 4) != 0 || ((op->ocp & PARAM_A) >> 2) != 0)
        return (0);
-    if (((op->ocp & PARAM_C) >> 6) == 0)
-        return (0);
     //ft_printf("op : %s - params : %d_%d_%d - pc : %d\n", op->name, op->params[0], op->params[1], op->params[2], process->pc);
     vm->map[0] = vm->map[0];
 	if (process->registre[op->params[0] - 1] == 0)
@@ -75,13 +73,13 @@ int lldi(t_vm *vm, t_op *op, t_process *process)
        return (0);
     if (op->params[2] <= 0 || op->params[2] > REG_NUMBER)
         return (0);
-    if ((k = (((op->ocp & PARAM_C)) >> 6) == 1) && (op->params[0] >= REG_NUMBER || op->params[0] < 1))
+    if ((k = (((op->ocp & PARAM_C)) >> 6) == 1) && (op->params[0] > REG_NUMBER || op->params[0] < 1))
         return (process->carry);
     if (k == 3)
         par_a = (short)op->params[0];
     else
         par_a = (k == 1) ? process->registre[op->params[0] - 1] : op->params[0];
-    if ((k = (((op->ocp & PARAM_B)) >> 4) == 1) && (op->params[1] >= REG_NUMBER || op->params[1] < 1))
+    if ((k = (((op->ocp & PARAM_B)) >> 4) == 1) && (op->params[1] > REG_NUMBER || op->params[1] < 1))
         return (process->carry);
     par_b = (k == 1) ? process->registre[op->params[1] - 1] : (short)op->params[1];
     process->registre[op->params[2] - 1] = toint(vm ,par_a + par_b, 4);
@@ -97,7 +95,7 @@ int lld(t_vm *vm, t_op *op, t_process *process)
     if (((op->ocp & PARAM_C) >> 6) < 2 || ((op->ocp & PARAM_B) >> 4) > 1 || ((op->ocp & PARAM_A) >> 2) != 0)
        return (0);
     vm->map[0] = vm->map[0];
-    if (op->params[1] > 0 && op->params[1] < REG_NUMBER)
+    if (op->params[1] > 0 && op->params[1] <= REG_NUMBER)
         process->registre[op->params[1] - 1] = op->params[0];
     else
         return (0);
@@ -123,13 +121,13 @@ int ldi(t_vm *vm, t_op *op, t_process *process)
        return (0);
     if (op->params[2] <= 0 || op->params[2] > REG_NUMBER)
         return (0);
-    if ((k = (((op->ocp & PARAM_C)) >> 6) == 1) && (op->params[0] >= REG_NUMBER || op->params[0] < 1))
+    if ((k = (((op->ocp & PARAM_C)) >> 6) == 1) && (op->params[0] > REG_NUMBER || op->params[0] < 1))
         return (process->carry);
     if (k == 3)
         par_a = (short)op->params[0];
     else
         par_a = (k == 1) ? process->registre[op->params[0] - 1] : op->params[0];
-    if ((k = (((op->ocp & PARAM_B)) >> 4) == 1) && (op->params[1] >= REG_NUMBER || op->params[1] < 1))
+    if ((k = (((op->ocp & PARAM_B)) >> 4) == 1) && (op->params[1] > REG_NUMBER || op->params[1] < 1))
         return (process->carry);
     par_b = (k == 1) ? process->registre[op->params[1] - 1] : (short)op->params[1];
     process->registre[op->params[2] - 1] = toint(vm , res_add(par_a + par_b, process->pc), 4);
@@ -151,19 +149,19 @@ int op_xor(t_vm *vm, t_op *op, t_process *process)
     vm->map[0] = vm->map[0];
     if (((op->ocp & PARAM_C) >> 6) == 0 || ((op->ocp & PARAM_B) >> 4) == 0 || ((op->ocp & PARAM_A) >> 2) != 1)
         return (0);
-    if ((err = (((op->ocp & PARAM_C)) >> 6) == 1) && (op->params[0] >= REG_NUMBER || op->params[0] < 1))
+    if ((err = (((op->ocp & PARAM_C)) >> 6) == 1) && (op->params[0] > REG_NUMBER || op->params[0] < 1))
         return (process->carry);
     if (err == 3)
         par_a = res_add(op->params[0] , process->pc);
     else
         par_a = (err == 1) ? process->registre[op->params[0] - 1] : op->params[0];
-    if (((err = ((op->ocp & PARAM_B) >> 4)) == 1) && (op->params[1] >= REG_NUMBER || op->params[1] < 1))
+    if (((err = ((op->ocp & PARAM_B) >> 4)) == 1) && (op->params[1] > REG_NUMBER || op->params[1] < 1))
         return (process->carry);
     if (err == 3)
         par_b = res_add(op->params[1] , process->pc);
     else
         par_b = (err == 1) ? process->registre[op->params[1] - 1] : op->params[1];
-    if (op->params[2] >= REG_NUMBER || op->params[2] < 1)
+    if (op->params[2] > REG_NUMBER || op->params[2] < 1)
         return (process->carry);
     process->registre[op->params[2] - 1] = par_a ^ par_b;
     if (process->registre[op->params[2] - 1] == 0)
@@ -184,19 +182,19 @@ int op_or(t_vm *vm, t_op *op, t_process *process)
     vm->map[0] = vm->map[0];
     if (((op->ocp & PARAM_C) >> 6) == 0 || ((op->ocp & PARAM_B) >> 4) == 0 || ((op->ocp & PARAM_A) >> 2) != 1)
         return (0);
-    if ((err = (((op->ocp & PARAM_C)) >> 6) == 1) && (op->params[0] >= REG_NUMBER || op->params[0] < 1))
+    if ((err = (((op->ocp & PARAM_C)) >> 6) == 1) && (op->params[0] > REG_NUMBER || op->params[0] < 1))
         return (process->carry);
     if (err == 3)
         par_a = res_add(op->params[0] , process->pc);
     else
         par_a = (err == 1) ? process->registre[op->params[0] - 1] : op->params[0];
-    if (((err = ((op->ocp & PARAM_B) >> 4)) == 1) && (op->params[1] >= REG_NUMBER || op->params[1] < 1))
+    if (((err = ((op->ocp & PARAM_B) >> 4)) == 1) && (op->params[1] > REG_NUMBER || op->params[1] < 1))
         return (process->carry);
     if (err == 3)
         par_b = res_add(op->params[1] , process->pc);
     else
         par_b = (err == 1) ? process->registre[op->params[1] - 1] : op->params[1];
-    if (op->params[2] >= REG_NUMBER || op->params[2] < 1)
+    if (op->params[2] > REG_NUMBER || op->params[2] < 1)
         return (process->carry);
     process->registre[op->params[2] - 1] = par_a | par_b;
     if (process->registre[op->params[2] - 1] == 0)
@@ -217,19 +215,19 @@ int op_and(t_vm *vm, t_op *op, t_process *process)
     vm->map[0] = vm->map[0];
     if (((op->ocp & PARAM_C) >> 6) == 0 || ((op->ocp & PARAM_B) >> 4) == 0 || ((op->ocp & PARAM_A) >> 2) != 1)
         return (0);
-    if ((err = (((op->ocp & PARAM_C)) >> 6) == 1) && (op->params[0] >= REG_NUMBER || op->params[0] < 1))
+    if ((err = (((op->ocp & PARAM_C)) >> 6) == 1) && (op->params[0] > REG_NUMBER || op->params[0] < 1))
         return (process->carry);
     if (err == 3)
         par_a = res_add(op->params[0] , process->pc);
     else
         par_a = (err == 1) ? process->registre[op->params[0] - 1] : op->params[0];
-    if (((err = ((op->ocp & PARAM_B) >> 4)) == 1) && (op->params[1] >= REG_NUMBER || op->params[1] < 1))
+    if (((err = ((op->ocp & PARAM_B) >> 4)) == 1) && (op->params[1] > REG_NUMBER || op->params[1] < 1))
         return (process->carry);
     if (err == 3)
         par_b = res_add(op->params[1] , process->pc);
     else
         par_b = (err == 1) ? process->registre[op->params[1] - 1] : op->params[1];
-    if (op->params[2] >= REG_NUMBER || op->params[2] < 1)
+    if (op->params[2] > REG_NUMBER || op->params[2] < 1)
         return (process->carry);
     process->registre[op->params[2] - 1] = par_a & par_b;
     if (process->registre[op->params[2] - 1] == 0)
@@ -317,27 +315,23 @@ int sti(t_vm *vm, t_op *op, t_process *process)
 
 
     if (((op->ocp & PARAM_C) >> 6) != 1 || ((op->ocp & PARAM_B) >> 4) == 0 || ((op->ocp & PARAM_A) >> 2) == 0 || ((op->ocp & PARAM_A) >> 2) == 3)
-    {
        return (0);
-    }
     if (op->params[0] <= 0 || op->params[0] > REG_NUMBER)
-    {
         return (0);
-    }
-
     vm->map[0] = vm->map[0];
-    if ((k = (((op->ocp & PARAM_B)) >> 4) == 1) && (op->params[1] >= REG_NUMBER || op->params[1] < 1))
+    if ((k = (((op->ocp & PARAM_B)) >> 4) == 1) && (op->params[1] > REG_NUMBER || op->params[1] < 1))
         return (process->carry);
     if (k == 3)
         par_a = (short)op->params[1];
     else
         par_a = (k == 1) ? process->registre[op->params[1] - 1] : op->params[1];
-    if (((k = ((op->ocp & PARAM_A) >> 2)) == 1) && (op->params[2] >= REG_NUMBER || op->params[2] < 1))
+    if (((k = ((op->ocp & PARAM_A) >> 2)) == 1) && (op->params[2] > REG_NUMBER || op->params[2] < 1))
         return (process->carry);
     par_b = (k == 1) ? process->registre[op->params[2] - 1] : op->params[2];
     tointhex((unsigned int)process->registre[op->params[0] - 1], &idx_val, vm);
     par_a = res_add(par_a + par_b, process->pc);
-    //ft_printf("op : %s - params : %d_%d_%d - pc : %d\n", op->name, op->params[0], op->params[1], process->registre[op->params[2] - 1], process->pc);
+    //if (vm->c + 1 == 11245)
+    //    ft_printf("op : %s - ocp : %d params : %d_%d_%d - pc : %d   par_a : %d\n", op->name, op->ocp, op->params[0], op->params[1], process->registre[op->params[2] - 1], process->pc, par_a);
     if (!idx_val)
         return (process->carry);
     k = -1;
@@ -372,11 +366,17 @@ int st(t_vm *vm, t_op *op, t_process *process)
     unsigned char *idx_val;
     int k;
 
-    //ft_printf("op : %s - params : %d_%d- pc : %d\n", op->name, op->params[0], op->params[1], process->pc);
+    //ft_printf("op : %s - params : %d_%d- pc : %d\n", op->name, process->registre[op->params[0] - 1], op->params[1], process->pc);
     if (((op->ocp & PARAM_C) >> 6) != 1 || ((op->ocp & PARAM_B) >> 4) == 2 || ((op->ocp & PARAM_A) >> 2) != 0)
        return (0);
     if (((op->ocp & PARAM_B) >> 4) == 1)
+    {
+        if ((op->params[1] <= 0 || op->params[1] > REG_NUMBER) || (op->params[0] <= 0 || op->params[0] > REG_NUMBER))
+        {
+            return (0);
+        }
         process->registre[op->params[1] - 1] = process->registre[op->params[0] - 1];
+    }
     else
     {
         
@@ -407,13 +407,16 @@ int st(t_vm *vm, t_op *op, t_process *process)
 
 int ld(t_vm *vm, t_op *op, t_process *process)
 {
+    //ft_printf("op : %s - params : %d_%d- pc : %d\n", op->name, op->params[0], process->registre[op->params[1] - 1], process->pc);
+    //exit(1);
     if (((op->ocp & PARAM_C) >> 6) < 2 || ((op->ocp & PARAM_B) >> 4) > 1 || ((op->ocp & PARAM_A) >> 2) != 0)
        return (0);
     vm->map[0] = vm->map[0];
-    if (op->params[1] > 0 && op->params[1] < REG_NUMBER)
+    if (op->params[1] > 0 && op->params[1] <= REG_NUMBER)
         process->registre[op->params[1] - 1] = (((op->ocp & PARAM_C) >> 6) == 2) ? op->params[0] : res_add(op->params[0], process->pc);
     else
         return (0);
+    
     if (op->params[0] == 0)
         process->carry = 1;
     else
