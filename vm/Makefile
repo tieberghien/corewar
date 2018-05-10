@@ -4,7 +4,6 @@ SRC_NAME = vm_main.c \
 		read_champ.c \
 		display_intro.c \
 		vm_mem.c \
-		vm_mem2.c	\
 		vm_allocop.c \
 		op_1.c \
 		op_2.c	\
@@ -12,7 +11,9 @@ SRC_NAME = vm_main.c \
 		op_4.c	\
 		op_5.c	\
 		op_extra.c	\
-		free.c
+		free.c		\
+		flag_n.c	\
+		vm_mem2.c
 
 OBJ_PATH = obj
 

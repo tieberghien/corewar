@@ -83,7 +83,7 @@ typedef	struct		s_vm
 	int				c;
 	int				live_num;
 	int				last_live;
-	unsigned int	tot_cycle;
+	unsigned int    tot_cycle;
 	t_opts			*opts;
 	t_champs		*champs;
 	t_process		**process;
@@ -158,7 +158,7 @@ void			return_failure(char *str, char *op);
 void			free_vm(t_vm *vm, t_opts opts);
 void			cycle_to_die(t_opts *opts, unsigned int tot_cycle, int flag);
 int				start_game(t_vm *vm, t_opts *opts);
-int				before_start_game(t_vm *vm, t_opts *opts, t_champs *champs);
+int				id_check(t_champs *champs, t_opts *opts);
 
 static int			(*g_op[])(t_vm *,t_op *, t_process *) = {&live, &ld, &st, &add, &sub, &op_and, &op_or, &op_xor, &zjmp, &ldi, &sti, &op_fork, &lld, &lldi, &op_lfork, &aff};
 

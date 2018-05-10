@@ -6,7 +6,7 @@
 /*   By: syboeuf <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 18:36:35 by syboeuf           #+#    #+#             */
-/*   Updated: 2018/05/10 18:58:08 by syboeuf          ###   ########.fr       */
+/*   Updated: 2018/05/10 23:05:35 by gficara          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,8 @@ int		zjmp(t_vm *vm, t_op *op, t_process *process)
 		process->pc = res_add(op->params[0], process->pc);
 		return (process->carry);
 	}
-	verb_adv(vm, process, 3);
+	if (vm->opts->verbosity == 1)
+		verb_adv(vm, process, 3);
 	process->pc = (process->pc + 3) % MEM_SIZE;
 	return (process->carry);
 }

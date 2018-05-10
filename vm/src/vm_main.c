@@ -6,7 +6,7 @@
 /*   By: syboeuf <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:35:43 by syboeuf           #+#    #+#             */
-/*   Updated: 2018/05/10 21:30:04 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/05/10 23:04:38 by gficara          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,10 @@ int		parsing_arg_b(char *str, t_opts *opts, int *j, t_champs *champs)
 	}
 	else
 	{
-		champs[opts->n_players].player_id = ft_atoi(str);
+		champs[opts->n_players].player_id = -ft_atoi(str);
+		if (champs[opts->n_players].player_id > 0 || id_check(champs, opts)
+				|| champs[opts->n_players].player_id < -2147483647)
+			exit(ft_printf("not a valid value for the ID or aready took\n"));
 		*j = -1;
 	}
 	return (0);
@@ -41,11 +44,17 @@ int		parsing_arg_b(char *str, t_opts *opts, int *j, t_champs *champs)
 int		parsing_arg_d(t_champs *champ, t_opts *opts, int *j)
 {
 	champ[opts->n_players].alive = 0;
+	if (id_check(champ, opts)
+			&& champ[opts->n_players].player_id != 0)
+		exit(ft_printf("ID conflicting, interrupting the program\n"));
 	if (champ[opts->n_players].player_id == 0)
 		champ[opts->n_players].player_id = -(1 + opts->n_players);
 	opts->n_players++;
 	if (opts->n_players > MAX_PLAYERS)
-		return (ft_printf("too many player\n"));
+	{
+		ft_printf("Too many players\n");
+		exit(1);
+	}
 	*j = 0;
 	return (0);
 }
@@ -53,7 +62,9 @@ int		parsing_arg_d(t_champs *champ, t_opts *opts, int *j)
 int		parsing_arg_c(char *av, t_opts *opts, t_champs *champ, int *j)
 {
 	char *par;
+	int i;
 
+	i = 0;
 	if (*j > 0)
 	{
 		if (parsing_arg_b(av, opts, j, champ))
@@ -72,6 +83,7 @@ int		parsing_arg_c(char *av, t_opts *opts, t_champs *champ, int *j)
 			return (ft_printf("invalid player"));
 		champ[opts->n_players].file_name = av;
 		parsing_arg_d(champ, opts, j);
+		i++;
 	}
 	else
 		return (ft_printf("invalid player\n"));

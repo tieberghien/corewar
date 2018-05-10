@@ -6,7 +6,7 @@
 /*   By: syboeuf <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 18:32:36 by syboeuf           #+#    #+#             */
-/*   Updated: 2018/05/10 19:10:54 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/05/10 23:05:00 by gficara          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ int		aff(t_vm *vm, t_op *op, t_process *process)
 			|| ((op->ocp & PARAM_A) >> 2) != 0)
 		return (0);
 	vm->map[0] = vm->map[0];
+	ft_printf("%hhc", process->registre[op->params[0] - 1] % 256);
 	if (process->registre[op->params[0] - 1] == 0)
 		process->carry = 1;
 	else
