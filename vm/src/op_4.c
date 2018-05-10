@@ -6,7 +6,7 @@
 /*   By: syboeuf <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 18:32:36 by syboeuf           #+#    #+#             */
-/*   Updated: 2018/05/10 18:34:11 by syboeuf          ###   ########.fr       */
+/*   Updated: 2018/05/10 19:06:13 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,22 @@ void	verb_adv(t_vm *vm, t_process *process, int l)
 
 	len = l;
 	i = 0;
-	ft_printf("ADV %d (", len);
-	if (process->pc == 0)
-		ft_putstr("0x");
-	ft_printf("%#.4x -> ", process->pc);
-	if (process->pc + len == 0)
-		ft_putstr("0x");
-	ft_printf("%#.4x) ", process->pc + len);
-	while (i < len)
+	if (vm->opts->verbosity)
 	{
-		ft_printf("%.2hhx ", vm->map[(process->pc + i) % MEM_SIZE]);
-		i++;
+		ft_printf("ADV %d (", len);
+		if (process->pc == 0)
+			ft_putstr("0x");
+		ft_printf("%#.4x -> ", process->pc);
+		if (process->pc + len == 0)
+			ft_putstr("0x");
+		ft_printf("%#.4x) ", process->pc + len);
+		while (i < len)
+		{
+			ft_printf("%.2hhx ", vm->map[(process->pc + i) % MEM_SIZE]);
+			i++;
+		}
+		ft_putchar('\n');
 	}
-	ft_putchar('\n');
 }
 
 int		aff(t_vm *vm, t_op *op, t_process *process)

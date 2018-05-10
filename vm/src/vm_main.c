@@ -6,7 +6,7 @@
 /*   By: syboeuf <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:35:43 by syboeuf           #+#    #+#             */
-/*   Updated: 2018/05/10 16:39:35 by syboeuf          ###   ########.fr       */
+/*   Updated: 2018/05/10 19:07:22 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ int		parsing_arg_c(char *av, t_opts *opts, t_champs *champ, int *j)
 		*j = 1;
 	else if (!ft_strcmp("-n", av) && *j == 0)
 		*j = 2;
+	else if (!ft_strcmp("-v", av) && *j == 0)
+		opts->verbosity = 1;
 	else if (ft_strcmp(av, ".cor") &&
 			(par = ft_strstr(av, ".cor")) && *j < 1)
 	{
@@ -95,6 +97,7 @@ int		main(int ac, char **av)
 
 	i = 0;
 	j = -1;
+	opts.verbosity = 0;
 	while (++j < MAX_PLAYERS)
 		champs[j].player_id = 0;
 	if (MAX_PLAYERS <= 0)
@@ -103,9 +106,8 @@ int		main(int ac, char **av)
 	opts.n_players = 0;
 	if (parsing_arg_a(ac, av, &opts, champs))
 		return (1);
-	if (oc_file(champs, &opts) > 0)
-		return (fun_exit(NULL, champs, &opts));
-	if (init_vm(champs, &opts, &vm))
-		return (fun_exit(NULL, champs, &opts));
+	oc_file(champs, &opts);
+	init_vm(champs, &opts, &vm);
+	free_vm(&vm, opts);
 	return (0);
 }

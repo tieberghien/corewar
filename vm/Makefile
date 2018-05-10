@@ -6,7 +6,12 @@ SRC_NAME = vm_main.c \
 		vm_mem.c \
 		vm_allocop.c \
 		op_1.c \
-		op_extra.c
+		op_2.c	\
+		op_3.c	\
+		op_4.c	\
+		op_5.c	\
+		op_extra.c	\
+		free.c
 
 OBJ_PATH = obj
 

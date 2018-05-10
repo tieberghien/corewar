@@ -3,37 +3,51 @@
 /*                                                        :::      ::::::::   */
 /*   read_champ.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: syboeuf <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: etieberg <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/05/10 16:25:48 by syboeuf           #+#    #+#             */
-/*   Updated: 2018/05/10 17:29:06 by syboeuf          ###   ########.fr       */
+/*   Created: 2018/05/10 17:23:28 by etieberg          #+#    #+#             */
+/*   Updated: 2018/05/10 18:08:16 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
+void	return_failure(char *str, char *op)
+{
+	ft_putstr_fd(str, 2);
+	if (op != NULL)
+		ft_putendl_fd(op, 2);
+	else
+		ft_putchar_fd('\n', 2);
+	exit(0);
+}
+
 int		cpyinst(unsigned char **str, int buffsize, unsigned char *buf, int fd)
 {
 	int i;
 
-	i = read(fd, buf, buffsize);
-	if (i != buffsize)
+	if ((i = read(fd, buf, buffsize)) != buffsize)
 		return (-1);
-	if (!(*str = (unsigned char*)malloc(sizeof(unsigned char) * buffsize)))
+	buf[buffsize] = '\0';
+	if (!(*str = malloc(buffsize + 1)))
 		return (-1);
-	*str = ft_memcpy((char*)*str, (char*)buf, buffsize);
+	ft_memcpy((char *)*str, (char *)buf, buffsize + 1);
 	return (i);
 }
 
 int		readstr(char **str, int buffsize, unsigned char *buf, int fd)
 {
-	int i;
+	int		i;
+	char	*tmp;
+	int		len;
 
 	i = read(fd, buf, buffsize);
-	if (!(*str = (char*)malloc(sizeof(char) * buffsize + 1)))
+	len = ft_strlen((char *)buf);
+	if (i != buffsize)
 		return (-1);
-	(*str)[buffsize] = '\0';
-	*str = ft_strncpy(*str, (char*)buf, buffsize);
+	buf[len] = '\0';
+	tmp = ft_strdup((char *)buf);
+	*str = tmp;
 	return (i);
 }
 
@@ -43,26 +57,26 @@ int		read_file(t_champs *champs)
 	int				j;
 	unsigned char	buf[COMMENT_LENGTH];
 
+	j = 0;
 	i = read(champs->fd, buf, 4);
 	if (ft_memcmp((void *)buf, g_magic, 4))
-		return (ft_printf("You're not a real.cor...\n"));
-	j = i;
+		return_failure(MAGIC, NULL);
+	j += i;
 	if ((i = readstr(&champs->name, PROG_NAME_LENGTH, buf, champs->fd)) < 0)
-		ft_printf("malloc error");
+		return_failure(NAME, NULL);
 	j += i;
 	lseek(champs->fd, 4, SEEK_CUR);
 	i = read(champs->fd, buf, 4);
 	if ((champs->size = buf[2] * 256 + buf[3]) == 0)
-		return (ft_printf("champion empty"));
+		return_failure(EMPTY, NULL);
 	if (buf[0] != 0 || buf[1] != 0 || champs->size > CHAMP_MAX_SIZE)
-		return (ft_printf("%s is too big", champs->name));
+		return_failure(BIG, NULL);
 	if ((i = readstr(&champs->comment, COMMENT_LENGTH, buf, champs->fd)) < 0)
-		ft_printf("malloc error");
+		return_failure(COMMENT, NULL);
 	j += i;
 	lseek(champs->fd, 4, SEEK_CUR);
 	if ((i = cpyinst(&champs->instructions, champs->size, buf, champs->fd)) < 0)
-		ft_printf("malloc error");
-	j += i;
+		return_failure(INSTR, NULL);
 	return (0);
 }
 
@@ -74,21 +88,22 @@ int		oc_file(t_champs *champs, t_opts *opts)
 	while (++i < opts->n_players)
 	{
 		champs[i].fd = open(champs[i].file_name, O_RDONLY);
-		if (champs[i].fd == -1 || lseek(champs[i].fd, 4, SEEK_SET) == -1)
-			return (ft_printf("champion %s is a lie!\n", champs[i].file_name));
+		if (champs[i].fd == -1)
+			return_failure("File not open", NULL);
+		if (lseek(champs[i].fd, 4, SEEK_SET) == -1)
+			return_failure("Your champion is a lie!", NULL);
 		if (lseek(champs[i].fd, PROG_NAME_LENGTH, SEEK_CUR) == -1)
-			return (ft_printf("champion %s is a lie!\n", champs[i].file_name));
+			return_failure("Your champion is a lie!", NULL);
 		if (lseek(champs[i].fd, 4, SEEK_SET) == -1)
-			return (ft_printf("champion %s is a lie!\n", champs[i].file_name));
+			return_failure("Your champion is a lie!", NULL);
 		if (lseek(champs[i].fd, 4, SEEK_CUR) == -1)
-			return (ft_printf("champion %s is a lie!\n", champs[i].file_name));
+			return_failure("Your champion is a lie!", NULL);
 		if (lseek(champs[i].fd, COMMENT_LENGTH, SEEK_CUR) == -1)
-			return (ft_printf("champion %s is a lie!\n", champs[i].file_name));
+			return_failure("Your champion is a lie!", NULL);
 		if (lseek(champs[i].fd, 4, SEEK_SET) == -1)
-			return (ft_printf("champion %s is a lie!\n", champs[i].file_name));
+			return_failure("Your champion is a lie!", NULL);
 		lseek(champs[i].fd, 0, SEEK_SET);
-		if (read_file(champs + i) > 0)
-			return (1);
+		read_file(champs + i);
 		close(champs[i].fd);
 	}
 	return (display_intro(champs, *opts));

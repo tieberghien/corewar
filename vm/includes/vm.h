@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   vm.h                                               :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: syboeuf <marvin@42.fr>                     +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/05/10 16:00:28 by syboeuf           #+#    #+#             */
-/*   Updated: 2018/05/10 17:18:14 by syboeuf          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef VM_H
 # define VM_H
 
@@ -17,38 +5,47 @@
 # include "op.h"
 # include <fcntl.h>
 
-# define NO_CHAMP		"missing champion"
-# define OPEN_CHAMP		"failed to open .cor"
+# define USAGE		"usage: ./corewar [-dump nbr_cycles] [[-n number] champion1.cor] ..."
+# define CORRUPT	"Invalid champion"
+# define OPEN_CHAMP	"failed to open .cor"
 # define PARSE_CHAMP	"failed to read .cor"
-# define SIZE_CHAMP		"champion size over max size"
-# define MAX_CHAMPS		"too many champions"
-# define VERBOSE		"verbosity level: 0, 1, 2, 4, 8, 16"
-# define PARAM_C		192
-# define PARAM_B		48
-# define PARAM_A		12
+# define MAX_CHAMPS	"Too many champions"
+# define SNEAKY		"MAX_PLAYERS not properly defined"
+# define VERBOSE	"verbosity level: 0, 1, 2, 4, 8, 16"
+# define MAGIC		"File has an invalid header"
+# define EMPTY		"Champion without instructions"
+# define BIG		"Champion has too large of a code (max 682 bytes)"
+# define NAME		"Failed to read champion name"
+# define COMMENT	"Failed to read champion comment"
+# define INSTR		"Failed to copy instructions"
+# define PARAM_C	192
+# define PARAM_B	48
+# define PARAM_A	12
 
-typedef struct			s_opts
+static unsigned char g_magic[] = {0, 234, 131, 243};
+
+typedef struct		s_opts
 {
 	unsigned int	aff_mode;
 	unsigned int	n_cycles;
 	unsigned int	s_cycles;
 	unsigned int	n_players;
 	unsigned int	verbosity;
-}						t_opts;
+}					t_opts;
 
-typedef struct			s_op
+typedef struct 		s_op
 {
 	char			*name;
 	int				argc;
-	int				params[3];
+	int				params[3];	
 	int				op_code;
 	int				dur;
 	char			effect[100];
 	int				carry;
 	unsigned char	ocp;
-}						t_op;
+}					t_op;
 
-typedef struct			s_champ
+typedef struct		s_champ
 {
 	int				player_id;
 	unsigned int	size;
@@ -59,9 +56,9 @@ typedef struct			s_champ
 	unsigned char	*instructions;
 	unsigned int	registre[REG_NUMBER];
 	int				alive;
-}						t_champs;
+}					t_champs;
 
-typedef struct			s_process
+typedef struct		s_process
 {
 	int					number;
 	int					pc;
@@ -73,15 +70,15 @@ typedef struct			s_process
 	unsigned int		registre[REG_NUMBER];
 	int					count;
 	struct s_process	*next;
-}						t_process;
+}					t_process;
 
-typedef	struct			s_vm
+typedef	struct		s_vm
 {
-	int				ping;
+	int 			ping;
 	unsigned char	*map;
 	char			*last;
 	int				*players_map;
-	int				cycle;
+	int			 	cycle;
 	int				next_cycle_group;
 	int				c;
 	int				live_num;
@@ -89,9 +86,13 @@ typedef	struct			s_vm
 	t_opts			*opts;
 	t_champs		*champs;
 	t_process		**process;
-}						t_vm;
+}					t_vm;
 
-static t_op				g_optab[17] =
+/*
+**we need to change all the operation so that they will take t_processes instead of t_champs;
+*/
+
+static t_op			g_optab[17] =
 {
 	{"live", 1, {T_DIR}, 1, 10, "alive", 0, 0},
 	{"ld", 2, {T_DIR | T_IND, T_REG}, 2, 5, "load", 1, 0},
@@ -118,46 +119,44 @@ static t_op				g_optab[17] =
 	{0, 0, {0}, 0, 0, "0", 0, 0}
 };
 
-static unsigned char	g_magic[] = {0, 234, 131, 243};
+void			init_reg(t_champs *champs, int player, t_process *process);
+unsigned int    rest_address(t_process *process, unsigned int num);
+void			tointhex(unsigned long int num, unsigned char **tmp);
+int				toint(t_vm *vm, int i, int size);
+int 			mv_mem(int *pos, int move, t_vm *vm, t_op **op);
+void    		ft_opdel(t_op **op);
+t_op   			*ft_opdup(t_op op);
+//void			parse_args(int ac, char **av, t_opts *opts);
+int				display_intro(t_champs *champs, t_opts opts);
+void			verbose_zero(t_champs *champs);
+void			verbose_one(t_champs champs);
+int				oc_file(t_champs *champs, t_opts *opts);
+int 			init_vm(t_champs *champs, t_opts *opts, t_vm *vm);
+void			print_vm_mem(t_vm *vm);
+int				save_op(t_process *process, t_vm *vm);
+int				save_op_spec(t_process *process, t_vm *vm);
+int 			check_alive(t_process **process, int flag);
+int				res_add(unsigned int param, int pc);
+int 			live(t_vm *vm, t_op *op, t_process *process);
+int				ld(t_vm *vm, t_op *op, t_process *process);
+int 			st(t_vm *vm, t_op *op, t_process *process);
+int				add(t_vm *vm, t_op *op, t_process *process);
+int 			sub(t_vm *vm, t_op *op, t_process *process);
+int				op_and(t_vm *vm, t_op *op, t_process *process);
+int 			op_or(t_vm *vm, t_op *op, t_process *process);
+int 			op_xor(t_vm *vm, t_op *op, t_process *process);
+int 			zjmp(t_vm *vm, t_op *op, t_process *process);
+int 			ldi(t_vm *vm, t_op *op, t_process *process);
+int 			sti(t_vm *vm, t_op *op, t_process *process);
+int 			op_fork(t_vm *vm, t_op *op, t_process *process);
+int				lld(t_vm *vm, t_op *op, t_process *process);
+int				lldi(t_vm *vm, t_op *op, t_process *process);
+int				op_lfork(t_vm *vm, t_op *op, t_process *process);
+int				aff(t_vm *vm, t_op *op, t_process *process);
+void			verb_adv(t_vm *vm, t_process *process, int l);
+void			return_failure(char *str, char *op);
+void			free_vm(t_vm *vm, t_opts opts);
 
-void					init_reg(t_champs *champs, int player,
-		t_process *process);
-unsigned int			rest_address(t_process *process, unsigned int num);
-void					tointhex(unsigned long int num, unsigned char **tmp);
-int						toint(t_vm *vm, int i, int size);
-int						mv_mem(int *pos, int move, t_vm *vm, t_op **op);
-void					ft_opdel(t_op **op);
-t_op					*ft_opdup(t_op op);
-int						display_intro(t_champs *champs, t_opts opts);
-void					verbose_zero(t_champs *champs);
-void					verbose_one(t_champs champs);
-int						oc_file(t_champs *champs, t_opts *opts);
-int						fun_exit(char *str, t_champs *champs, t_opts *opts);
-int						init_vm(t_champs *champs, t_opts *opts, t_vm *vm);
-void					print_vm_mem(t_vm *vm);
-int						save_op(t_process *process, t_vm *vm);
-int						save_op_spec(t_process *process, t_vm *vm);
-int						check_alive(t_process **process, int flag);
-int						res_add(unsigned int param, int pc);
-int						live(t_vm *vm, t_op *op, t_process *process);
-int						ld(t_vm *vm, t_op *op, t_process *process);
-int						st(t_vm *vm, t_op *op, t_process *process);
-int						add(t_vm *vm, t_op *op, t_process *process);
-int						sub(t_vm *vm, t_op *op, t_process *process);
-int						op_and(t_vm *vm, t_op *op, t_process *process);
-int						op_or(t_vm *vm, t_op *op, t_process *process);
-int						op_xor(t_vm *vm, t_op *op, t_process *process);
-int						zjmp(t_vm *vm, t_op *op, t_process *process);
-int						ldi(t_vm *vm, t_op *op, t_process *process);
-int						sti(t_vm *vm, t_op *op, t_process *process);
-int						op_fork(t_vm *vm, t_op *op, t_process *process);
-int						lld(t_vm *vm, t_op *op, t_process *process);
-int						lldi(t_vm *vm, t_op *op, t_process *process);
-int						op_lfork(t_vm *vm, t_op *op, t_process *process);
-int						aff(t_vm *vm, t_op *op, t_process *process);
-void					verb_adv(t_vm *vm, t_process *process, int l);
-static int				(*g_op[])(t_vm *, t_op *, t_process *) = {&live,
-	&ld, &st, &add, &sub, &op_and, &op_or, &op_xor, &zjmp, &ldi, &sti,
-	&op_fork, &lld, &lldi, &op_lfork, &aff};
+static int			(*g_op[])(t_vm *,t_op *, t_process *) = {&live, &ld, &st, &add, &sub, &op_and, &op_or, &op_xor, &zjmp, &ldi, &sti, &op_fork, &lld, &lldi, &op_lfork, &aff};
 
 #endif
