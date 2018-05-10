@@ -4,6 +4,7 @@ SRC_NAME = vm_main.c \
 		read_champ.c \
 		display_intro.c \
 		vm_mem.c \
+		vm_mem2.c	\
 		vm_allocop.c \
 		op_1.c \
 		op_2.c	\
