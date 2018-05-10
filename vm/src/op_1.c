@@ -331,7 +331,7 @@ int sti(t_vm *vm, t_op *op, t_process *process)
     tointhex((unsigned int)process->registre[op->params[0] - 1], &idx_val, vm);
     par_a = res_add(par_a + par_b, process->pc);
     //if (vm->c + 1 == 11245)
-    //    ft_printf("op : %s - ocp : %d params : %d_%d_%d - pc : %d   par_a : %d\n", op->name, op->ocp, op->params[0], op->params[1], process->registre[op->params[2] - 1], process->pc, par_a);
+    //    ft_printf("op : %s - ocp : %d params : %x_%d_%d - pc : %d   par_a : %d\n", op->name, op->ocp, process->registre[op->params[0] - 1], op->params[1], op->params[2], process->pc, par_a);
     if (!idx_val)
         return (process->carry);
     k = -1;
@@ -366,7 +366,7 @@ int st(t_vm *vm, t_op *op, t_process *process)
     unsigned char *idx_val;
     int k;
 
-    //ft_printf("op : %s - params : %d_%d- pc : %d\n", op->name, process->registre[op->params[0] - 1], op->params[1], process->pc);
+    //ft_printf("op : %s - params : %x(%d)_%d- pc : %d\n", op->name, process->registre[op->params[0] - 1], op->params[0], op->params[1], process->pc);
     if (((op->ocp & PARAM_C) >> 6) != 1 || ((op->ocp & PARAM_B) >> 4) == 2 || ((op->ocp & PARAM_A) >> 2) != 0)
        return (0);
     if (((op->ocp & PARAM_B) >> 4) == 1)
@@ -413,10 +413,14 @@ int ld(t_vm *vm, t_op *op, t_process *process)
        return (0);
     vm->map[0] = vm->map[0];
     if (op->params[1] > 0 && op->params[1] <= REG_NUMBER)
-        process->registre[op->params[1] - 1] = (((op->ocp & PARAM_C) >> 6) == 2) ? op->params[0] : res_add(op->params[0], process->pc);
+    {
+        if (((op->ocp & PARAM_C) >> 6) == 2)
+            process->registre[op->params[1] - 1] = op->params[0];
+        else
+            process->registre[op->params[1] - 1] = toint(vm , res_add(op->params[0], process->pc), 4);
+    }
     else
         return (0);
-    
     if (op->params[0] == 0)
         process->carry = 1;
     else
