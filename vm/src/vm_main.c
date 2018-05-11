@@ -6,7 +6,7 @@
 /*   By: syboeuf <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:35:43 by syboeuf           #+#    #+#             */
-/*   Updated: 2018/05/10 23:04:38 by gficara          ###   ########.fr       */
+/*   Updated: 2018/05/11 08:40:59 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,20 +22,17 @@ int		parsing_arg_b(char *str, t_opts *opts, int *j, t_champs *champs)
 	while (str[k] >= '0' && str[k] <= '9')
 		k++;
 	if (str[k])
-		return (ft_printf("not a number\n"));
+		return_failure(DUMP, NULL);
 	if (*j == 1)
 	{
 		if (opts->s_cycles != 0)
-			return (ft_printf("more than 1 dump command\n"));
+			return_failure(DUMP, NULL);
 		opts->s_cycles = ft_atoi(str);
 		*j = 0;
 	}
 	else
 	{
-		champs[opts->n_players].player_id = -ft_atoi(str);
-		if (champs[opts->n_players].player_id > 0 || id_check(champs, opts)
-				|| champs[opts->n_players].player_id < -2147483647)
-			exit(ft_printf("not a valid value for the ID or aready took\n"));
+		champs[opts->n_players].player_id = ft_atoi(str);
 		*j = -1;
 	}
 	return (0);
@@ -44,17 +41,11 @@ int		parsing_arg_b(char *str, t_opts *opts, int *j, t_champs *champs)
 int		parsing_arg_d(t_champs *champ, t_opts *opts, int *j)
 {
 	champ[opts->n_players].alive = 0;
-	if (id_check(champ, opts)
-			&& champ[opts->n_players].player_id != 0)
-		exit(ft_printf("ID conflicting, interrupting the program\n"));
 	if (champ[opts->n_players].player_id == 0)
 		champ[opts->n_players].player_id = -(1 + opts->n_players);
 	opts->n_players++;
 	if (opts->n_players > MAX_PLAYERS)
-	{
-		ft_printf("Too many players\n");
-		exit(1);
-	}
+		return_failure(MAX_CHAMPS, NULL);
 	*j = 0;
 	return (0);
 }
@@ -62,9 +53,7 @@ int		parsing_arg_d(t_champs *champ, t_opts *opts, int *j)
 int		parsing_arg_c(char *av, t_opts *opts, t_champs *champ, int *j)
 {
 	char *par;
-	int i;
 
-	i = 0;
 	if (*j > 0)
 	{
 		if (parsing_arg_b(av, opts, j, champ))
@@ -80,13 +69,12 @@ int		parsing_arg_c(char *av, t_opts *opts, t_champs *champ, int *j)
 			(par = ft_strstr(av, ".cor")) && *j < 1)
 	{
 		if (ft_strcmp(".cor", par) || par[-1] == '/')
-			return (ft_printf("invalid player"));
+			return_failure(CORRUPT, NULL);
 		champ[opts->n_players].file_name = av;
 		parsing_arg_d(champ, opts, j);
-		i++;
 	}
 	else
-		return (ft_printf("invalid player\n"));
+		return_failure(CORRUPT, NULL);
 	return (0);
 }
 
@@ -119,7 +107,9 @@ int		main(int ac, char **av)
 	while (++j < MAX_PLAYERS)
 		champs[j].player_id = 0;
 	if (MAX_PLAYERS <= 0)
-		ft_printf("MAX_PLAYERS not properly defined");
+		return_failure(SNEAKY, NULL);
+	else if (ac > MAX_PLAYERS + 1)
+		return_failure(MAX_CHAMPS, NULL);
 	opts.s_cycles = 0;
 	opts.n_players = 0;
 	if (parsing_arg_a(ac, av, &opts, champs))

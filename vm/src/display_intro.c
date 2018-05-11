@@ -6,7 +6,7 @@
 /*   By: syboeuf <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:13:17 by syboeuf           #+#    #+#             */
-/*   Updated: 2018/05/10 19:25:01 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/05/11 08:43:36 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,11 @@
 
 void	verbose_one(t_champs champ)
 {
-	ft_putstr("un processus dit que le joueur ");
+	ft_putstr("Player ");
+	ft_putnbr(champ.player_id);
+	ft_putstr(" (");
 	ft_putstr(champ.name);
-	ft_putstr(" est en vie\n");
+	ft_putendl(") is said to be alive");
 }
 
 int		fun_exit(char *str, t_champs *champs, t_opts *opts)
