@@ -6,7 +6,7 @@
 /*   By: syboeuf <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:35:43 by syboeuf           #+#    #+#             */
-/*   Updated: 2018/05/11 09:17:58 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/05/11 09:21:42 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int		parsing_arg_c(char *av, t_opts *opts, t_champs *champ, int *j)
 		parsing_arg_d(champ, opts, j);
 	}
 	else
-		return_failure(CORRUPT, NULL);
+		return_failure(OPTS, NULL);
 	return (0);
 }
 

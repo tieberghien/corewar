@@ -6,7 +6,7 @@
 /*   By: etieberg <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/11 08:48:42 by etieberg          #+#    #+#             */
-/*   Updated: 2018/05/11 09:14:52 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/05/11 09:22:15 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 
 # define USAGE			"usage: ./corewar -dump -v [-n champion1.cor] ..."
 # define CORRUPT		"Invalid champion"
+# define OPTS			"Invalid option"
 # define OPEN_CHAMP		"Failed to open .cor"
 # define PARSE_CHAMP	"Failed to read .cor"
 # define MAX_CHAMPS		"Too many champions"
@@ -29,7 +30,7 @@
 # define NAME			"Failed to read champion name"
 # define COMMENT		"Failed to read champion comment"
 # define INSTR			"Failed to copy instructions"
-# define DUMP			"Wrong opts input"
+# define DUMP			"Wrong option input"
 # define PARAM_C		192
 # define PARAM_B		48
 # define PARAM_A		12
