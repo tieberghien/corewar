@@ -6,7 +6,7 @@
 /*   By: syboeuf <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:13:17 by syboeuf           #+#    #+#             */
-/*   Updated: 2018/05/11 08:43:36 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/05/11 09:27:49 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,11 @@ int		display_intro(t_champs *champs, t_opts opts)
 
 void	verbose_zero(t_champs *champ)
 {
-	ft_putstr("le joueur ");
+	ft_putstr("Contestant ");
 	ft_putnbr(champ->player_id);
-	ft_putstr(" (");
+	ft_putstr(", \"");
 	ft_putstr(champ->name);
-	ft_putchar(')');
-	ft_putstr(" a gagne\n");
+	ft_putstr("\", has won !\n");
 }
 
 void	print_vm_mem(t_vm *vm)
