@@ -6,11 +6,24 @@
 /*   By: gficara <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 21:57:25 by gficara           #+#    #+#             */
-/*   Updated: 2018/05/10 22:21:25 by gficara          ###   ########.fr       */
+/*   Updated: 2018/05/11 09:14:54 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
+
+int	count_opts(int ac, char **av)
+{
+	int i;
+
+	i = 0;
+	while (ac-- > 0)
+	{
+		if (av[ac][0] == '-' || ft_isdigit(av[ac][0]))
+			i++;
+	}
+	return (i);
+}
 
 int	id_check(t_champs *champs, t_opts *opts)
 {

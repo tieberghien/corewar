@@ -6,7 +6,7 @@
 /*   By: syboeuf <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:35:43 by syboeuf           #+#    #+#             */
-/*   Updated: 2018/05/11 08:40:59 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/05/11 09:17:58 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,17 +89,17 @@ int		parsing_arg_a(int ac, char **av, t_opts *opts, t_champs *champ)
 		if (parsing_arg_c(av[i], opts, champ, &j))
 			return (1);
 	if (1 == ac || opts->n_players == 0 || j != 0)
-		return (ft_printf((j == 0) ? "no player\n" : "missing player"));
+		return_failure(USAGE, NULL);
 	return (0);
 }
 
 int		main(int ac, char **av)
 {
-	t_opts			opts;
-	t_champs		champs[MAX_PLAYERS];
-	t_vm			vm;
-	unsigned int	i;
-	int				j;
+	t_opts		opts;
+	t_champs	champs[MAX_PLAYERS];
+	t_vm		vm;
+	int			i;
+	int			j;
 
 	i = 0;
 	j = -1;
@@ -108,7 +108,7 @@ int		main(int ac, char **av)
 		champs[j].player_id = 0;
 	if (MAX_PLAYERS <= 0)
 		return_failure(SNEAKY, NULL);
-	else if (ac > MAX_PLAYERS + 1)
+	if (ac > MAX_PLAYERS + count_opts(ac, av) + 1)
 		return_failure(MAX_CHAMPS, NULL);
 	opts.s_cycles = 0;
 	opts.n_players = 0;

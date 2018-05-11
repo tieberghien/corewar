@@ -6,7 +6,7 @@
 /*   By: etieberg <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/11 08:48:42 by etieberg          #+#    #+#             */
-/*   Updated: 2018/05/11 08:50:52 by etieberg         ###   ########.fr       */
+/*   Updated: 2018/05/11 09:14:52 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,23 +17,22 @@
 # include "op.h"
 # include <fcntl.h>
 
-# define USAGE		"usage: ./corewar -dump -v [-n champion1.cor] ..."
-# define CORRUPT	"Invalid champion"
-# define OPEN_CHAMP	"failed to open .cor"
-# define PARSE_CHAMP	"failed to read .cor"
-# define MAX_CHAMPS	"Too many champions"
-# define SNEAKY		"MAX_PLAYERS not properly defined"
-# define VERBOSE	"verbosity level: 0, 1, 2, 4, 8, 16"
-# define MAGIC		"File has an invalid header"
-# define EMPTY		"Champion without instructions"
-# define BIG		"Champion has too large of a code (max 682 bytes)"
-# define NAME		"Failed to read champion name"
-# define COMMENT	"Failed to read champion comment"
-# define INSTR		"Failed to copy instructions"
-# define DUMP		"Wrong -dump input, needs whole number"
-# define PARAM_C	192
-# define PARAM_B	48
-# define PARAM_A	12
+# define USAGE			"usage: ./corewar -dump -v [-n champion1.cor] ..."
+# define CORRUPT		"Invalid champion"
+# define OPEN_CHAMP		"Failed to open .cor"
+# define PARSE_CHAMP	"Failed to read .cor"
+# define MAX_CHAMPS		"Too many champions"
+# define SNEAKY			"MAX_PLAYERS not properly defined"
+# define MAGIC			"File has an invalid header"
+# define EMPTY			"Champion without instructions"
+# define BIG			"Champion has too large of a code (max 682 bytes)"
+# define NAME			"Failed to read champion name"
+# define COMMENT		"Failed to read champion comment"
+# define INSTR			"Failed to copy instructions"
+# define DUMP			"Wrong opts input"
+# define PARAM_C		192
+# define PARAM_B		48
+# define PARAM_A		12
 
 static unsigned char g_magic[] = {0, 234, 131, 243};
 
@@ -172,6 +171,7 @@ void			free_vm(t_vm *vm, t_opts opts);
 void			cycle_to_die(t_opts *opts, unsigned int tot_cycle, int flag);
 int				start_game(t_vm *vm, t_opts *opts);
 int				before_start_game(t_vm *vm, t_opts *opts, t_champs *champs);
+int				count_opts(int ac, char **av);
 
 static int			(*g_op[])(t_vm *,t_op *, t_process *) = {&live, &ld, &st, &add, &sub, &op_and, &op_or, &op_xor, &zjmp, &ldi, &sti, &op_fork, &lld, &lldi, &op_lfork, &aff};
 
