@@ -18,6 +18,7 @@
 # define NAME		"Failed to read champion name"
 # define COMMENT	"Failed to read champion comment"
 # define INSTR		"Failed to copy instructions"
+# define DUMP		"Wrong -dump input, needs whole number"
 # define PARAM_C	192
 # define PARAM_B	48
 # define PARAM_A	12
@@ -83,7 +84,7 @@ typedef	struct		s_vm
 	int				c;
 	int				live_num;
 	int				last_live;
-	unsigned int    tot_cycle;
+	unsigned int	tot_cycle;
 	t_opts			*opts;
 	t_champs		*champs;
 	t_process		**process;
@@ -158,7 +159,7 @@ void			return_failure(char *str, char *op);
 void			free_vm(t_vm *vm, t_opts opts);
 void			cycle_to_die(t_opts *opts, unsigned int tot_cycle, int flag);
 int				start_game(t_vm *vm, t_opts *opts);
-int				id_check(t_champs *champs, t_opts *opts);
+int				before_start_game(t_vm *vm, t_opts *opts, t_champs *champs);
 
 static int			(*g_op[])(t_vm *,t_op *, t_process *) = {&live, &ld, &st, &add, &sub, &op_and, &op_or, &op_xor, &zjmp, &ldi, &sti, &op_fork, &lld, &lldi, &op_lfork, &aff};
 
