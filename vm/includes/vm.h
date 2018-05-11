@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   vm.h                                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: etieberg <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/05/11 08:48:42 by etieberg          #+#    #+#             */
+/*   Updated: 2018/05/11 08:50:52 by etieberg         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef VM_H
 # define VM_H
 
@@ -5,7 +17,7 @@
 # include "op.h"
 # include <fcntl.h>
 
-# define USAGE		"usage: ./corewar [-dump nbr_cycles] [[-n number] champion1.cor] ..."
+# define USAGE		"usage: ./corewar -dump -v [-n champion1.cor] ..."
 # define CORRUPT	"Invalid champion"
 # define OPEN_CHAMP	"failed to open .cor"
 # define PARSE_CHAMP	"failed to read .cor"
